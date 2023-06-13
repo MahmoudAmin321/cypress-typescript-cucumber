@@ -1,0 +1,20 @@
+{
+  "stepDefinitions": [
+    "cypress/test/[filepath].steps.[jt]s",
+    "cypress/test/[filepart]/common/**/*.[jt]s"
+  ],
+  "messages": {
+    "enabled": true,
+    "output": "cypress/reports/cucumber/cucumber-messages.ndjson"
+  },
+  "json": {
+    "enabled": false,
+    "output": "cypress/reports/cucumber/cucumber-report.json"
+  },
+  "html": {
+    "enabled": true,
+    "output": "cypress/reports/cucumber/basic-report/cucumber-report.html"
+  },
+  "omitFiltered": false,
+  "filterSpecs": true
+}

@@ -1,0 +1,11 @@
+node_modules
+
+#cypress
+cypress/reports
+cypress/downloads
+cypress/fixtures/local
+cypress/screenshots
+cypress/videos
+
+#local env files
+cypress.env.json
