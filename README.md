@@ -3,7 +3,7 @@
 ## Overview
 
 - Purpose of this project is to demonstrate test automation.
-- Automated tests are integration and e2e.
+- Automated tests are **integration** and **e2e**.
 - Used stack: Cypress, Typescript, Cucumber
 - **Tests location**: `cypress/test/features`
 - **POM files location**: `cypress/pages`
