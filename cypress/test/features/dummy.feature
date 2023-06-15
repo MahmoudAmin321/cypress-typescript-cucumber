@@ -19,7 +19,7 @@ Feature: SUT - Dummy feature
             When You make dummy step as "aDmIn"
             When You make dummy step as "usEr1"
             When You make dummy step as "UseR2"
-        @integration/components
+        @integration/comp
         Scenario Outline: Dummy scenario outline
             When Dummy step
             Examples:
@@ -27,5 +27,5 @@ Feature: SUT - Dummy feature
                 | row1 col1 | row1 col2 |
                 | row2 col1 | row2 col2 |
 
-        @integration/api
+        @integration/program
         Scenario: Another dummy scenario

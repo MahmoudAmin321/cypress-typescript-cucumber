@@ -1,4 +1,4 @@
-Feature: SUT - Special2 feature
+Feature: SUT - Special1 feature
         - Description for the feature
 
         References:
@@ -12,17 +12,17 @@ Feature: SUT - Special2 feature
         * [Scenarios_Titles_Defined] - Visual scenarios
 
 
-    Rule: Special2 Dummy rule
+    Rule: Special1 Dummy rule
         @e2e
-        Scenario: Special2 Dummy scenario
-            Given Special2 Dummy step
-        @integration/components
-        Scenario Outline: Special2 Dummy scenario outline
-            When Special2 Dummy step
+        Scenario: Special1 Dummy scenario
+            Given Special1 Dummy step
+        @integration/comp
+        Scenario Outline: Special1 Dummy scenario outline
+            When Special1 Dummy step
             Examples:
                 | header1   | header2   |
                 | row1 col1 | row1 col2 |
                 | row2 col1 | row2 col2 |
 
-        @integration/api
-        Scenario: Special2 Another dummy scenario
+        @integration/program
+        Scenario: Special1 Another dummy scenario
