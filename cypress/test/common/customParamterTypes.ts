@@ -1,5 +1,5 @@
 import { defineParameterType } from "@badeball/cypress-cucumber-preprocessor";
-import { User } from "../../../support/models/userInfo";
+import { User } from "../../support/models/userInfo";
 
 const stringRegex = /"([^"]*)"/;
 

@@ -7,7 +7,7 @@ export default defineConfig({
     CURRENT_TESTING_ENV: "SPRINT5",
     TESTING_ENVS: {
       SPRINT5: {
-        UI_HOST: "https://practicesoftwaretesting.com",
+        UI_HOST: "https://practicesoftwaretesting.com/#",
         API_HOST: "https://api.practicesoftwaretesting.com",
       },
       SPRINT5_BUGS: {
@@ -56,7 +56,10 @@ export default defineConfig({
       // Make sure to return the config object as it might have been modified by the plugin.
       return config;
     },
-    specPattern: ["cypress/test/**/*.feature", "cypress/test/**/*cy.{ts,js}"],
+    specPattern: [
+      "cypress/test/**/*.feature",
+      "cypress/test/**/*.spec.{ts,js}",
+    ],
     excludeSpecPattern: ["dummy/glob/pattern"],
   },
   watchForFileChanges: false,
