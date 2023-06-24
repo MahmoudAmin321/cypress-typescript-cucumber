@@ -14,7 +14,7 @@ Feature: SUT - Login feature
         Scenario Outline:  <user> can login successfully
             Given You have "login" page opened
             When You enter credentials of "<user>"
-            And You click on "login" button of "login" page
+            And You click on "login" button of "login" page, which redirects to "<home page>" page
             Then You should be redirected to "<home page>" page
 
             Examples:

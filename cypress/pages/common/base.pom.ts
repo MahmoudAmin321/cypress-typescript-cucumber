@@ -9,7 +9,7 @@ export abstract class Base {
 
   abstract waitForPage(): Cypress.Chainable<any>;
 
-  assertPage() {
+  assertPage(): Cypress.Chainable<any> {
     return null;
   }
 

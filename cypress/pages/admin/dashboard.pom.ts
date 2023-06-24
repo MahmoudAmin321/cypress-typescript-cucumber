@@ -11,13 +11,13 @@ class Dashboard extends Base {
   };
 
   waitForPage() {
-    cy.interceptApi(apis.currentUser);
-    return cy.wait(apis.currentUser.interceptorName);
+    cy.interceptApi(apis.yearsSales);
+    return cy.wait(`@${apis.yearsSales.interceptorName}`);
   }
 
   assertPage() {
     cy.url().should("match", new RegExp(`/${adminEndPoint}/dashboard$`));
-    this.dashboard.container().should("be.visible");
+    return this.dashboard.container().should("be.visible");
   }
 
   getButton(businessBtnName: string): Cypress.Chainable<any> {
