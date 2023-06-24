@@ -11,6 +11,12 @@
   - UI: https://practicesoftwaretesting.com/
   - Swagger: https://api.practicesoftwaretesting.com/
 
+## Prerequisites
+
+- Nodejs: Starting from `18.0.0`
+- Chrome: Starting from `97`
+- Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex#browser_compatibility
+
 ## Cucumber scenarios tags list
 
 - **Hint**: When a tag is set to a rule, all scenarios of this rule inherit this tag

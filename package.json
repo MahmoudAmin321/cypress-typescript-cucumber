@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "cy:open": "./node_modules/.bin/cypress open",
-    "cy:run": "./node_modules/.bin/cypress run"
+    "cy:run": "./node_modules/.bin/cypress run --browser chrome",
+    "cy:run:e2e": "./node_modules/.bin/cypress run --env tags=\"@e2e and not @todo\" --browser chrome",
+    "cy:run:integ:program": "./node_modules/.bin/cypress run --env tags=\"@integration/program and not @todo\" --browser chrome",
+    "cy:run:integ:comp": "./node_modules/.bin/cypress run --spec \"cypress/test/**/*.spec.{ts,js}\" --browser chrome",
+    "cy:run:integ": "npm run cy:run:integ:program && npm run cy:run:integ:comp"
   },
   "author": "Mahmoud Mostafa",
   "license": "ISC",
