@@ -15,9 +15,11 @@
 
 // Import commands.js using ES2015 syntax:
 import "./commands";
-import { uiHost } from "./cyEnvVar";
 
-// set baseUrl. BaserUrl in cypress.config.ts doesn't accept Cypress.env() as value (The error [Cypress is Not defined ] gets thrown)
+const currentTestEnv: string = Cypress.env("CURRENT_TESTING_ENV");
+export const uiHost: string =
+  Cypress.env("TESTING_ENVS")[currentTestEnv]["UI_HOST"];
+// set baseUrl. You didn't do it in cypress.config.ts, because baserUrl there doesn't accept Cypress.env() as value (The error [Cypress is Not defined ] gets thrown)
 Cypress.config("baseUrl", uiHost);
 
 // Alternatively you can use CommonJS syntax:

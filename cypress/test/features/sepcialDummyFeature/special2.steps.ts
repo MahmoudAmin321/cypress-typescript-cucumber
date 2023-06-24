@@ -1,5 +1,5 @@
 import { Given } from "@badeball/cypress-cucumber-preprocessor";
 
-Given("Special1 dummy step", function () {
+Given("Special2 Dummy step", function () {
   cy.log("this is dummy a dummy step");
 });

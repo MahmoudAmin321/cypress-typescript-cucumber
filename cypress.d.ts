@@ -1,26 +1,26 @@
-import { ApiInfo } from "./cypress/support/models/apiInfo";
-import { UserInfo } from "./cypress/support/models/userInfo";
+// Indicate, this .ts file is a module to avoid error [Augmentations for the global scope can only be directly nested in external modules or ambient module declarations.ts(2669)]
+export {};
 
 // Reference: https://docs.cypress.io/guides/tooling/typescript-support#Using-an-External-Typings-File
 declare global {
   namespace Cypress {
     interface Chainable {
-      /**
-       * Custom command to intercept api and create alias for the interception
-       * @param api
-       * @param method HTTP request method. Default is "GET"
-       * @param times Maximum number of times to intercept the request. Default is 1
-       * @example cy.interceptApi()
-       */
-      interceptApi(
-        api: ApiInfo,
-        method?: string,
-        times?: number
-      ): Chainable<any>;
-
-      loginWithUI(user: UserInfo): Chainable<any>;
-
-      loginProgrammatically(user: UserInfo): Chainable<any>;
+      //   /**
+      //    * Custom command to select DOM element by data-cy attribute.
+      //    * @example cy.dataCy('greeting')
+      //    */
+      //   dataCy(value: string): Chainable<JQuery<HTMLElement>>;
+      //   login(email: string, password: string): Chainable<void>;
+      //   drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>;
+      //   dismiss(
+      //     subject: string,
+      //     options?: Partial<TypeOptions>
+      //   ): Chainable<Element>;
+      //   visit(
+      //     originalFn: CommandOriginalFn,
+      //     url: string,
+      //     options: Partial<VisitOptions>
+      //   ): Chainable<Element>;
     }
   }
 }
