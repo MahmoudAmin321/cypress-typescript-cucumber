@@ -10,12 +10,12 @@ class Account extends Base {
 
   waitForPage() {
     cy.interceptApi(apis.currentUser);
-    return cy.wait(apis.currentUser.interceptorName);
+    return cy.wait(`@${apis.currentUser.interceptorName}`);
   }
 
   assertPage() {
     cy.url().should("match", new RegExp(`/${customerEndPoint}$`));
-    this.profile().should("be.visible");
+    return this.profile().should("be.visible");
   }
 
   getButton(businessBtnName: string): Cypress.Chainable<any> {

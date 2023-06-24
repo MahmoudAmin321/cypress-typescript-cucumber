@@ -19,6 +19,10 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     interceptorName: "currentUser",
     urlRegex: /users\/me$/,
   },
+  yearsSales: {
+    interceptorName: "yearsSales",
+    urlRegex: /reports\/total-sales-of-years/,
+  },
   dummyApi: {
     interceptorName: "dummyInterceptorName",
     urlRegex: /dummy regex/,
