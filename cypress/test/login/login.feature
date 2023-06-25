@@ -27,14 +27,14 @@ Feature: SUT - Login feature
 
     Rule: Email and password fields should be validated
 
-        @integration/comp
+        @program/suite
         Scenario Outline: Upon entering <email> as email, <email msg> should be displayed
             Examples:
                 | email    | email msg                 |
                 |          | E-mail is required.       |
                 | invalid@ | E-mail format is invalid. |
 
-        @integration/comp @todo
+        @program/suite @todo
         Scenario Outline: Upon entering <pw> as password, <pw msg> should be displayed
             Examples:
                 | pw | pw msg                      |
