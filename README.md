@@ -3,7 +3,6 @@
 ## Overview
 
 - Purpose of this project is to demonstrate test automation.
-- Automated tests are **integration** and **e2e**.
 - Used stack: Cypress, Typescript, Cucumber
 - **Tests location**: `cypress/test/features`
 - **POM files location**: `cypress/pages`
@@ -21,8 +20,9 @@
 
 - **Hint**: When a tag is set to a rule, all scenarios of this rule inherit this tag
 - **`@e2e`**: The scenario is implemented black box (No programmatic implemention for preconditions)
-- **`@integration/program`**: The scenario's preconditions are implemented programmatically (UI avoided), if possible
-- **`@integration/comp`**: The scenario tests the front end components (Apis responses are stubbed)
+- **`@program`**: The scenario's preconditions are implemented programmatically (UI avoided), if possible
+  - **`/bdd`**: The scenario is implemented using cucumber (feature steps, step definitions)
+  - **`/suite`**: The scenario is implemented using mocha test suites (describe, it)
 - **`@todo`**: The scenario is to do
 
 ## Cucumber rules statuses list

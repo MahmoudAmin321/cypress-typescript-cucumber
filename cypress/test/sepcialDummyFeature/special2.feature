@@ -11,7 +11,7 @@ Feature: SUT - Special2 feature
         @e2e
         Scenario: Special2 dummy scenario
             Given Special2 dummy step
-        @integration/comp
+        @program/suite
         Scenario Outline: Special2 dummy scenario outline
             When Special2 dummy step
             Examples:
@@ -19,5 +19,5 @@ Feature: SUT - Special2 feature
                 | row1 col1 | row1 col2 |
                 | row2 col1 | row2 col2 |
 
-        @integration/program
+        @program/bdd
         Scenario: Special2 another dummy scenario
