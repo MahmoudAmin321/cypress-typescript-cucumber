@@ -4,7 +4,7 @@
 
 - Purpose of this project is to demonstrate test automation.
 - Used stack: Cypress, Typescript, Cucumber
-- **Tests location**: `cypress/test/features`
+- **Tests location**: `cypress/test`
 - **POM files location**: `cypress/pages`
 - SUT:
   - UI: https://practicesoftwaretesting.com/
