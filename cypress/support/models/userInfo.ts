@@ -22,7 +22,7 @@ export class User {
     this.user = this.findUserByBusinessName(businessName);
     if (!this.user) {
       throw Error(
-        `User [ ${businessName} ] Not found in users collection ${users}`
+        `User [ ${businessName} ] Not found in users dictionary ${users}`
       );
     }
   }

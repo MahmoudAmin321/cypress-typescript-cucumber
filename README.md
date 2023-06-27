@@ -28,5 +28,8 @@
 ## Cucumber rules statuses list
 
 - **`[Scenarios_Titles_Defined]`**: Only scenarios titles of the rule are implemented (No steps yet)
-- **`[Scenarios_Defined]`**: All scenarios of the rules are implemented (titles, "feature steps and step definitions" , if integration/comp "spec tests")
+- **`[Scenarios_Defined]`**: All scenarios of the rules are implemented
+  - Titles
+  - Feature steps and step definitions , if program/bdd
+  - Spec tests, if program/suite
 - **`[Scenarios_Defined_Partially]`**: The rule is a mix of fully-defined scenarios and scenarios with only titles

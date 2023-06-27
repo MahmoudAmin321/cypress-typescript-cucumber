@@ -1,5 +1,5 @@
 Feature: SUT - Login feature
-        - Login feature
+        - Login feature description
 
         References:
         - BDD tags and statuses -> README.md
