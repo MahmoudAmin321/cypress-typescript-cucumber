@@ -1,7 +1,9 @@
-import { ApiInfo } from "../../support/models/apiInfo";
+import { ApiInfo } from "../../support/models/api";
 
 export abstract class Base {
   abstract readonly relativeUrl: string;
+
+  readonly priceRegex = /\$(\d+)\.(\d+)/;
 
   getApiInfo(): ApiInfo {
     return null;
@@ -13,7 +15,7 @@ export abstract class Base {
     return null;
   }
 
-  abstract getButton(businessBtnName: string): Cypress.Chainable<any>;
+  abstract getButton(bddBtnName: string): Cypress.Chainable<any>;
 
   typeInField(
     inputData: string,

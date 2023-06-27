@@ -1,15 +1,18 @@
-import { adminEndPoint, apis, customerEndPoint } from "../../support/consts";
-import { uiHost } from "../../support/cyEnvVar";
+import { apis, customerEndPoint } from "../../support/consts";
+import { ApiInfo } from "../../support/models/api";
 import { Base } from "../common/base.pom";
 
 class Account extends Base {
-  readonly relativeUrl = `/${adminEndPoint}/dashboard`;
+  readonly relativeUrl = `/${customerEndPoint}`;
 
   readonly favorites = () => cy.get("[data-test=nav-favorites]");
   readonly profile = () => cy.get("[data-test=nav-profile]");
 
+  getApiInfo(): ApiInfo {
+    return apis.currentUser;
+  }
+
   waitForPage() {
-    cy.interceptApi(apis.currentUser);
     return cy.wait(`@${apis.currentUser.interceptorName}`);
   }
 
@@ -18,13 +21,13 @@ class Account extends Base {
     return this.profile().should("be.visible");
   }
 
-  getButton(businessBtnName: string): Cypress.Chainable<any> {
-    if (businessBtnName.toLowerCase().match(/^favo(.*)/)) {
+  getButton(bddBtnName: string): Cypress.Chainable<any> {
+    if (bddBtnName.toLowerCase().match(/^favo(.*)/)) {
       return this.favorites();
-    } else if (businessBtnName.toLowerCase().match(/^profil(.*)/)) {
+    } else if (bddBtnName.toLowerCase().match(/^profil(.*)/)) {
       return this.profile();
     } else {
-      throw Error(`Button [ ${businessBtnName} ] doesn't exist in the map`);
+      throw Error(`Button [ ${bddBtnName} ] doesn't exist in the map`);
     }
   }
 }

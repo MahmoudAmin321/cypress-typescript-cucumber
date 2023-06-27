@@ -1,22 +1,35 @@
 import dashboardPage from "../admin/dashboard.pom";
 import accountPage from "../customer/account.pom";
+import homePage from "../home.pom";
 import loginPage from "../login.pom";
 
-export class PagesFactory {
+class PagesFactory {
   /**
    * Creates a map between business page name (BDD name) and page object
-   * @param businessPageName
+   * @param bddPageName
    * @returns The page object of the provided BDD name. If the BDD name is invalid, an error is thrown
    */
-  getPage(businessPageName: string) {
-    if (businessPageName.toLowerCase().match(/log(( *)|(-*))in/)) {
+  getPage(bddPageName: string) {
+    if (bddPageName.toLowerCase().match(/log(( *)|(-*))in/)) {
       return loginPage;
-    } else if (businessPageName.toLowerCase().match(/board/)) {
+    } else if (bddPageName.toLowerCase().match(/board/)) {
       return dashboardPage;
-    } else if (businessPageName.toLowerCase().match(/a(c+)ount/)) {
+    } else if (bddPageName.toLowerCase().match(/a(c+)ount/)) {
+      return accountPage;
+    } else if (bddPageName.toLowerCase().match(/home/)) {
+      return homePage;
+    } else {
+      throw Error(`Page [ ${bddPageName} ] doesn't exist in the map`);
+    }
+  }
+
+  getLoginRedirectPage(user: string) {
+    if (user.toLowerCase().match(/admin/)) {
+      return dashboardPage;
+    } else if (user.toLowerCase().match(/customer\d/)) {
       return accountPage;
     } else {
-      throw Error(`Page [ ${businessPageName} ] doesn't exist in the map`);
+      throw Error(`User [ ${user} ] doesn't exist in the map`);
     }
   }
 }

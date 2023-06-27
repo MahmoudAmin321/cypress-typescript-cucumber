@@ -1,6 +1,5 @@
 import { adminEndPoint, apis } from "../../support/consts";
-import { uiHost } from "../../support/cyEnvVar";
-import { ApiInfo } from "../../support/models/apiInfo";
+import { ApiInfo } from "../../support/models/api";
 import { Base } from "../common/base.pom";
 
 class Dashboard extends Base {
@@ -10,8 +9,10 @@ class Dashboard extends Base {
     salesChart: () => cy.get("chart"),
   };
 
+  getApiInfo(): ApiInfo {
+    return apis.yearsSales;
+  }
   waitForPage() {
-    cy.interceptApi(apis.yearsSales);
     return cy.wait(`@${apis.yearsSales.interceptorName}`);
   }
 
@@ -20,7 +21,7 @@ class Dashboard extends Base {
     return this.dashboard.container().should("be.visible");
   }
 
-  getButton(businessBtnName: string): Cypress.Chainable<any> {
+  getButton(bddBtnName: string): Cypress.Chainable<any> {
     // Page has No uncommon buttons so far
     return null;
   }

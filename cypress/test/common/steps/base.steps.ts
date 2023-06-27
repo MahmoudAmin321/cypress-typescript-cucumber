@@ -1,6 +1,7 @@
-import { When } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, When } from "@badeball/cypress-cucumber-preprocessor";
 import pagesFactory from "../../../pages/common/pagesFactory";
 import commonBtns from "../../../pages/common/commonBtns";
+import { User } from "../../../support/models/userInfo";
 
 When(
   "{word} click on {string} button of {string} page, which redirects to {string} page",
@@ -12,7 +13,15 @@ When(
   ) {
     const currentPage = pagesFactory.getPage(bddCurrentPageName);
     const incomingPage = pagesFactory.getPage(bddIncomingPageName);
+    const api = incomingPage.getApiInfo();
+
+    // intercept page api, if applicable
+    if (api) {
+      cy.spyApi(api);
+    }
+
     currentPage.getButton(bddBtnName).click();
+
     incomingPage.waitForPage();
   }
 );
@@ -20,8 +29,23 @@ When(
 When(
   "{word} click on {string} button, which redirects to {string} page",
   function (_: string, bddBtnName: string, bddIncomingPageName: string) {
-    commonBtns.getCommonButton(bddBtnName).click();
     const incomingPage = pagesFactory.getPage(bddIncomingPageName);
+    const api = incomingPage.getApiInfo();
+
+    // intercept page api, if applicable
+    if (api) {
+      cy.spyApi(api);
+    }
+
+    commonBtns.getCommonButton(bddBtnName).click();
+
     incomingPage.waitForPage();
+  }
+);
+
+Given(
+  "{word} progrmmatically login as {user}",
+  function (_: string, user: User) {
+    cy.loginProgrammatically(user.user);
   }
 );

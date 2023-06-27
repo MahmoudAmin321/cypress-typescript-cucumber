@@ -1,20 +1,25 @@
 import { credentials } from "./cyEnvVar";
-import { ApiInfo } from "./models/apiInfo";
-import { UserInfo } from "./models/userInfo";
 
 // Comment const type to allow syntax error upon accessing non-exiting property
 export const users /*: { [key: string]: UserInfo }*/ = {
   admin: { businessName: "Admin", ...credentials.ADMIN },
   customer1: { businessName: "Customer1", ...credentials.CUSTOMER1 },
-  customer: { businessName: "Customer2", ...credentials.CUSTOMER2 },
+  customer2: { businessName: "Customer2", ...credentials.CUSTOMER2 },
 };
 
 export const adminEndPoint = "admin";
 
 export const customerEndPoint = "account";
 
+export const tokenKeyName = "auth-token";
+
 // Comment const type to allow syntax error upon accessing non-exiting property
 export const apis /*: { [key: string]: ApiInfo }*/ = {
+  login: {
+    interceptorName: "login",
+    urlRegex: /users\/login$/,
+    relativeUrl: () => `/users/login`,
+  },
   currentUser: {
     interceptorName: "currentUser",
     urlRegex: /users\/me$/,
@@ -23,9 +28,21 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     interceptorName: "yearsSales",
     urlRegex: /reports\/total-sales-of-years/,
   },
-  dummyApi: {
-    interceptorName: "dummyInterceptorName",
-    urlRegex: /dummy regex/,
-    relativeUrl: (param: string) => `dynamic/${param}/dummyUrl`,
+  categoriesTree: {
+    interceptorName: "categoriesTree",
+    urlRegex: /categories\/tree/,
+  },
+  products: {
+    interceptorName: "products",
+    urlRegex: /products\?/,
+  },
+  brands: {
+    interceptorName: "brands",
+    urlRegex: /brands$/,
+  },
+  specificProduct: {
+    interceptorName: "specificProduct",
+    urlRegex: /products\/\d$/,
+    relativeUrl: (productId: string) => `/product/${productId}`,
   },
 };

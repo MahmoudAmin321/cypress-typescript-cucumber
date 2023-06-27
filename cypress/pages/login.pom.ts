@@ -3,6 +3,7 @@ import { Base } from "./common/base.pom";
 
 class Login extends Base {
   readonly relativeUrl = "/auth/login";
+
   readonly form = {
     // Declare DOM elements as functions to get them fresh (with latest state) from DOM each time you access the property
     email: () => cy.get("[data-test=email]"),
@@ -23,15 +24,15 @@ class Login extends Base {
     return this.form.email().should("be.visible");
   }
 
-  getButton(businessBtnName: string): Cypress.Chainable<any> {
-    if (businessBtnName.toLowerCase().match(/log(( *)|(-*))in/)) {
+  getButton(bddBtnName: string): Cypress.Chainable<any> {
+    if (bddBtnName.toLowerCase().match(/log(( *)|(-*))in/)) {
       return this.form.loginBtn();
-    } else if (businessBtnName.toLowerCase().match(/regist(.*)/)) {
+    } else if (bddBtnName.toLowerCase().match(/regist(.*)/)) {
       return this.registerLink();
-    } else if (businessBtnName.toLowerCase().match(/forg(.*)/)) {
+    } else if (bddBtnName.toLowerCase().match(/forg(.*)/)) {
       return this.forgotPWLink();
     } else {
-      throw Error(`Button [ ${businessBtnName} ] doesn't exist in the map`);
+      throw Error(`Button [ ${bddBtnName} ] doesn't exist in the map`);
     }
   }
 

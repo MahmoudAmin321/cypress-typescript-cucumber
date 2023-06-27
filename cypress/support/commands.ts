@@ -1,6 +1,9 @@
 /// <reference types="cypress" />
 
+import pagesFactory from "../pages/common/pagesFactory";
 import loginPage from "../pages/login.pom";
+import { apis, tokenKeyName } from "./consts";
+import { apiHost } from "./cyEnvVar";
 
 // ***********************************************
 // This example commands.ts shows you how to
@@ -14,7 +17,7 @@ import loginPage from "../pages/login.pom";
 //
 //
 // -- This is a parent command --
-Cypress.Commands.add("interceptApi", (api, method = "GET", times = 1) => {
+Cypress.Commands.add("spyApi", (api, method = "GET", times = 1) => {
   cy.intercept(api.urlRegex, { method, times }, (req) => {
     delete req.headers["if-none-match"];
   }).as(api.interceptorName);
@@ -25,23 +28,90 @@ Cypress.Commands.add("interceptApi", (api, method = "GET", times = 1) => {
   });
 });
 
+Cypress.Commands.add(
+  "stubApi",
+  ({ api, method = "GET", times = 1, statusCode = 200, resBody }) => {
+    cy.intercept(api.urlRegex, { method, times }, (req) => {
+      req.reply(statusCode, resBody);
+    }).as(api.interceptorName);
+
+    // Make the custom command appear in cypress command log of cypress open mode
+    Cypress.log({
+      message: `Interceptor name ${api.interceptorName} with method ${method} for ${times} times`,
+    });
+  }
+);
+
+/**
+ * UI login in all runs (1st and subsequent)
+ * Useful for e2e (blackbox) tests
+ */
 Cypress.Commands.add("loginWithUI", (user) => {
+  const homePage = pagesFactory.getLoginRedirectPage(user.businessName);
+
+  const homePageApi = homePage.getApiInfo();
+
+  // intercept page api, if applicable
+  if (homePageApi) {
+    cy.spyApi(homePageApi);
+  }
+
+  cy.visit(loginPage.relativeUrl);
   loginPage.typeCredentials(user);
   loginPage.form.loginBtn().click();
 
+  homePage.waitForPage();
+
   // Make the custom command appear in cypress command log of cypress open mode
   Cypress.log({
-    message: `UI login with user ${user}`,
+    message: `UI login with user ${user.businessName}`,
   });
 });
 
-Cypress.Commands.add("loginProgrammatically", (user) => {
-  // TODO
+// /**
+//  * UI login in 1st run, then progrmmatic login (by restoring cached token from local storage) in subseuquent runs.
+//  * Useful, in case the programmatic login (i.e. by requesting login api) couldn't be acheived
+//  */
+// Cypress.Commands.add("loginWithUI", (user) => {
+//   const chainable = cy.session(
+//     `ui_login_session_id_for_ ${user.businessName}`,
+//     () => {
+//       cy.visit(loginPage.relativeUrl);
+//       loginPage.typeCredentials(user);
+//       loginPage.form.loginBtn().click();
+//     },
+//     {
+//       validate() {
+//         cy.window().its("localStorage").should("have.property", tokenKeyName);
+//       }
+//     }
+//   );
+// });
 
-  // Make the custom command appear in cypress command log of cypress open mode
-  Cypress.log({
-    message: `Progrmmatic login with user ${user}`,
-  });
+Cypress.Commands.add("loginProgrammatically", (user) => {
+  const reqBody = { email: user.EMAIL, password: user.PASSWORD };
+
+  const chainable = cy.session(
+    `porgrammatic_login_session_id_for_ ${user.businessName}`,
+    () => {
+      cy.request({
+        url: `${apiHost}${apis.login.relativeUrl()}`,
+        method: "POST",
+        body: reqBody,
+      }).then((resp) => {
+        window.localStorage.setItem(tokenKeyName, resp.body.access_token);
+      });
+
+      cy.visit("/");
+    },
+    {
+      validate() {
+        cy.window().its("localStorage").should("have.property", tokenKeyName);
+      },
+    }
+  );
+
+  return chainable;
 });
 
 //

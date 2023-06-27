@@ -10,7 +10,7 @@ Given(
     // intercept page api, if applicable
     const api = page.getApiInfo();
     if (api) {
-      cy.interceptApi(api);
+      cy.spyApi(api);
     }
 
     //visit page
