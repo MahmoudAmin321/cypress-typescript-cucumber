@@ -59,6 +59,7 @@ export default defineConfig({
     specPattern: [
       "cypress/test/**/*.feature",
       "cypress/test/**/*.spec.{ts,js}",
+      "cypress/testApi/**/*.apiSpec.{ts,js}",
     ],
     excludeSpecPattern: ["dummy/glob/pattern"],
   },

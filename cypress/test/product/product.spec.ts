@@ -1,4 +1,4 @@
-import { getProducts } from "../../apiMocks/getProducts";
+import { getProducts } from "../../apiMocks/product/getProducts";
 import homePage from "../../pages/home.pom";
 import { apis, users } from "../../support/consts";
 import helper from "../../support/helper";
