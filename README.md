@@ -3,9 +3,11 @@
 ## Overview
 
 - Purpose of this project is to demonstrate test automation.
+- Automated tests are **GUI** and **API**
 - Used stack: Cypress, Typescript, Cucumber
-- **Tests location**: `cypress/test`
+- **GUI tests location**: `cypress/test`
 - **POM files location**: `cypress/pages`
+- **API tests location**: `cypress/testApi`
 - SUT:
   - UI: https://practicesoftwaretesting.com/
   - Swagger: https://api.practicesoftwaretesting.com/

@@ -1,7 +1,7 @@
 {
   "stepDefinitions": [
-    "cypress/test/[filepath].steps.[jt]s",
-    "cypress/test/[filepart]/*[cC]ommon/**/*.[jt]s"
+    "cypress/[filepath].steps.[jt]s",
+    "cypress/[filepart]/*[cC]ommon/**/*.[jt]s"
   ],
   "messages": {
     "enabled": true,

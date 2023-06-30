@@ -15,10 +15,20 @@ export const tokenKeyName = "auth-token";
 
 // Comment const type to allow syntax error upon accessing non-exiting property
 export const apis /*: { [key: string]: ApiInfo }*/ = {
+  register: {
+    interceptorName: "register",
+    urlRegex: /users\/register$/,
+    relativeUrl: () => `/users/register`,
+  },
   login: {
     interceptorName: "login",
     urlRegex: /users\/login$/,
     relativeUrl: () => `/users/login`,
+  },
+  specificUser: {
+    interceptorName: "specificUser",
+    urlRegex: /users\/\d+$/,
+    relativeUrl: (userId: number) => `/users/${userId}`,
   },
   currentUser: {
     interceptorName: "currentUser",
@@ -42,7 +52,7 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
   },
   specificProduct: {
     interceptorName: "specificProduct",
-    urlRegex: /products\/\d$/,
-    relativeUrl: (productId: string) => `/product/${productId}`,
+    urlRegex: /products\/\d+$/,
+    relativeUrl: (productId: string) => `/products/${productId}`,
   },
 };
