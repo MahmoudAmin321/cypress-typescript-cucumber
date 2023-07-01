@@ -1,6 +1,6 @@
 import { apis, users } from "../../support/consts";
-import loginApi from "../common/apiPom/user/loginApi";
-import registerApi from "../common/apiPom/user/registerApi";
+import loginApi from "../common/apiPom/login/loginApi";
+import registerApi from "../common/apiPom/register/registerApi";
 import userApi from "../common/apiPom/user/userApi";
 
 describe(`${apis.login.relativeUrl()}`, () => {
