@@ -1,7 +1,8 @@
 import { apis } from "../../../../support/consts";
 import { apiHost } from "../../../../support/cyEnvVar";
+import { BaseAPI } from "../base.apiPom";
 
-class LoginApi {
+class LoginApi extends BaseAPI {
   login(
     email: string,
     password: string

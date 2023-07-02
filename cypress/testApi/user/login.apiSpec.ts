@@ -1,6 +1,6 @@
 import { apis, users } from "../../support/consts";
-import loginApi from "../common/apiPom/login/loginApi";
-import registerApi from "../common/apiPom/register/registerApi";
+import loginApi from "../common/apiPom/user/loginApi";
+import registerApi from "../common/apiPom/user/registerApi";
 import userApi from "../common/apiPom/user/userApi";
 
 describe(`${apis.login.relativeUrl()}`, () => {
@@ -21,13 +21,8 @@ describe(`${apis.login.relativeUrl()}`, () => {
   });
 
   it("Should respond with correct status code and body upon providing registered credentials", () => {
-    const registeredusers = {
-      email: users.customer1.EMAIL,
-      password: users.customer1.PASSWORD,
-    };
-
     loginApi
-      .login(registeredusers.email, registeredusers.password)
+      .login(users.customer1.EMAIL, users.customer1.PASSWORD)
       .then((loginResp) => {
         expect(loginResp.status).to.eq(200);
         expect(Object.keys(loginResp.body)).to.have.lengthOf(3);
@@ -44,10 +39,10 @@ describe(`${apis.login.relativeUrl()}`, () => {
     const incorrectPW = "incorrectPW";
     let userId: number;
 
-    // Register a brand-new user and Not use existing user to avoid making the test sensitive to data change
-    registerApi.register(registerApi.registrationData).then((registerResp) => {
-      registeredEmail = registerResp.body.email;
-      userId = registerResp.body.id;
+    // As precondition, Register a brand-new user and Not use existing user to avoid making the test sensitive to data change
+    registerApi.setUp().then((userInfo) => {
+      registeredEmail = userInfo.registeredEmail;
+      userId = userInfo.userId;
     });
 
     // Without cy.then(), registeredEmail value will be undefined -> https://docs.cypress.io/guides/core-concepts/introduction-to-cypress#Mixing-Async-and-Sync-code
@@ -61,23 +56,10 @@ describe(`${apis.login.relativeUrl()}`, () => {
       });
     });
 
-    // Delete the created user as a tear down action
-    /* Ideally, a script for clearing test data from the database should be executed in a beforeEach hook, but
-   as this automation project uses a deployed (Not local) version of the SUT, a workaround is used to avoid flakiness*/
-    loginApi
-      .login(users.admin.EMAIL, users.admin.PASSWORD)
-      .then((loginResp) => {
-        const token = loginResp.body.access_token;
-
-        userApi.deleteUser(userId, token).then((deleteUserResp) => {
-          expect(deleteUserResp.status).to.eq(204);
-        });
-
-        // Make sure user is deleted
-        userApi.getUser(userId, token).then((getUsersResp) => {
-          expect(getUsersResp.status).to.eq(404);
-        });
-      });
+    // Cleanup
+    cy.then(() => {
+      userApi.cleanUp(userId);
+    });
   });
 
   it("Should lock accuont upon making multiple failed login attempts", () => {
@@ -86,9 +68,10 @@ describe(`${apis.login.relativeUrl()}`, () => {
     let incorrectPW: "incorrectPW";
     let userId: number;
 
-    registerApi.register(registerApi.registrationData).then((registerResp) => {
-      registeredEmail = registerResp.body.email;
-      userId = registerResp.body.id;
+    // Precondition
+    registerApi.setUp().then((userInfo) => {
+      registeredEmail = userInfo.registeredEmail;
+      userId = userInfo.userId;
     });
 
     // reach max. allowed number of failed attempt
@@ -110,17 +93,9 @@ describe(`${apis.login.relativeUrl()}`, () => {
       });
     });
 
-    // Tear down
-    loginApi
-      .login(users.admin.EMAIL, users.admin.PASSWORD)
-      .then((loginResp) => {
-        const token = loginResp.body.access_token;
-        userApi.deleteUser(userId, token).then((deleteUserResp) => {
-          expect(deleteUserResp.status).to.eq(204);
-        });
-        userApi.getUser(userId, token).then((getUsersResp) => {
-          expect(getUsersResp.status).to.eq(404);
-        });
-      });
+    // Cleanup
+    cy.then(() => {
+      userApi.cleanUp(userId);
+    });
   });
 });
