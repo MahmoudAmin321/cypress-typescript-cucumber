@@ -1,7 +1,7 @@
 import { apis } from "../support/consts";
 import { ApiInfo } from "../support/models/api";
-import { Base } from "./common/base.pom";
-import productCards from "./common/product/productCards";
+import { Base } from "./_common/base.pom";
+import productCards from "./_common/product/productCards";
 
 class Home extends Base {
   readonly relativeUrl = "/";

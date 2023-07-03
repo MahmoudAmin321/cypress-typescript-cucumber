@@ -1,6 +1,6 @@
 import { Given, Then } from "@badeball/cypress-cucumber-preprocessor";
-import pagesFactory from "../../../pages/common/pagesFactory";
-import { Base } from "../../../pages/common/base.pom";
+import pagesFactory from "../../../pages/_common/pagesFactory";
+import { Base } from "../../../pages/_common/base.pom";
 
 Given(
   "{word} have {string} page opened",

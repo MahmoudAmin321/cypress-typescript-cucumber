@@ -1,6 +1,6 @@
 import { apis } from "../support/consts";
 import { ApiInfo } from "../support/models/api";
-import { Base } from "./common/base.pom";
+import { Base } from "./_common/base.pom";
 
 class ProductDetails extends Base {
   relativeUrlRegex = /product\/\d$/;
