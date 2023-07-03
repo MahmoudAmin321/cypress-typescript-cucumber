@@ -1,6 +1,6 @@
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import homePage from "../../pages/home.pom";
-import productCardInfo from "../../pages/common/product/productCardInfo";
+import productCardInfo from "../../pages/_common/product/productCardInfo";
 import { apis } from "../../support/consts";
 import productDetails from "../../pages/productDetails.pom";
 

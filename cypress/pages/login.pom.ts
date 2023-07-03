@@ -1,5 +1,5 @@
 import { UserInfo } from "../support/models/userInfo";
-import { Base } from "./common/base.pom";
+import { Base } from "./_common/base.pom";
 
 class Login extends Base {
   readonly relativeUrl = "/auth/login";

@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import pagesFactory from "../pages/common/pagesFactory";
+import pagesFactory from "../pages/_common/pagesFactory";
 import loginPage from "../pages/login.pom";
 import { apis, tokenKeyName } from "./consts";
 import { apiHost } from "./cyEnvVar";

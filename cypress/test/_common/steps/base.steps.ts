@@ -1,6 +1,6 @@
 import { Given, When } from "@badeball/cypress-cucumber-preprocessor";
-import pagesFactory from "../../../pages/common/pagesFactory";
-import commonBtns from "../../../pages/common/commonBtns";
+import pagesFactory from "../../../pages/_common/pagesFactory";
+import commonBtns from "../../../pages/_common/commonBtns";
 import { User } from "../../../support/models/userInfo";
 
 When(

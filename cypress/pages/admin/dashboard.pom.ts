@@ -1,6 +1,6 @@
 import { adminEndPoint, apis } from "../../support/consts";
 import { ApiInfo } from "../../support/models/api";
-import { Base } from "../common/base.pom";
+import { Base } from "../_common/base.pom";
 
 class Dashboard extends Base {
   readonly relativeUrl = `/${adminEndPoint}/dashboard`;
