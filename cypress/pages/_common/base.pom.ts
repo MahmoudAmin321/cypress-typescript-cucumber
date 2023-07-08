@@ -5,6 +5,8 @@ export abstract class Base {
 
   readonly priceRegex = /\$(\d+)\.(\d+)/;
 
+  readonly sortDropdown = () => cy.get("[data-test=sort]");
+
   getApiInfo(): ApiInfo {
     return null;
   }

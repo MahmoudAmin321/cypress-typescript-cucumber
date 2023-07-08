@@ -2,9 +2,9 @@ import { credentials } from "./cyEnvVar";
 
 // Comment const type to allow syntax error upon accessing non-exiting property
 export const users /*: { [key: string]: UserInfo }*/ = {
-  admin: { businessName: "Admin", ...credentials.ADMIN },
-  customer1: { businessName: "Customer1", ...credentials.CUSTOMER1 },
-  customer2: { businessName: "Customer2", ...credentials.CUSTOMER2 },
+  admin: { bddName: "Admin", ...credentials.ADMIN },
+  customer1: { bddName: "Customer1", ...credentials.CUSTOMER1 },
+  customer2: { bddName: "Customer2", ...credentials.CUSTOMER2 },
 };
 
 export const adminEndPoint = "admin";
