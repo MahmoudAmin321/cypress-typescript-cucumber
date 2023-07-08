@@ -8,11 +8,7 @@ Feature: SUT - Product feature
         * [Scenarios_Defined] - Product details should be displayed correctly
 
 
-
     Rule: Product details should be displayed correctly
-
-        @program/suite
-        Scenario:  A product card should have image, name and price
 
         @program/bdd
         Scenario: Upon opening a product card, the product details (image, name and price) should be same as in card

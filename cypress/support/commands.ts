@@ -47,7 +47,7 @@ Cypress.Commands.add(
  * Useful for e2e (blackbox) tests
  */
 Cypress.Commands.add("loginWithUI", (user) => {
-  const homePage = pagesFactory.getLoginRedirectPage(user.businessName);
+  const homePage = pagesFactory.getLoginRedirectPage(user.bddName);
 
   const homePageApi = homePage.getApiInfo();
 
@@ -64,7 +64,7 @@ Cypress.Commands.add("loginWithUI", (user) => {
 
   // Make the custom command appear in cypress command log of cypress open mode
   Cypress.log({
-    message: `UI login with user ${user.businessName}`,
+    message: `UI login with user ${user.bddName}`,
   });
 });
 
@@ -74,7 +74,7 @@ Cypress.Commands.add("loginWithUI", (user) => {
 //  */
 // Cypress.Commands.add("loginWithUI", (user) => {
 //   const chainable = cy.session(
-//     `ui_login_session_id_for_ ${user.businessName}`,
+//     `ui_login_session_id_for_ ${user.bddName}`,
 //     () => {
 //       cy.visit(loginPage.relativeUrl);
 //       loginPage.typeCredentials(user);
@@ -92,7 +92,7 @@ Cypress.Commands.add("loginProgrammatically", (user) => {
   const reqBody = { email: user.EMAIL, password: user.PASSWORD };
 
   const chainable = cy.session(
-    `porgrammatic_login_session_id_for_ ${user.businessName}`,
+    `porgrammatic_login_session_id_for_ ${user.bddName}`,
     () => {
       cy.request({
         url: `${apiHost}${apis.login.relativeUrl()}`,

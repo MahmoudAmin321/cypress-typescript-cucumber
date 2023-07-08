@@ -7,7 +7,7 @@ Given(
   function (_: string, pageName: string) {
     const page: Base = pagesFactory.getPage(pageName);
 
-    // intercept page api, if applicable
+    // spy page api, if applicable
     const api = page.getApiInfo();
     if (api) {
       cy.spyApi(api);
