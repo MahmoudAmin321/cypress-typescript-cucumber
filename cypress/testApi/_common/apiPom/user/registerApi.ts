@@ -41,7 +41,7 @@ class RegisterApi {
       });
   }
 
-  resetReistrationData() {
+  resetRegistrationData() {
     this.registrationData = {
       first_name: "test",
       last_name: "Doe",
