@@ -5,6 +5,14 @@ import productCards from "./_common/product/productCards";
 
 class Home extends Base {
   readonly relativeUrl = "/";
+
+  readonly priceRange = {
+    leftBtn: () => cy.get("[role=slider][class*=min]"),
+    rightBtn: () => cy.get("[role=slider][class*=max]"),
+    leftValue: () => cy.get("[class*=slider-model-value]"),
+    rightValue: () => cy.get("[class*=slider-model-high]"),
+  };
+
   readonly resetBtn = () => cy.get("[data-test=search-reset]");
   readonly searchBtn = () => cy.get("[data-test=search-submit]");
 
@@ -19,12 +27,27 @@ class Home extends Base {
   }
 
   getButton(bddBtnName: string): Cypress.Chainable<any> {
-    if (bddBtnName.toLowerCase().match(/reset/)) {
+    const lowerCase = bddBtnName.toLowerCase();
+    if (lowerCase.match(/reset/)) {
       return this.resetBtn();
-    } else if (bddBtnName.toLowerCase().match(/search/)) {
+    } else if (lowerCase.match(/search/)) {
       return this.searchBtn();
+    } else if (lowerCase.match(/right/)) {
+      return this.priceRange.rightBtn();
+    } else if (lowerCase.match(/left/)) {
+      return this.priceRange.leftBtn();
     } else {
       throw Error(`Button [ ${bddBtnName} ] doesn't exist in the map`);
+    }
+  }
+
+  getValueElement(bddPosition: string): Cypress.Chainable<any> {
+    if (bddPosition.toLowerCase().match(/right/)) {
+      return this.priceRange.rightValue();
+    } else if (bddPosition.toLowerCase().match(/left/)) {
+      return this.priceRange.leftValue();
+    } else {
+      throw Error(`Position [ ${bddPosition} ] doesn't exist in the map`);
     }
   }
 }
