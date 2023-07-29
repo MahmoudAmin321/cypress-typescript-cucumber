@@ -1,4 +1,6 @@
-class CommonBtns {
+class CommonElements {
+  readonly body = () => cy.get("body");
+
   readonly userMenu = {
     menu: () => cy.get("[data-test$=menu]"),
     myAccount: () => cy.get("[href$=account]"),
@@ -15,7 +17,7 @@ class CommonBtns {
    * @param bddBtnName
    * @returns The chainable common button of the provided BDD name. If the BDD name is invalid, an error is thrown
    */
-  getCommonButton(bddBtnName: string) {
+  getButton(bddBtnName: string) {
     if (bddBtnName.toLowerCase().match(/user( *)(menu)*/)) {
       return this.userMenu.menu();
     } else if (bddBtnName.toLowerCase().match(/(my)*( *)account/)) {
@@ -28,5 +30,5 @@ class CommonBtns {
   }
 }
 
-const commonBtns = new CommonBtns();
-export default commonBtns;
+const commonElements = new CommonElements();
+export default commonElements;

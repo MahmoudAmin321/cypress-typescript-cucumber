@@ -58,6 +58,15 @@ Feature: SUT - Products feature
 
         @program/bdd
         Scenario: Products can be filtered by price range
+            Given You have "home" page opened
+            And You store products prices order
+            And Product with price 12.01 "exist"
+            When You have slider "left" button clicked
+            And You hit "right arrow" key 12 times
+            Then Slider "left" value is 13
+            When You wait 3 seconds
+            And You store products prices order
+            Then Product with price 12.01 "not exist"
 
         @program/bdd
         Scenario: Products can be filtered by category
