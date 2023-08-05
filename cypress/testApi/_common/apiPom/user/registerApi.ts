@@ -2,6 +2,8 @@ import { apis } from "../../../../support/consts";
 import { apiHost } from "../../../../support/cyEnvVar";
 
 class RegisterApi {
+  readonly unregisteredEmail = "test26@test.test";
+
   registrationData = {
     first_name: "test",
     last_name: "Doe",
@@ -12,7 +14,7 @@ class RegisterApi {
     postcode: "1234AA",
     phone: "0987654321",
     dob: "1970-01-01",
-    email: "test23@test.test",
+    email: this.unregisteredEmail,
     password: "welcome01",
   };
 
@@ -52,7 +54,7 @@ class RegisterApi {
       postcode: "1234AA",
       phone: "0987654321",
       dob: "1970-01-01",
-      email: "test23@test.test",
+      email: this.unregisteredEmail,
       password: "welcome01",
     };
   }

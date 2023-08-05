@@ -1,7 +1,7 @@
 import { apis, users } from "../../support/consts";
 import loginApi from "../_common/apiPom/user/loginApi";
 import registerApi from "../_common/apiPom/user/registerApi";
-import userApi from "../_common/apiPom/user/userApi";
+import usersApi from "../_common/apiPom/user/usersApi";
 
 describe(`${apis.login.relativeUrl()}`, () => {
   before(() => {
@@ -9,7 +9,7 @@ describe(`${apis.login.relativeUrl()}`, () => {
   });
 
   beforeEach(() => {
-    cy.log("before each test in this suite");
+    usersApi.cleanUp();
   });
 
   afterEach(() => {
@@ -26,7 +26,7 @@ describe(`${apis.login.relativeUrl()}`, () => {
       .then((loginResp) => {
         expect(loginResp.status).to.eq(200);
         expect(Object.keys(loginResp.body)).to.have.lengthOf(3);
-        expect(loginResp.body.access_token).to.be.a("string").and.to.be.ok; // ok referes to "truthy"
+        expect(loginResp.body.access_token).to.be.a("string").and.to.be.ok; // ok refers to "truthy"
         expect(loginResp.body.token_type.toLowerCase()).to.eq(
           "Bearer".toLowerCase()
         );
@@ -55,14 +55,9 @@ describe(`${apis.login.relativeUrl()}`, () => {
         );
       });
     });
-
-    // Cleanup
-    cy.then(() => {
-      userApi.cleanUp(userId);
-    });
   });
 
-  it("Should lock accuont upon making multiple failed login attempts", () => {
+  it("Should lock account upon making multiple failed login attempts", () => {
     const failedAttempts = 3;
     let registeredEmail: string;
     let incorrectPW: "incorrectPW";
@@ -91,11 +86,6 @@ describe(`${apis.login.relativeUrl()}`, () => {
           "Account locked, too many failed attempts. Please contact the administrator.".toLowerCase();
         expect(loginResp.body.error.toLowerCase()).to.contain(expectedErrMsg);
       });
-    });
-
-    // Cleanup
-    cy.then(() => {
-      userApi.cleanUp(userId);
     });
   });
 });

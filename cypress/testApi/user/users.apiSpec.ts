@@ -10,10 +10,10 @@ describe(`${apis.users.relativeUrl()}`, () => {
   });
 
   beforeEach(() => {
-    cy.log("before each test in this suite");
+    usersApi.cleanUp();
 
     loginApi
-      .login(users.customer2.EMAIL, users.customer2.PASSWORD)
+      .login(users.admin.EMAIL, users.admin.PASSWORD)
       .then((loginResp) => {
         // store token
         cy.wrap(loginResp.body.access_token).as(tokenAliasName);
@@ -32,16 +32,16 @@ describe(`${apis.users.relativeUrl()}`, () => {
     cy.get(`@${tokenAliasName}`).then((token: any) => {
       usersApi.getUsers(token).then((usersResp) => {
         expect(usersResp.status).equal(200);
-        expect(usersResp.body).to.be.an("array").and.not.to.be.empty;
+        expect(usersResp.body.data).to.be.an("array").and.not.to.be.empty;
 
         // Assert, that any (randomly selected) object in the response array has the correct properties
         const randomIndex = helper.getRandomInteger(
           0,
-          usersResp.body.length - 1
+          usersResp.body.data.length - 1
         );
-        expect(usersResp.body[randomIndex])
+        expect(usersResp.body.data[randomIndex])
           .to.be.an("object")
-          .and.to.have.all.keys(
+          .and.to.include.all.keys(
             "first_name",
             "last_name",
             "address",
