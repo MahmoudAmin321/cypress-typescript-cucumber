@@ -1,5 +1,8 @@
-import { apis } from "../../../../support/consts";
+import { apis, users } from "../../../../support/consts";
 import { apiHost } from "../../../../support/cyEnvVar";
+import { UserInfo } from "../../../../support/models/userInfo";
+import loginApi from "./loginApi";
+import userApi from "./userApi";
 
 class UsersApi {
   getUsers(token: string): Cypress.Chainable<Cypress.Response<any>> {
@@ -9,6 +12,32 @@ class UsersApi {
         bearer: token,
       },
       failOnStatusCode: false,
+    });
+  }
+
+  cleanUp() {
+    // login as admin
+    let adminToken: string;
+    loginApi
+      .login(users.admin.EMAIL, users.admin.PASSWORD)
+      .then((loginResp) => {
+        adminToken = loginResp.body.access_token;
+      });
+
+    // delete all users except for the built-in ones.
+    cy.then(() => {
+      const usersToBeKept: string[] = Object.values(users).map(
+        (user: UserInfo) => user.EMAIL
+      );
+
+      usersApi.getUsers(adminToken).then((usersResp) => {
+        const users: object[] = usersResp.body.data;
+        users.forEach((user) => {
+          if (!usersToBeKept.includes(user["email"])) {
+            userApi.deleteUser(user["id"], adminToken);
+          }
+        });
+      });
     });
   }
 }

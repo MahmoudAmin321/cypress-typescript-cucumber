@@ -27,6 +27,11 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     urlRegex: /users\/login$/,
     relativeUrl: () => "/users/login",
   },
+  forgotPW: {
+    interceptorName: "forgotPW",
+    urlRegex: /users\/forgot-password$/,
+    relativeUrl: () => "/users/forgot-password",
+  },
   specificUser: {
     interceptorName: "specificUser",
     urlRegex: /users\/\d+$/,

@@ -1,6 +1,6 @@
 import { apis } from "../../support/consts";
 import registerApi from "../_common/apiPom/user/registerApi";
-import userApi from "../_common/apiPom/user/userApi";
+import usersApi from "../_common/apiPom/user/usersApi";
 
 describe(`${apis.register.relativeUrl()}`, () => {
   before(() => {
@@ -8,7 +8,7 @@ describe(`${apis.register.relativeUrl()}`, () => {
   });
 
   beforeEach(() => {
-    cy.log("before each test in this suite");
+    usersApi.cleanUp();
   });
 
   afterEach(() => {
@@ -25,6 +25,10 @@ describe(`${apis.register.relativeUrl()}`, () => {
     // Precondition
     registerApi.setUp().then((userInfo) => {
       userId = userInfo.userId;
+
+      // log
+      console.log("con id ", userId);
+      cy.log("id ", userId);
     });
 
     cy.then(() => {
@@ -36,11 +40,6 @@ describe(`${apis.register.relativeUrl()}`, () => {
             "A customer with this email address already exists.",
           ]);
         });
-    });
-
-    // Cleanup
-    cy.then(() => {
-      userApi.cleanUp(userId);
     });
   });
 
