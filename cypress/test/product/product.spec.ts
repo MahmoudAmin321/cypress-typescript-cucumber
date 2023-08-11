@@ -1,7 +1,7 @@
 import { getProducts } from "../../apiMocks/product/getProducts";
 import homePage from "../../pages/home.pom";
 import { apis, users } from "../../support/consts";
-import helper from "../../support/helper";
+import { Helper } from "../../support/helper";
 
 describe("Product", () => {
   before(() => {
@@ -28,7 +28,7 @@ describe("Product", () => {
     cy.wait(`@${apis.products.interceptorName}`);
 
     homePage.productCards().then((cards) => {
-      const randomIndex = helper.getRandomInteger(0, cards.length - 1);
+      const randomIndex = Helper.getRandomInteger(0, cards.length - 1);
       cards[randomIndex].image().should("be.visible");
       cards[randomIndex]
         .name()

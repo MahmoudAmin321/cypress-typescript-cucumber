@@ -1,10 +1,11 @@
 import { apis, users } from "../../../../support/consts";
 import { apiHost } from "../../../../support/cyEnvVar";
 import { UserInfo } from "../../../../support/models/userInfo";
+import { BaseAPI } from "../base.apiPom";
 import loginApi from "./loginApi";
 import userApi from "./userApi";
 
-class UsersApi {
+class UsersApi extends BaseAPI {
   getUsers(token: string): Cypress.Chainable<Cypress.Response<any>> {
     return cy.request({
       url: `${apiHost}${apis.users.relativeUrl()}`,

@@ -67,7 +67,7 @@ When(
     cy.spyApi(apis.products);
 
     // select
-    homePage.sortDropdown().select(bddSortOption.sortOptionValue);
+    commonElements.sortDropdown().select(bddSortOption.sortOptionValue);
 
     // wait
     cy.wait(`@${apis.products.interceptorName}`);
