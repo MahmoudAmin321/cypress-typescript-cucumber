@@ -1,6 +1,7 @@
-class ProductsPrices {
-  originalOrder: string[] = [];
+class Products {
+  pricesOriginalOrder: string[] = [];
+  names: string[] = [];
 }
 
-const productsPrices = new ProductsPrices();
-export default productsPrices;
+const products = new Products();
+export default products;

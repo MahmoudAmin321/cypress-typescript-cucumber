@@ -12,6 +12,13 @@ class CommonElements {
     privacyPolicy: () => cy.get("[href*=privacy]"),
   };
 
+  readonly sortDropdown = () => cy.get("[data-test=sort]");
+
+  readonly categories = () =>
+    cy.get("[data-test=filters] [data-test^=category]");
+
+  readonly brands = () => cy.get("[data-test=filters] [data-test^=brand]");
+
   /**
    * Creates a map between business common button name (BDD name) and chainable common button
    * @param bddBtnName

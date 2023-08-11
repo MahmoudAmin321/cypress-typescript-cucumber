@@ -1,7 +1,8 @@
 import { apis } from "../../../../support/consts";
 import { apiHost } from "../../../../support/cyEnvVar";
+import { BaseAPI } from "../base.apiPom";
 
-class UserApi {
+class UserApi extends BaseAPI {
   deleteUser(
     userId: number,
     token: string

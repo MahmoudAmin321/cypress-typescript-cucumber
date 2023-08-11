@@ -1,6 +1,6 @@
 import { apis, tokenAliasName, users } from "../../support/consts";
 import { apiHost } from "../../support/cyEnvVar";
-import helper from "../../support/helper";
+import { Helper } from "../../support/helper";
 import loginApi from "../_common/apiPom/user/loginApi";
 import usersApi from "../_common/apiPom/user/usersApi";
 
@@ -35,7 +35,7 @@ describe(`${apis.users.relativeUrl()}`, () => {
         expect(usersResp.body.data).to.be.an("array").and.not.to.be.empty;
 
         // Assert, that any (randomly selected) object in the response array has the correct properties
-        const randomIndex = helper.getRandomInteger(
+        const randomIndex = Helper.getRandomInteger(
           0,
           usersResp.body.data.length - 1
         );

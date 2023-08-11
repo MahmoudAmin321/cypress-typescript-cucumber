@@ -1,7 +1,8 @@
 import { apis } from "../../../../support/consts";
 import { apiHost } from "../../../../support/cyEnvVar";
+import { BaseAPI } from "../base.apiPom";
 
-class RegisterApi {
+class RegisterApi extends BaseAPI {
   readonly unregisteredEmail = "test26@test.test";
 
   registrationData = {
