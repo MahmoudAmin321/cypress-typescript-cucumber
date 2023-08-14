@@ -2,7 +2,7 @@ import { ProductCard } from "../../../pages/_common/components/productCard";
 import homePage from "../../../pages/home.pom";
 import { SortBase } from "./sortBase";
 import { SortOrder } from "./_sortFactory";
-import products from "../_common/productsPrices";
+import products from "../_common/products";
 
 class SortByNone extends SortBase {
   readonly regex = /^$|empty|none/;

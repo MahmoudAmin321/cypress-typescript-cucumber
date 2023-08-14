@@ -1,7 +1,7 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import homePage from "../../pages/home.pom";
 import { ProductCard } from "../../pages/_common/components/productCard";
-import products from "../../support/models/_common/productsPrices";
+import products from "../../support/models/_common/products";
 import { apis } from "../../support/consts";
 import { Helper } from "../../support/helper";
 
@@ -57,9 +57,9 @@ Then(
 Then(
   "{int}. product is {string}",
   function (bddOrder: number, bddName: string) {
-    const firstProductName = products.names[bddOrder - 1].trim().toLowerCase();
+    const nthProductName = products.names[bddOrder - 1].trim().toLowerCase();
 
-    cy.wrap(firstProductName).should("equal", bddName.toLowerCase());
+    cy.wrap(nthProductName).should("equal", bddName.toLowerCase());
   }
 );
 

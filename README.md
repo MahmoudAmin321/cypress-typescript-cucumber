@@ -26,6 +26,8 @@
   - **`/bdd`**: The scenario is implemented using cucumber (feature steps, step definitions)
   - **`/suite`**: The scenario is implemented using mocha test suites (describe, it)
 - **`@todo`**: The scenario is to do
+- **`@manual`**: For any reason, the scenario should be executed manually
+- **`@not_automatable`**: For technical reasons, the scenario is not automatable
 
 ## Cucumber rules statuses list
 
