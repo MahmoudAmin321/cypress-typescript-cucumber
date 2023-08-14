@@ -73,20 +73,38 @@ Feature: SUT - Products feature
             Given You have "home" page opened
             And You store products names
             And Product with name "combination pliers" "exists"
-            When You have selected "hand saw" category
+            When You have "selected" "hand saw" category
             And You store products names
             Then Product with name "combination pliers" "not exists"
             Then 1. product is "wood saw"
-
 
         @todo
         Scenario: Products can be filtered by brand
 
         @program/bdd
-        Scenario: Combining filters (i.e. category and brand) should be possible (Latest filter doesn't eliminate previous filter)
+        Scenario: Combining filters should be possible (Latest filter doesn't eliminate previous filter)
+            Given You have "home" page opened
+            And You have "selected" "hand saw" category
+            And You store products names
+            And Product with name "wood saw" "exists"
+            When You have "selected" "Wrench" category
+            Then Product with name "wood saw" "exists"
+            When You store products names
+            Then 2. product is "adjustable wrench"
 
         @program/bdd
         Scenario: Upon unselecting a filter, it should be eliminated and the products should be adjusted accordignly
+            Given You have "home" page opened
+            And You store products names
+            And Product with name "combination pliers" "exists"
+            And You have "selected" "hand saw" category
+            And You store products names
+            And Product with name "combination pliers" "not exists"
+            When You have "unselected" "hand saw" category
+            And You store products names
+            Then Product with name "combination pliers" "exists"
+
+
 
 
     Rule: Conducted product changes by admin should reflect to the customer

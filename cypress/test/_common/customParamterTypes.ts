@@ -2,6 +2,7 @@ import { defineParameterType } from "@badeball/cypress-cucumber-preprocessor";
 import { User } from "../../support/models/userInfo";
 import { SortOptions } from "../../support/models/sort/_sortOptions";
 
+const wordRegex = /"^\w+$"/;
 const stringRegex = /"([^"]*)"/;
 
 /**
