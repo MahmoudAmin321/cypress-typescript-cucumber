@@ -3,7 +3,8 @@ import { apiHost } from "../../../../support/cyEnvVar";
 import { BaseAPI } from "../base.apiPom";
 
 class RegisterApi extends BaseAPI {
-  readonly unregisteredEmail = "test26@test.test";
+  readonly unregisteredEmail = Cypress.env("UNREGISTERED_CREDENTIALS")["EMAIL"];
+  unregisteredPW = Cypress.env("UNREGISTERED_CREDENTIALS")["PASSWORD"];
 
   registrationData = {
     first_name: "test",
@@ -16,7 +17,8 @@ class RegisterApi extends BaseAPI {
     phone: "0987654321",
     dob: "1970-01-01",
     email: this.unregisteredEmail,
-    password: "welcome01",
+    password: this.unregisteredPW,
+    
   };
 
   userId: number;
@@ -56,7 +58,7 @@ class RegisterApi extends BaseAPI {
       phone: "0987654321",
       dob: "1970-01-01",
       email: this.unregisteredEmail,
-      password: "welcome01",
+      password: this.unregisteredPW,
     };
   }
 }
