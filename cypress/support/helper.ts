@@ -7,9 +7,9 @@ export class Helper {
 
   static getAssertion(bddAssertion: string): string {
     const lower = bddAssertion.toLowerCase();
-    if (lower.match(/^exist/)) {
+    if (lower.match(/(^exist)|(^is$)/)) {
       return "";
-    } else if (lower.match(/not exist/)) {
+    } else if (lower.match(/(not exist)|(is( *)n(o|')t)/)) {
       return "not.";
     } else {
       throw Error(`Invalid expected result [${bddAssertion}].`);

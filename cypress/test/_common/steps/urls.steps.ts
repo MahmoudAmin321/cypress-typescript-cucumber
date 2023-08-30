@@ -14,7 +14,7 @@ Given(
     }
 
     //visit page
-    cy.visit(page.relativeUrl);
+    cy.visit(page.relativeUrl());
 
     //wait for page to avoid flakiness
     page.waitForPage();

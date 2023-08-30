@@ -56,7 +56,7 @@ Cypress.Commands.add("loginWithUI", (user) => {
     cy.spyApi(homePageApi);
   }
 
-  cy.visit(loginPage.relativeUrl);
+  cy.visit(loginPage.relativeUrl());
   loginPage.typeCredentials(user);
   loginPage.form.loginBtn().click();
 
@@ -76,7 +76,7 @@ Cypress.Commands.add("loginWithUI", (user) => {
 //   const chainable = cy.session(
 //     `ui_login_session_id_for_ ${user.bddName}`,
 //     () => {
-//       cy.visit(loginPage.relativeUrl);
+//       cy.visit(loginPage.relativeUrl());
 //       loginPage.typeCredentials(user);
 //       loginPage.form.loginBtn().click();
 //     },

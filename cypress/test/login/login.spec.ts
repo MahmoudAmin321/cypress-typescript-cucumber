@@ -18,7 +18,7 @@ describe("Login", () => {
   });
 
   it("Upon entering empty email, correct msg should be displayed", () => {
-    cy.visit(loginPage.relativeUrl);
+    cy.visit(loginPage.relativeUrl());
 
     // with click
     loginPage.form.loginBtn().click();
@@ -36,7 +36,7 @@ describe("Login", () => {
   });
 
   it("Upon entering invalid email, correct msg should be displayed", () => {
-    cy.visit(loginPage.relativeUrl);
+    cy.visit(loginPage.relativeUrl());
 
     // with click
     loginPage.form.email().clear().type("invalid@");

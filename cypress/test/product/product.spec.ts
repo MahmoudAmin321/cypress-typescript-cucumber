@@ -24,7 +24,7 @@ describe("Product", () => {
     cy.loginProgrammatically(users.customer2);
 
     cy.stubApi({ api: apis.products, resBody: getProducts });
-    cy.visit(homePage.relativeUrl);
+    cy.visit(homePage.relativeUrl());
     cy.wait(`@${apis.products.interceptorName}`);
 
     homePage.productCards().then((cards) => {

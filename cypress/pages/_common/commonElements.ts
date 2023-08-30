@@ -1,10 +1,18 @@
 class CommonElements {
   readonly body = () => cy.get("body");
 
-  readonly userMenu = {
+  readonly navIcon = () => cy.get("[class=navbar-toggler][type=button]")
+
+  readonly userNavMenu = {
     menu: () => cy.get("[data-test$=menu]"),
     myAccount: () => cy.get("[href$=account]"),
     dashboard: () => cy.get("[data-test$=dashboard]"),
+    products: ()=> cy.get("[data-test=nav-admin-products]")
+  };
+
+  readonly categoriesNavMenu = {
+    menu: () => cy.get("[data-test=nav-categories]"),
+    handTools: () => cy.get("[data-test=nav-hand-tools]"),
   };
 
   readonly footer = {
@@ -19,6 +27,8 @@ class CommonElements {
 
   readonly brands = () => cy.get("[data-test=filters] [data-test^=brand]");
 
+  readonly saveBtn = () => cy.get("[data-test=product-submit")
+
   /**
    * Creates a map between business common button name (BDD name) and chainable common button
    * @param bddBtnName
@@ -26,11 +36,14 @@ class CommonElements {
    */
   getButton(bddBtnName: string) {
     if (bddBtnName.toLowerCase().match(/user( *)(menu)*/)) {
-      return this.userMenu.menu();
+      return this.userNavMenu.menu();
     } else if (bddBtnName.toLowerCase().match(/(my)*( *)account/)) {
-      return this.userMenu.myAccount();
+      return this.userNavMenu.myAccount();
     } else if (bddBtnName.toLowerCase().match(/dash(.*)/)) {
-      return this.userMenu.dashboard();
+      return this.userNavMenu.dashboard();
+    } 
+    else if (bddBtnName.toLowerCase().match(/products/)) {
+      return this.userNavMenu.products();
     } else {
       throw Error(`Common button [ ${bddBtnName} ] doesn't exist in the map`);
     }

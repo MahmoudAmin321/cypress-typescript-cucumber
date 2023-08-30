@@ -105,15 +105,32 @@ Feature: SUT - Products feature
             Then Product with name "combination pliers" "exists"
 
 
-
-
     Rule: Conducted product changes by admin should reflect to the customer
 
-        @program/bdd
+        @e2e
         Scenario: When admin changes product details, the customer should see the new details
+            Given You login as "admin"
+            And You "expand" "navigation" menu, if needed
+            And You "expand" "user" menu
+            And You click on "products" button, which redirects to "products" page
+            When You have clicked on "edit" button of 1. "product"
+            And You set text field "name" of "edit product" page to "edited name"
+            And You set text field "price" of "edit product" page to "14.17"
+            And You have saved
+            And You have "products" page opened
+            Then "name" of 1. "product" "is" "edited name"
+            When You have "home" page opened
+            And You store products names
+            And You store products prices order
+            Then Product with name "edited name" "exists"
+            And Product with price 14.17 "exists"
 
         @program/bdd
         Scenario: When admin changes product brand, the product should disappear from the old brand filteration and appear in the new
+            # TODO continue
+            Given You programmatically login as "admin"
+            And You have "products" page opened
+            When You set dropdown "brand" of "edit product" page to "Brand name 2"
 
 
     Rule: Changed products display order can be reset to original

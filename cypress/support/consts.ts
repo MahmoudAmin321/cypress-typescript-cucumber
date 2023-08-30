@@ -15,7 +15,7 @@ export const tokenKeyName = "auth-token";
 
 export const tokenAliasName = "token";
 
-const dataBaseId = "[\\d\\w]+";
+export const dbIdRegex = "[\\d\\w]+";
 
 // Comment const type to allow syntax error upon accessing non-exiting property
 export const apis /*: { [key: string]: ApiInfo }*/ = {
@@ -71,7 +71,7 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
   },
   specificProduct: {
     interceptorName: "specificProduct",
-    urlRegex: new RegExp(`products/${dataBaseId}$`),
+    urlRegex: new RegExp(`products/${dbIdRegex}$`),
     relativeUrl: (productId: string) => `/products/${productId}`,
   },
 };
