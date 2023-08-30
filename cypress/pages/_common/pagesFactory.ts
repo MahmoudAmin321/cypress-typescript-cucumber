@@ -1,4 +1,6 @@
 import dashboardPage from "../admin/dashboard.pom";
+import editProductsPage from "../admin/editProduct.pom";
+import productsPage from "../admin/products.pom";
 import accountPage from "../customer/account.pom";
 import homePage from "../home.pom";
 import loginPage from "../login.pom";
@@ -18,7 +20,14 @@ class PagesFactory {
       return accountPage;
     } else if (bddPageName.toLowerCase().match(/home/)) {
       return homePage;
-    } else {
+    } 
+    else if (bddPageName.toLowerCase().match(/products/)) {
+      return productsPage;
+    }
+    else if (bddPageName.toLowerCase().match(/edit product/)) {
+      return editProductsPage;
+    }
+    else {
       throw Error(`Page [ ${bddPageName} ] doesn't exist in the map`);
     }
   }

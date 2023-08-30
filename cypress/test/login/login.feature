@@ -20,7 +20,7 @@ Feature: SUT - Login feature
             Examples:
                 | user      | home page |
                 | Admin     | dashboard |
-                | Customer1 | account   |
+                | Customer2 | account   |
 
         @todo
         Scenario: Login with correct (registered) email with wrong casing should be successful

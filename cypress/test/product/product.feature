@@ -12,7 +12,7 @@ Feature: SUT - Product feature
 
         @program/bdd
         Scenario: Upon opening a product card, the product details (image, name and price) should be same as in card
-            Given You programmatically login as "customer1"
+            Given You programmatically login as "customer2"
             And You have "home" page opened
             When You store details of 1. card
             And You open 1. card

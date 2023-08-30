@@ -2,7 +2,7 @@ import { UserInfo } from "../support/models/userInfo";
 import { Base } from "./_common/base.pom";
 
 class Login extends Base {
-  readonly relativeUrl = "/auth/login";
+  readonly relativeUrl = ()=>"/auth/login";
 
   readonly form = {
     // Declare DOM elements as functions to get them fresh (with latest state) from DOM each time you access the property

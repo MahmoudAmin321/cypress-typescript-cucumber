@@ -3,8 +3,7 @@ import { ApiInfo } from "../support/models/api";
 import { Base } from "./_common/base.pom";
 
 class ProductDetails extends Base {
-  relativeUrlRegex = /product\/\d$/;
-  relativeUrl: string;
+  readonly relativeUrl = (id: string) => `/product/${id}`;
 
   readonly details = {
     container: () => cy.get("[class*='row my']"),
@@ -15,10 +14,6 @@ class ProductDetails extends Base {
       this.details.container().find("[data-test=add-to-cart]"),
     addToFavoritesBtn: () =>
       this.details.container().find("[data-test=add-to-favorites]"),
-  };
-
-  readonly relatedProducts = {
-    // TODO
   };
 
   getApiInfo(): ApiInfo {

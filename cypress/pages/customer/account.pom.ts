@@ -3,7 +3,7 @@ import { ApiInfo } from "../../support/models/api";
 import { Base } from "../_common/base.pom";
 
 class Account extends Base {
-  readonly relativeUrl = `/${customerEndPoint}`;
+  readonly relativeUrl = ()=> `/${customerEndPoint}`;
 
   readonly favorites = () => cy.get("[data-test=nav-favorites]");
   readonly profile = () => cy.get("[data-test=nav-profile]");

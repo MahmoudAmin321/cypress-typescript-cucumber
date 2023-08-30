@@ -3,7 +3,7 @@ import { ApiInfo } from "../../support/models/api";
 import { Base } from "../_common/base.pom";
 
 class Dashboard extends Base {
-  readonly relativeUrl = `/${adminEndPoint}/dashboard`;
+  readonly relativeUrl = () => `/${adminEndPoint}/dashboard`;
   readonly dashboard = {
     container: () => cy.get("app-dashboard"),
     salesChart: () => cy.get("chart"),
@@ -17,7 +17,8 @@ class Dashboard extends Base {
   }
 
   assertPage() {
-    cy.url().should("match", new RegExp(`/${adminEndPoint}/dashboard$`));
+    cy.url().should("match", new RegExp(`${this.relativeUrl()}$`));
+
     return this.dashboard.container().should("be.visible");
   }
 

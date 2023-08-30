@@ -1,7 +1,8 @@
-export class CheckBoxAction {
+class CheckBoxAction {
   /**
    * Creates a map between business checkbox action (BDD name) and its cypress command
    * @param bddCheckboxAction
+   * @param chainableCheckBox
    * @returns The cypress command of the provided BDD name. If the BDD name is invalid, an error is thrown
    */
   perform(

@@ -4,7 +4,7 @@ import { Base } from "./_common/base.pom";
 import productCards from "./_common/product/productCards";
 
 class Home extends Base {
-  readonly relativeUrl = "/";
+  readonly relativeUrl = ()=> "/";
 
   readonly priceRange = {
     leftBtn: () => cy.get("[role=slider][class*=min]"),
