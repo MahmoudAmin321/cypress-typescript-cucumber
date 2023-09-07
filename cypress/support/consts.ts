@@ -34,6 +34,11 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     urlRegex: /users\/logout$/,
     relativeUrl: () => "/users/logout",
   },
+  refreshToken: {
+    interceptorName: "refreshToken",
+    urlRegex: /users\/refresh$/,
+    relativeUrl: () => "/users/refresh",
+  },
   forgotPW: {
     interceptorName: "forgotPW",
     urlRegex: /users\/forgot-password$/,
