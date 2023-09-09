@@ -1,14 +1,14 @@
-import commonElements from "../../pages/_common/commonElements";
+import { Base } from "../../pages/_common/base.pom";
 
 class Menus {
   getMenu(bddMenuName: string): Cypress.Chainable<JQuery<HTMLElement>> {
     const lower = bddMenuName.toLowerCase();
     if (lower.toLowerCase().match(/navigation/)) {
-      return commonElements.navIcon();
+      return Base.navIcon();
     } else if (lower.toLowerCase().match(/user/)) {
-      return commonElements.userNavMenu.menu();
+      return Base.userNavMenu.menu();
     } else if (lower.toLowerCase().match(/categor/)) {
-      return commonElements.categoriesNavMenu.menu();
+      return Base.categoriesNavMenu.menu();
     } else {
       throw Error(`Menu name [ ${bddMenuName} ] doesn't exist in the map`);
     }

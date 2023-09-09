@@ -1,11 +1,11 @@
 import { When } from "@badeball/cypress-cucumber-preprocessor";
-import commonElements from "../../../pages/_common/commonElements";
 import menus from "../../../support/models/menus";
+import { Base } from "../../../pages/_common/base.pom";
 
 When(
   "{word} {string} {string} menu, if needed",
   function (_: string, bddAction: string, bddMenuName: string) {
-    commonElements.navIcon().then((navIcon) => {
+    Base.navIcon().then((navIcon) => {
       const isMenuVisible = navIcon.is(":visible");
 
       //log

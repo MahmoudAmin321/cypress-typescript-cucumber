@@ -1,5 +1,4 @@
 import { Given, When } from "@badeball/cypress-cucumber-preprocessor";
-import commonElements from "../../../pages/_common/commonElements";
 import keyboardFactory from "../../../support/models/keyboardFactory";
 import { Base } from "../../../pages/_common/base.pom";
 import pagesFactory from "../../../pages/_common/pagesFactory";
@@ -20,7 +19,7 @@ When(
     const key = keyboardFactory.getKey(bddKeyName);
 
     for (let i = 0; i < times / 2; i++) {
-      commonElements.body().type(key);
+      Base.body().type(key);
     }
   }
 );
