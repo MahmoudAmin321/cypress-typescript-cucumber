@@ -1,6 +1,5 @@
 import { When } from "@badeball/cypress-cucumber-preprocessor";
 import pagesFactory from "../../../pages/_common/pagesFactory";
-import commonElements from "../../../pages/_common/commonElements";
 import { Base } from "../../../pages/_common/base.pom";
 
 When(
@@ -37,7 +36,7 @@ When(
       cy.spyApi(api);
     }
 
-    commonElements.getButton(bddBtnName).click();
+    Base.getButton(bddBtnName).click();
 
     incomingPage.waitForPage();
   }

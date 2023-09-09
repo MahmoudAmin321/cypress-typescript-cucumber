@@ -1,8 +1,8 @@
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
-import commonElements from "../../../pages/_common/commonElements";
 import { SortOptions } from "../../../support/models/sort/_sortOptions";
 import { apis } from "../../../support/consts";
 import sortFactory from "../../../support/models/sort/_sortFactory";
+import { Base } from "../../../pages/_common/base.pom";
 
 When(
   "{word} have {sortOption} sort option selected",
@@ -11,7 +11,7 @@ When(
     cy.spyApi(apis.products);
 
     // select
-    commonElements.sortDropdown().select(bddSortOption.sortOptionValue);
+    Base.sortDropdown().select(bddSortOption.sortOptionValue);
 
     // wait
     cy.wait(`@${apis.products.interceptorName}`);

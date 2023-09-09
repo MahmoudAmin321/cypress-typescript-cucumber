@@ -1,8 +1,8 @@
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
-import commonElements from "../../../pages/_common/commonElements";
 import entitiesFactory from "../../../pages/admin/entitiesFactory";
 import { apis } from "../../../support/consts";
 import { Helper } from "../../../support/helper";
+import { Base } from "../../../pages/_common/base.pom";
 
 When(
   "{word} have clicked on {string} button of {int}. {string}",
@@ -65,7 +65,7 @@ When("{word} have saved", function (_: string) {
   cy.spyApi(apis.specificProduct, "PUT");
 
   // save
-  commonElements.saveBtn().click();
+  Base.saveBtn().click();
 
   // wait for api
   cy.wait(`@${apis.specificProduct.interceptorName}`);
