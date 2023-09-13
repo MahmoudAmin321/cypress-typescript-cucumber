@@ -12,25 +12,51 @@ When(
 
     if (lower.match(/edit/)) {
       // spy
+      // when time comes, handle specific category
       cy.spyApi(apis.specificProduct);
 
       // click
       table.nthActionBtns(rowNr).edit().click();
 
       // wait
+      // when time comes, handle specific category
       cy.wait(`@${apis.specificProduct.interceptorName}`);
     } else if (lower.match(/delete/)) {
       // spy
+      // when time comes, handle categories
       cy.spyApi(apis.products);
 
       // click
       table.nthActionBtns(rowNr).delete().click();
 
       // wait
+      // when time comes, handle categories
       cy.wait(`@${apis.products.interceptorName}`);
     } else {
       throw Error(`Button [ ${bddActionBtn} ] doesn't exist in the map`);
     }
+  }
+);
+
+Then(
+  "{string} of {int}. {string} is {string}",
+  function (
+    bddColumnName: string,
+    rowNr: number,
+    bddEntity: string,
+    bddName: string
+  ) {
+    // get from DOM
+    const column = entitiesFactory.getColumnFromDOM(
+      bddColumnName,
+      bddEntity,
+      rowNr
+    );
+
+    // assert
+    column.invoke("text").then((text) => {
+      expect(text.trim().toLowerCase()).to.eq(bddName.trim().toLowerCase());
+    });
   }
 );
 
