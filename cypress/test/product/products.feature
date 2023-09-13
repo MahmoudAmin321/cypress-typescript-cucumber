@@ -127,10 +127,25 @@ Feature: SUT - Products feature
 
         @program/bdd
         Scenario: When admin changes product brand, the product should disappear from the old brand filteration and appear in the new
-            # TODO continue
             Given You programmatically login as "admin"
             And You have "products" page opened
-            When You set dropdown "brand" of "edit product" page to "Brand name 2"
+            And "name" of 3. "product" is "Bolt Cutters"
+            Given You have "home" page opened
+            And You have "selected" "brand name 1" brand
+            And You store products names
+            And Product with name "bolt cutters" "exists"
+            And You have "products" page opened
+            When You have clicked on "edit" button of 3. "product"
+            And You set dropdown "brand" of "edit product" page to "Brand name 2"
+            And You have saved
+            And You have "home" page opened
+            And You have "selected" "brand name 1" brand
+            And You store products names
+            Then Product with name "bolt clutters" "not exists"
+            When You have "unselected" "brand name 1" brand
+            And You have "selected" "brand name 2" brand
+            And You store products names
+            Then Product with name "bolt cutters" "exists"
 
 
     Rule: Changed products display order can be reset to original
