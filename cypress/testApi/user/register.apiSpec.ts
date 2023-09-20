@@ -20,7 +20,7 @@ describe(`${apis.register.relativeUrl()}`, () => {
   });
 
   it("Should Not register already registered emails", () => {
-    let userId: number;
+    let userId: string;
 
     // Precondition
     registerApi.setUp().then((userInfo) => {

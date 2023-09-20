@@ -37,7 +37,7 @@ describe(`${apis.login.relativeUrl()}`, () => {
   it("Should respond correct status code and body upon providing incorrect credentials", () => {
     let registeredEmail: string;
     const incorrectPW = "incorrectPW";
-    let userId: number;
+    let userId: string;
 
     // As precondition, Register a brand-new user and Not use existing user to avoid making the test sensitive to data change
     registerApi.setUp().then((userInfo) => {
@@ -61,7 +61,7 @@ describe(`${apis.login.relativeUrl()}`, () => {
     const failedAttempts = 3;
     let registeredEmail: string;
     let incorrectPW: "incorrectPW";
-    let userId: number;
+    let userId: string;
 
     // Precondition
     registerApi.setUp().then((userInfo) => {
