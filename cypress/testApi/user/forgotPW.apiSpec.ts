@@ -24,7 +24,7 @@ describe(`${apis.forgotPW.relativeUrl()}`, () => {
 
   it("Should respond with success, upon providing registered email", () => {
     let email: string;
-    let userId: number;
+    let userId: string;
 
     // precondition
     registerApi.setUp().then((userInfo) => {
@@ -45,7 +45,7 @@ describe(`${apis.forgotPW.relativeUrl()}`, () => {
   });
 
   it("Should reset pw to default value", () => {
-    let userId: number;
+    let userId: string;
 
     // precondition: register user with pw other than welcome01
     registerApi.registrationData.password = "different01";

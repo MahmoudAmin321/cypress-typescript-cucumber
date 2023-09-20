@@ -18,10 +18,9 @@ class RegisterApi extends BaseAPI {
     dob: "1970-01-01",
     email: this.unregisteredEmail,
     password: this.unregisteredPW,
-    
   };
 
-  userId: number;
+  userId: string;
 
   register(reqBody: object): Cypress.Chainable<Cypress.Response<any>> {
     return cy.request({
@@ -39,7 +38,7 @@ class RegisterApi extends BaseAPI {
         // Make sure user is registered
         expect(registerResp.status).to.eq(201);
         const actualEmail: string = registerResp.body.email;
-        const userId: number = registerResp.body.id;
+        const userId: string = registerResp.body.id;
         expect(actualEmail).to.eq(registerApi.registrationData.email);
 
         return { registeredEmail: actualEmail, userId };
