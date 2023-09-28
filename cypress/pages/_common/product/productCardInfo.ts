@@ -1,5 +1,3 @@
-import { ProductCard } from "../components/productCard";
-
 class ProductCardInfo {
   // Attributes of the img element
   readonly image = {

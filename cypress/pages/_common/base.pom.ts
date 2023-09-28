@@ -37,7 +37,11 @@ export abstract class Base {
   static readonly brands = () =>
     cy.get("[data-test=filters] [data-test^=brand]");
 
-  static readonly saveBtn = () => cy.get("[data-test=product-submit");
+  static readonly saveBtn = () => cy.get("[data-test=product-submit]");
+
+  static readonly resetBtn = () => cy.get("[data-test$=reset]");
+
+  static readonly paginator = () => cy.get(".ngx-pagination");
 
   getApiInfo(): ApiInfo {
     return null;

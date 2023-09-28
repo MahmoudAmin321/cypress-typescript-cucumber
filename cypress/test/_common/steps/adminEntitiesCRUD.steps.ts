@@ -123,7 +123,7 @@ Then(
     const assertion = Helper.getAssertion(bddAssertion);
     column.invoke("text").then((text) => {
       const trimmedText = text.trim();
-      cy.wrap(trimmedText).should(`${assertion}equal`, expectedText);
+      cy.wrap(trimmedText).should(assertion, expectedText);
     });
   }
 );

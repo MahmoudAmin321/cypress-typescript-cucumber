@@ -60,23 +60,23 @@ Feature: SUT - Products feature
         Scenario: Products can be filtered by price range
             Given You have "home" page opened
             And You store products prices order
-            And Product with price 12.01 "exists"
+            And Product with price 12.01 "is included"
             When You have slider "left" button clicked
             And You hit "right arrow" key 12 times
             Then Slider "left" value is 13
             When You wait 3 seconds
             And You store products prices order
-            Then Product with price 12.01 "not exists"
+            Then Product with price 12.01 "is not included"
 
         @program/bdd
         Scenario: Products can be filtered by category
             Given You have "home" page opened
             And You store products names
-            And Product with name "combination pliers" "exists"
+            And Product with name "combination pliers" "is included"
             When You have "selected" "hand saw" category
             And You store products names
-            Then Product with name "combination pliers" "not exists"
-            Then 1. product is "wood saw"
+            Then Product with name "combination pliers" "not included"
+            Then 1. product "is" "wood saw"
 
         @todo
         Scenario: Products can be filtered by brand
@@ -86,23 +86,23 @@ Feature: SUT - Products feature
             Given You have "home" page opened
             And You have "selected" "hand saw" category
             And You store products names
-            And Product with name "wood saw" "exists"
+            And Product with name "wood saw" "included"
             When You have "selected" "Wrench" category
-            Then Product with name "wood saw" "exists"
+            Then Product with name "wood saw" "included"
             When You store products names
-            Then 2. product is "adjustable wrench"
+            Then 2. product "is" "adjustable wrench"
 
         @program/bdd
         Scenario: Upon unselecting a filter, it should be eliminated and the products should be adjusted accordignly
             Given You have "home" page opened
             And You store products names
-            And Product with name "combination pliers" "exists"
+            And Product with name "combination pliers" "included"
             And You have "selected" "hand saw" category
             And You store products names
-            And Product with name "combination pliers" "not exists"
+            And Product with name "combination pliers" "not included"
             When You have "unselected" "hand saw" category
             And You store products names
-            Then Product with name "combination pliers" "exists"
+            Then Product with name "combination pliers" "included"
 
 
     Rule: Conducted product changes by admin should reflect to the customer
@@ -113,17 +113,17 @@ Feature: SUT - Products feature
             And You "expand" "navigation" menu, if needed
             And You "expand" "user" menu
             And You click on "products" button, which redirects to "products" page
-            When You have clicked on "edit" button of 1. "product"
+            When You have clicked on "edit" button of 5. "product"
             And You set text field "name" of "edit product" page to "edited name"
-            And You set text field "price" of "edit product" page to "14.17"
+            And You set text field "price" of "edit product" page to "9.13"
             And You have saved
             And You have "products" page opened
-            Then "name" of 1. "product" "is" "edited name"
+            Then "name" of 5. "product" "is" "edited name"
             When You have "home" page opened
             And You store products names
             And You store products prices order
-            Then Product with name "edited name" "exists"
-            And Product with price 14.17 "exists"
+            Then Product with name "edited name" "included"
+            And Product with price 9.13 "is included"
 
         @program/bdd
         Scenario: When admin changes product brand, the product should disappear from the old brand filteration and appear in the new
@@ -133,7 +133,7 @@ Feature: SUT - Products feature
             Given You have "home" page opened
             And You have "selected" "brand name 1" brand
             And You store products names
-            And Product with name "bolt cutters" "exists"
+            And Product with name "bolt cutters" "included"
             And You have "products" page opened
             When You have clicked on "edit" button of 3. "product"
             And You set dropdown "brand" of "edit product" page to "Brand name 2"
@@ -141,20 +141,40 @@ Feature: SUT - Products feature
             And You have "home" page opened
             And You have "selected" "brand name 1" brand
             And You store products names
-            Then Product with name "bolt clutters" "not exists"
+            Then Product with name "bolt clutters" "not included"
             When You have "unselected" "brand name 1" brand
             And You have "selected" "brand name 2" brand
             And You store products names
-            Then Product with name "bolt cutters" "exists"
+            Then Product with name "bolt cutters" "included"
 
 
     Rule: Changed products display order can be reset to original
 
         @program/bdd
         Scenario: Clicking reset button should eliminate applied sort and filters and reset products order to original
+            Given You have "home" page opened
+            And You store products names
+            And Product with name "combination pliers" "included"
+            And You have "Name ( Z- a)" sort option selected
+            And You have "selected" "Hammer" category
+            And You store products names
+            And Product with name "combination pliers" "not included"
+            And 1. product "is" "Thor Hammer"
+            When You have reset
+            And You store products names
+            Then Product with name "combination pliers" "included"
 
         @program/bdd
         Scenario: Clicking reset button should eliminate applied search and reset products order to original
+            Given You have "home" page opened
+            And You store products names
+            And Product with name "combination pliers" "included"
+            And You have searched for "hammer"
+            And You store products names
+            And Product with name "combination pliers" "not included"
+            When You have reset
+            And You store products names
+            Then Product with name "combination pliers" "included"
 
 
     Rule: Group of individual scenarios
@@ -164,12 +184,18 @@ Feature: SUT - Products feature
 
         @program/bdd
         Scenario: Products can be searched
+            Given You have "home" page opened
+            And You store products names
+            And 1. product "is" "combination pliers"
+            When You have searched for "hammer"
+            And You store products names
+            Then Product with name "combination pliers" "not included"
+            And 1. product "contains" "hammer"
 
         @program/bdd
         Scenario: Paginator should appear only if the products amount exceeds the max. amount a page can hold
-
-
-
-
-
-
+            When You have "home" page opened
+            Then Paginator "is visible"
+            When You have searched for "combination"
+            And Displayed products are less than maximum
+            Then Paginator "doesn't exist"
