@@ -41,7 +41,7 @@ Then(
     );
 
     const assertion = Helper.getAssertion(bddAssertion);
-    cy.wrap(prices).should(`${assertion}include`, bddPrice);
+    cy.wrap(prices).should(assertion, bddPrice);
   }
 );
 
@@ -50,16 +50,17 @@ Then(
   function (bddName: string, bddAssertion: string) {
     const names = products.names.map((name) => name.trim().toLowerCase());
     const assertion = Helper.getAssertion(bddAssertion);
-    cy.wrap(names).should(`${assertion}include`, bddName.toLowerCase());
+    cy.wrap(names).should(assertion, bddName.toLowerCase());
   }
 );
 
 Then(
-  "{int}. product is {string}",
-  function (bddOrder: number, bddName: string) {
+  "{int}. product {string} {string}",
+  function (bddOrder: number, bddAssertion: string, bddName: string) {
     const nthProductName = products.names[bddOrder - 1].trim().toLowerCase();
 
-    cy.wrap(nthProductName).should("equal", bddName.toLowerCase());
+    const assertion = Helper.getAssertion(bddAssertion);
+    cy.wrap(nthProductName).should(assertion, bddName.toLowerCase());
   }
 );
 
@@ -84,3 +85,9 @@ Then(
       });
   }
 );
+
+When("Displayed products are less than maximum", function (_: string) {
+  homePage
+    .productCards()
+    .should("have.length.lessThan", homePage.maxProductsPerPage);
+});

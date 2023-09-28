@@ -1,7 +1,8 @@
-import { Given, When } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import keyboardFactory from "../../../support/models/keyboardFactory";
 import { Base } from "../../../pages/_common/base.pom";
 import pagesFactory from "../../../pages/_common/pagesFactory";
+import { Helper } from "../../../support/helper";
 
 // Anti pattern. Only use as exception, when there is No other option
 Given("{word} wait {int} seconds", function (_: string, seconds: number) {
@@ -45,11 +46,16 @@ When(
     _: string,
     bddDropdownName: string,
     bddPageName: string,
-    bddIncomigOption: string
+    bddIncomingOption: string
   ) {
     const page: Base = pagesFactory.getPage(bddPageName);
     const dropdown = page.getDropdown(bddDropdownName);
 
-    dropdown.select(bddIncomigOption);
+    dropdown.select(bddIncomingOption);
   }
 );
+
+Then("Paginator {string}", function (bddAssertion: string) {
+  const assertion = Helper.getAssertion(bddAssertion);
+  Base.paginator().should(assertion);
+});

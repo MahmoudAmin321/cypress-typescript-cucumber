@@ -5,6 +5,7 @@ import productCards from "./_common/product/productCards";
 
 class Home extends Base {
   readonly relativeUrl = ()=> "/";
+  readonly maxProductsPerPage = 9;
 
   readonly priceRange = {
     leftBtn: () => cy.get("[role=slider][class*=min]"),
@@ -13,6 +14,7 @@ class Home extends Base {
     rightValue: () => cy.get("[class*=slider-model-high]"),
   };
 
+  readonly searchField = () => cy.get("[data-test=search-query]");
   readonly resetBtn = () => cy.get("[data-test=search-reset]");
   readonly searchBtn = () => cy.get("[data-test=search-submit]");
 

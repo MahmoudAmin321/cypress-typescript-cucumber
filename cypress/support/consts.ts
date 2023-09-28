@@ -73,7 +73,7 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
   },
   products: {
     interceptorName: "products",
-    urlRegex: /products\?/,
+    urlRegex: /products(.*)\?/,
   },
   brands: {
     interceptorName: "brands",
