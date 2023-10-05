@@ -57,6 +57,7 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
   currentUser: {
     interceptorName: "currentUser",
     urlRegex: /users\/me$/,
+    relativeUrl: () => "/users/me",
   },
   users: {
     interceptorName: "users",

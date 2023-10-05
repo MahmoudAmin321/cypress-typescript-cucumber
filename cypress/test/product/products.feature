@@ -6,10 +6,10 @@ Feature: SUT - Products feature
 
         Feature rules:
         * [Scenarios_Defined] - Products can be sorted
-        * [Scenarios_Titles_Defined] - Products can be filtered
-        * [Scenarios_Titles_Defined] - Conducted product changes by admin should reflect to the customer
-        * [Scenarios_Titles_Defined] - Changed products display order can be reset to original
-        * [Scenarios_Titles_Defined] - Group of individual scenarios
+        * [Scenarios_Defined] - Products can be filtered
+        * [Scenarios_Defined] - Conducted product changes by admin should reflect to the customer
+        * [Scenarios_Defined] - Changed products display order can be reset to original
+        * [Scenarios_Defined] - Group of individual scenarios
 
 
     Rule: Products can be sorted
