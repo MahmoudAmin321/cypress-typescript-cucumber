@@ -4,11 +4,16 @@ import { Base } from "./_common/base.pom";
 
 class ProductDetails extends Base {
   readonly relativeUrl = (id: string) => `/product/${id}`;
+  
+  storedId: string;
 
   readonly details = {
     container: () => cy.get("[class*='row my']"),
     image: () => this.details.container().find("img"),
     name: () => this.details.container().find("[data-test=product-name]"),
+    category: () => this.details.container().find("[class^='badge rounded-pill']").eq(0),
+    brand: () => this.details.container().find("[class^='badge rounded-pill']").eq(1),
+    description: () => this.details.container().find("[data-test=product-description]"),
     unitPrice: () => this.details.container().find("[data-test=unit-price]"),
     addToCartBtn: () =>
       this.details.container().find("[data-test=add-to-cart]"),
@@ -35,5 +40,5 @@ class ProductDetails extends Base {
   }
 }
 
-const productDetails = new ProductDetails();
-export default productDetails;
+const productDetailsPage = new ProductDetails();
+export default productDetailsPage;
