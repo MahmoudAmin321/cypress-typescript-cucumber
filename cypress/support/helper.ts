@@ -1,3 +1,6 @@
+import editProductPage from "../pages/admin/editProduct.pom";
+import productDetailsPage from "../pages/productDetails.pom";
+
 export class Helper {
   static getRandomInteger(min: number, max: number): number {
     min = Math.ceil(min);
@@ -26,12 +29,19 @@ export class Helper {
     } else if (lower.match(/visible/)) {
       result += "be.visible";
       return result;
-    } 
-    else if (lower.match(/include/)) {
+    } else if (lower.match(/include/)) {
       result += "include";
       return result;
-    }else {
+    } else {
       throw Error(`Invalid expected result [${bddAssertion}].`);
+    }
+  }
+
+  static getProductPage(bddSide: string) {
+    if (bddSide.toLowerCase().match(/admin/)) {
+      return editProductPage;
+    } else {
+      return productDetailsPage;
     }
   }
 }

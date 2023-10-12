@@ -2,7 +2,8 @@ import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import homePage from "../../pages/home.pom";
 import productCardInfo from "../../pages/_common/product/productCardInfo";
 import { apis } from "../../support/consts";
-import productDetails from "../../pages/productDetails.pom";
+import productDetailsPage from "../../pages/productDetails.pom";
+import { DetailOfProduct } from "../../support/models/productDetails";
 
 When(
   "{word} store details of {int}. card",
@@ -38,25 +39,33 @@ When("{word} open {int}. card", function (_: string, cardNr: number) {
     const card = $cards[cardNr - 1];
     cy.spyApi(apis.specificProduct);
     card.name().click();
-    productDetails.waitForPage();
+    productDetailsPage.waitForPage();
   });
 });
 
 Then("Product details should be same as in card", function () {
-  productDetails.details
+  productDetailsPage.details
     .image()
     .invoke("attr", "src")
     .should("eq", productCardInfo.image.src);
 
-  productDetails.details
+  productDetailsPage.details
     .name()
     .invoke("text")
     .should("eq", productCardInfo.name.text);
 
-  productDetails.details
+  productDetailsPage.details
     .unitPrice()
     .invoke("text")
     .then((text) => {
       expect(`$${text}`).to.eq(productCardInfo.price.text);
     });
+});
+
+Then("{productDetail} is {string}", function (productDetail: DetailOfProduct, expectedValue: string) {
+  const detailName = productDetail.detail.name
+  productDetail.getProductDetail(detailName).domElement.invoke("text").then((text: string)=>{
+    const actualValue = text.trim()
+    expect(actualValue).to.eq(expectedValue)
+  })
 });

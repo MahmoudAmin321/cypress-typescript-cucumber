@@ -3,7 +3,9 @@ import { ApiInfo } from "../../support/models/api";
 import { Base } from "../_common/base.pom";
 
 class EditProduct extends Base {
-  readonly relativeUrl = (id: string) => `/${adminEndPoint}/users/edit/${id}`;
+  readonly relativeUrl = (id: string) => `/${adminEndPoint}/products/edit/${id}`;
+  
+  storedId: string;
 
   readonly textFields = {
     id: () => cy.get("[data-test=id]"),
@@ -77,5 +79,5 @@ class EditProduct extends Base {
   }
 }
 
-const editProductsPage = new EditProduct();
-export default editProductsPage;
+const editProductPage = new EditProduct();
+export default editProductPage;
