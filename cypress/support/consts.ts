@@ -64,6 +64,11 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     urlRegex: /users$/,
     relativeUrl: () => "/users",
   },
+  usersSearch: {
+    interceptorName: "usersSearch",
+    urlRegex: /users\/search\?/,
+    relativeUrl: () => "/users/search",
+  },
   yearsSales: {
     interceptorName: "yearsSales",
     urlRegex: /reports\/total-sales-of-years/,
