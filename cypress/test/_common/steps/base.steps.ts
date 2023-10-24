@@ -102,3 +102,8 @@ When(
     });
   }
 );
+
+Then("Cart icon {string}", function (bddAssertion: string) {
+  const assertion = Helper.getAssertion(bddAssertion);
+  Base.cartIcon().should(assertion);
+});

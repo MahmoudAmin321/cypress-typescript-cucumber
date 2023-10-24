@@ -15,24 +15,56 @@ Feature: SUT - Product feature
 
         @program/bdd
         Scenario: customer can increase or decrease the product quantity by clicking
+        Given You programmatically login as "customer2"
+        And You have "thor hammer" product opened from "customer" side
+        When You increase quantity
+        Then Quantity is "2"
+        When You decrease quantity
+        Then Quantity is "1"
 
         @program/bdd
         Scenario: customer cannot decrease the product quantity by clicking to less than 1
+        Given You programmatically login as "customer2"
+        And You have "thor hammer" product opened from "customer" side
+        When You decrease quantity
+        Then Quantity is "1"
 
         @program/bdd
-        Scenario: customer can increase or decrease the product quantity by inputting .. aut.
+        Scenario: customer can set the product quantity by inputting
+        Given You programmatically login as "customer2"
+        And You have "thor hammer" product opened from "customer" side
+        When You set quantity to "25"
+        Then Quantity is "25"
 
         @manual
         Scenario: There is No max. to quantity (inputting 999999999999998) is possible
 
         @program/bdd
         Scenario: quantity accepts only numbers
+        Given You programmatically login as "customer2"
+        And You have "thor hammer" product opened from "customer" side
+        When You set quantity to "9a7b3C"
+        Then Quantity is "973"
 
         @manual
         Scenario: quantity cannot be decimal
 
-        @program/bdd.
-        Scenario: Trying to add product to cart with invalid (empty or 0 or -ve) quantity is Not possible .. aut.
+        @program/bdd
+        Scenario: Trying to add product to cart with invalid (empty or 0 or -ve) quantity is Not possible
+        Given You programmatically login as "customer2"
+        And You have "thor hammer" product opened from "customer" side
+        When You set quantity to " "
+        And You add product to cart
+        Then Success toaster "doesn't exist"
+        And Cart icon "doesn't exist"
+        When You set quantity to "0"
+        And You add product to cart
+        Then Success toaster "doesn't exist"
+        And Cart icon "doesn't exist"
+        When You set quantity to "-1"
+        And You add product to cart
+        Then Success toaster "doesn't exist"
+        And Cart icon "doesn't exist"
 
         @program/bdd
         Scenario: upon adding product to cart, cart icon has correct quantity
@@ -81,7 +113,7 @@ Feature: SUT - Product feature
             Given You programmatically login as "customer2"
             And You have "home" page opened
             When You store details of 1. card
-            And You open 1. card
+            And You have 1. card opened
             Then Product details should be same as in card
 
         @program/bdd
