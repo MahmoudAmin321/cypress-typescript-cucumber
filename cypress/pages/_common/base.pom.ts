@@ -24,6 +24,8 @@ export abstract class Base {
     handTools: () => cy.get("[data-test=nav-hand-tools]"),
   };
 
+  static readonly cartIcon = ()=> cy.get("[data-test=nav-cart]")
+
   static readonly footer = {
     githubRepo: () => cy.get("[href*=github]"),
     privacyPolicy: () => cy.get("[href*=privacy]"),
