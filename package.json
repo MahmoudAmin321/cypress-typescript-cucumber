@@ -12,7 +12,7 @@
     "cy:run:program": "cross-env npm run cy:run:program:bdd && npm run cy:run:program:suite",
     "cy:run:gui": "cross-env npm run cy:run:e2e && npm run cy:run:program",
     "cy:run:api": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/*.apiSpec.{ts,js}\"",
-    "cy:run:single": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/test/**/product.feature\" --browser chrome"
+    "cy:run:single": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/brands.apiSpec.ts\" --browser chrome"
   },
   "author": "Mahmoud Mostafa",
   "license": "ISC",
