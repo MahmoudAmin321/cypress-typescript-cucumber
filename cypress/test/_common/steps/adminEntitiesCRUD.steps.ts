@@ -1,8 +1,8 @@
 import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import entitiesFactory from "../../../pages/admin/entitiesFactory";
 import { apis } from "../../../support/consts";
-import { Helper } from "../../../support/helper";
 import { Base } from "../../../pages/_common/base.pom";
+import { Factory } from "../../../pages/_common/factory";
 
 When(
   "{word} have clicked on {string} button of {int}. {string}",
@@ -120,7 +120,7 @@ Then(
       bddEntity,
       rowNr
     );
-    const assertion = Helper.getAssertion(bddAssertion);
+    const assertion = Factory.getAssertion(bddAssertion);
     column.invoke("text").then((text) => {
       const trimmedText = text.trim();
       cy.wrap(trimmedText).should(assertion, expectedText);

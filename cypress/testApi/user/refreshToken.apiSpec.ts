@@ -52,7 +52,7 @@ describe(`${apis.refreshToken.relativeUrl()}`, () => {
     });
   });
 
-  it("Should respond with unauthorized, upon providing invalid token", () => {
+  it("bug - Should respond with unauthorized, upon providing invalid token", () => {
     const invalidToken = "invalid token";
     refreshTokenApi.refreshToken(invalidToken).then((refreshTokenResp) => {
       expect(refreshTokenResp.status).to.eq(401);

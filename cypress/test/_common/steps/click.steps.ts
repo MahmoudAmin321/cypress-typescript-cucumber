@@ -1,6 +1,7 @@
 import { When } from "@badeball/cypress-cucumber-preprocessor";
 import pagesFactory from "../../../pages/_common/pagesFactory";
 import { Base } from "../../../pages/_common/base.pom";
+import { Factory } from "../../../pages/_common/factory";
 
 When(
   "{word} click on {string} button of {string} page, which redirects to {string} page",
@@ -36,7 +37,7 @@ When(
       cy.spyApi(api);
     }
 
-    Base.getButton(bddBtnName).click();
+    Factory.getButton(bddBtnName).click();
 
     incomingPage.waitForPage();
   }

@@ -3,8 +3,7 @@ import homePage from "../../pages/home.pom";
 import productCardInfo from "../../pages/_common/product/productCardInfo";
 import { apis } from "../../support/consts";
 import productDetailsPage from "../../pages/productDetails.pom";
-import { DetailOfProduct } from "../../support/models/productDetails";
-import { Helper } from "../../support/helper";
+import { Factory } from "../../pages/_common/factory";
 
 When(
   "{word} store details of {int}. card",
@@ -63,20 +62,6 @@ Then("Product details should be same as in card", function () {
     });
 });
 
-Then(
-  "{productDetail} is {string}",
-  function (productDetail: DetailOfProduct, expectedValue: string) {
-    const detailName = productDetail.detail.name;
-    productDetail
-      .getProductDetail(detailName)
-      .domElement.invoke("text")
-      .then((text: string) => {
-        const actualValue = text.trim();
-        expect(actualValue).to.eq(expectedValue);
-      });
-  }
-);
-
 When("You increase quantity", function () {
   productDetailsPage.details.increaseQuantity().click();
 });
@@ -93,11 +78,14 @@ When("You add product to cart", function () {
   productDetailsPage.details.addToCartBtn().click();
 });
 
-Then("Quantity is {string}", function (quantity: string) {
-  productDetailsPage.details.quantity().invoke("val").should("equal", quantity);
-});
+Then(
+  "{string} quantity is {string}",
+  function (bddType: string, bddQuantity: string) {
+    Factory.getQuantityText(bddType).should("equal", bddQuantity);
+  }
+);
 
 Then("Success toaster {string}", function (bddAssertion: string) {
-  const assertion = Helper.getAssertion(bddAssertion);
+  const assertion = Factory.getAssertion(bddAssertion);
   productDetailsPage.successToaster().should(assertion);
 });

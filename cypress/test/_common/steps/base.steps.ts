@@ -5,6 +5,7 @@ import pagesFactory from "../../../pages/_common/pagesFactory";
 import { Helper } from "../../../support/helper";
 import { apis, tokenKeyName } from "../../../support/consts";
 import { apiHost } from "../../../support/cyEnvVar";
+import { Factory } from "../../../pages/_common/factory";
 
 // Anti pattern. Only use as exception, when there is No other option
 Given("{word} wait {int} seconds", function (_: string, seconds: number) {
@@ -58,14 +59,14 @@ When(
 );
 
 Then("Paginator {string}", function (bddAssertion: string) {
-  const assertion = Helper.getAssertion(bddAssertion);
+  const assertion = Factory.getAssertion(bddAssertion);
   Base.paginator().should(assertion);
 });
 
 When(
   "You have {string} product opened from {string} side",
   function (bddProductName: string, bddSide: string) {
-    const productPage = Helper.getProductPage(bddSide);
+    const productPage = pagesFactory.getProductPage(bddSide);
 
     // GET all products (page 1)
     cy.request({
@@ -104,6 +105,6 @@ When(
 );
 
 Then("Cart icon {string}", function (bddAssertion: string) {
-  const assertion = Helper.getAssertion(bddAssertion);
+  const assertion = Factory.getAssertion(bddAssertion);
   Base.cartIcon().should(assertion);
 });

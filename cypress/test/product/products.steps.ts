@@ -3,7 +3,7 @@ import homePage from "../../pages/home.pom";
 import { ProductCard } from "../../pages/_common/components/productCard";
 import products from "../../support/models/_common/products";
 import { apis } from "../../support/consts";
-import { Helper } from "../../support/helper";
+import { Factory } from "../../pages/_common/factory";
 
 Given("{word} store products prices order", function (_: string) {
   // cleanup array (remove all previously stored items)
@@ -40,7 +40,7 @@ Then(
       Number(priceText.trim().replace("$", ""))
     );
 
-    const assertion = Helper.getAssertion(bddAssertion);
+    const assertion = Factory.getAssertion(bddAssertion);
     cy.wrap(prices).should(assertion, bddPrice);
   }
 );
@@ -49,7 +49,7 @@ Then(
   "Product with name {string} {string}",
   function (bddName: string, bddAssertion: string) {
     const names = products.names.map((name) => name.trim().toLowerCase());
-    const assertion = Helper.getAssertion(bddAssertion);
+    const assertion = Factory.getAssertion(bddAssertion);
     cy.wrap(names).should(assertion, bddName.toLowerCase());
   }
 );
@@ -59,7 +59,7 @@ Then(
   function (bddOrder: number, bddAssertion: string, bddName: string) {
     const nthProductName = products.names[bddOrder - 1].trim().toLowerCase();
 
-    const assertion = Helper.getAssertion(bddAssertion);
+    const assertion = Factory.getAssertion(bddAssertion);
     cy.wrap(nthProductName).should(assertion, bddName.toLowerCase());
   }
 );

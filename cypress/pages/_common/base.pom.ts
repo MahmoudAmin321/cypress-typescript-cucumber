@@ -24,7 +24,10 @@ export abstract class Base {
     handTools: () => cy.get("[data-test=nav-hand-tools]"),
   };
 
-  static readonly cartIcon = ()=> cy.get("[data-test=nav-cart]")
+  static readonly cartIcon = () => cy.get("[data-test=nav-cart]");
+
+  static readonly cartQuantity = () =>
+    Base.cartIcon().find("[data-test=cart-quantity]");
 
   static readonly footer = {
     githubRepo: () => cy.get("[href*=github]"),
@@ -56,26 +59,6 @@ export abstract class Base {
   }
 
   abstract getButton(bddBtnName: string): Cypress.Chainable<any>;
-
-  
-  /**
-   * Creates a map between business common button name (BDD name) and chainable common button
-   * @param bddBtnName
-   * @returns The chainable common button of the provided BDD name. If the BDD name is invalid, an error is thrown
-   */
-  static getButton(bddBtnName: string) {
-    if (bddBtnName.toLowerCase().match(/user( *)(menu)*/)) {
-      return Base.userNavMenu.menu();
-    } else if (bddBtnName.toLowerCase().match(/(my)*( *)account/)) {
-      return Base.userNavMenu.myAccount();
-    } else if (bddBtnName.toLowerCase().match(/dash(.*)/)) {
-      return Base.userNavMenu.dashboard();
-    } else if (bddBtnName.toLowerCase().match(/products/)) {
-      return Base.userNavMenu.products();
-    } else {
-      throw Error(`Common button [ ${bddBtnName} ] doesn't exist in the map`);
-    }
-  }
 
   getTextField(
     bddTextFieldName: string
