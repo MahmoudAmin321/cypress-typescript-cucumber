@@ -44,7 +44,7 @@ describe(`${apis.forgotPW.relativeUrl()}`, () => {
     });
   });
 
-  it("Should reset pw to default value", () => {
+  it("bug - Should reset pw to default value", () => {
     let userId: string;
 
     // precondition: register user with pw other than welcome01

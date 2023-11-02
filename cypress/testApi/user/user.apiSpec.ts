@@ -122,8 +122,8 @@ describe(`${apis.specificUser.relativeUrl("{userId}")}`, () => {
             }
 
             if (key == "phone") {
-              const phone = Number(userApi.userData[key]);
-              expect(getUserResp.body[key]).to.equal(phone);
+              const expectedPhone = userApi.userData[key];
+              expect(getUserResp.body[key]).to.equal(expectedPhone);
               continue;
             }
 

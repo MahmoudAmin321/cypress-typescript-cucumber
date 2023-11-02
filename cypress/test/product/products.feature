@@ -141,11 +141,18 @@ Feature: SUT - Products feature
             And You have "home" page opened
             And You have "selected" "brand name 1" brand
             And You store products names
-            Then Product with name "bolt clutters" "not included"
+            Then Product with name "bolt cutters" "not included"
             When You have "unselected" "brand name 1" brand
             And You have "selected" "brand name 2" brand
             And You store products names
             Then Product with name "bolt cutters" "included"
+            #Tear down: reset brand
+            When You have "products" page opened
+            And You have "bolt cutters" product opened from "admin" side
+            And You set dropdown "brand" of "edit product" page to "Brand name 1"
+            And You have saved
+            And You have "bolt cutters" product opened from "customer" side
+            Then "Brand" is "Brand name 1"
 
 
     Rule: Changed products display order can be reset to original

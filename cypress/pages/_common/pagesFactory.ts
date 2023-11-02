@@ -4,6 +4,7 @@ import productsPage from "../admin/products.pom";
 import accountPage from "../customer/account.pom";
 import homePage from "../home.pom";
 import loginPage from "../login.pom";
+import productDetailsPage from "../productDetails.pom";
 
 class PagesFactory {
   /**
@@ -39,6 +40,14 @@ class PagesFactory {
       return accountPage;
     } else {
       throw Error(`User [ ${user} ] doesn't exist in the map`);
+    }
+  }
+
+  getProductPage(bddSide: string) {
+    if (bddSide.toLowerCase().match(/admin/)) {
+      return editProductPage;
+    } else {
+      return productDetailsPage;
     }
   }
 }

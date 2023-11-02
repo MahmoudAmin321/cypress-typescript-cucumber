@@ -43,7 +43,7 @@ describe(`${apis.register.relativeUrl()}`, () => {
     });
   });
 
-  it("Should Not register a user without filling required data", () => {
+  it("bug - Should Not register a user without filling required data", () => {
     for (let key in registerApi.registrationData) {
       // reset to default
       registerApi.resetRegistrationData();

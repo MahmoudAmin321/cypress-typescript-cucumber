@@ -22,7 +22,7 @@ describe(`${apis.changePW.relativeUrl()}`, () => {
     cy.log("after all tests in this suite");
   });
 
-  it("Should respond with success, upon providing correct current pw, same data in new pw and repeat pw", () => {
+  it("bug - Should respond with success, upon providing correct current pw, same data in new pw and repeat pw", () => {
     // Prepare request body
     cy.then(() => {
       changePwApi.requestBody.current_password =
@@ -64,7 +64,7 @@ describe(`${apis.changePW.relativeUrl()}`, () => {
     });
   });
 
-  it("Should throw error, upon providing different new pw and repeat pw", () => {
+  it("bug - Should throw error, upon providing different new pw and repeat pw", () => {
     // Prepare request body
     cy.then(() => {
       changePwApi.requestBody.current_password =
@@ -86,7 +86,7 @@ describe(`${apis.changePW.relativeUrl()}`, () => {
     });
   });
 
-  it("Should throw error, upon missing a property (i.e. new pw) from request body", () => {
+  it("bug - Should throw error, upon missing a property (i.e. new pw) from request body", () => {
     // Prepare request body
     const body = {
       current_password: registerApi.registrationData.password,
@@ -118,7 +118,7 @@ describe(`${apis.changePW.relativeUrl()}`, () => {
     });
   });
 
-  it("Should Not allow login with old pw", () => {
+  it("bug - Should Not allow login with old pw", () => {
     // Prepare request body
     cy.then(() => {
       changePwApi.requestBody.current_password =
@@ -147,7 +147,7 @@ describe(`${apis.changePW.relativeUrl()}`, () => {
       });
   });
 
-  it("Should allow login with new pw", () => {
+  it("bug - Should allow login with new pw", () => {
     // Prepare request body
     cy.then(() => {
       changePwApi.requestBody.current_password =

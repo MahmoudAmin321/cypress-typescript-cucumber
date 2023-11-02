@@ -27,7 +27,7 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     cy.log("after all tests in this suite");
   });
 
-  it("Should search by first name", () => {
+  it("bug - Should search by first name", () => {
     const firstName = "this is some kind of fn";
 
     // precondition: register multiple users
@@ -56,7 +56,7 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     });
   });
 
-  it("Should search by last name", () => {
+  it("bug - Should search by last name", () => {
     const lastName = "this is some kind of ln";
 
     // precondition: register user
@@ -78,7 +78,7 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     });
   });
 
-  it("Should search by city", () => {
+  it("bug - Should search by city", () => {
     const city = "this is some kind of city";
 
     // precondition: register user
@@ -98,7 +98,7 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     });
   });
 
-  it("Should return 404, if search value doesn't exist", () => {
+  it("bug - Should return 404, if search value doesn't exist", () => {
     const city = "this is some kind of city";
 
     // precondition: register user
@@ -120,7 +120,7 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     });
   });
 
-  it("Search should be case-insensitive", () => {
+  it("bug - Search should be case-insensitive", () => {
     const city = "this is some kind of city";
 
     // precondition: register user
@@ -141,7 +141,7 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     });
   });
 
-  it("Search should allow starts with", () => {
+  it("bug - Search should allow starts with", () => {
     const city = "this is some kind of city";
 
     // precondition: register user
@@ -162,7 +162,7 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     });
   });
 
-  it("Search should allow contains", () => {
+  it("bug - Search should allow contains", () => {
     const city = "this is some kind of city";
 
     // precondition: register user
@@ -183,7 +183,7 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     });
   });
 
-  it("Should return error, upon searching by other key than fn, ln Or city", () => {
+  it("bug - Should return error, upon searching by other key than fn, ln Or city", () => {
     const email = "customer@practicesoftwaretesting.com";
 
     // precondition: register user
@@ -220,7 +220,7 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
       });
   });
 
-  it("Should return forbidden, if unauthorized user is trying to search", () => {
+  it("bug - Should return forbidden, if unauthorized user is trying to search", () => {
     const city = "this is some kind of city";
 
     // precondition: register user
