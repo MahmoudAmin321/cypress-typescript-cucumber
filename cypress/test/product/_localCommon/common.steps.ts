@@ -10,7 +10,7 @@ Then(
         .domElement.invoke("text")
         .then((text: string) => {
           const actualValue = text.trim().toLowerCase();
-          expect(actualValue).to.eq(expectedValue);
+          expect(actualValue).to.eq(expectedValue.toLowerCase());
         });
     }
   );

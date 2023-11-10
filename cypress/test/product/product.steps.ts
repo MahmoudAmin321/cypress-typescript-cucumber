@@ -1,9 +1,10 @@
-import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
+import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import homePage from "../../pages/home.pom";
 import productCardInfo from "../../pages/_common/product/productCardInfo";
 import { apis } from "../../support/consts";
 import productDetailsPage from "../../pages/productDetails.pom";
 import { Factory } from "../../pages/_common/factory";
+import brandsApi from "../../testApi/_common/apiPom/brand/brandsApi";
 
 When(
   "{word} store details of {int}. card",
@@ -89,3 +90,11 @@ Then("Success toaster {string}", function (bddAssertion: string) {
   const assertion = Factory.getAssertion(bddAssertion);
   productDetailsPage.successToaster().should(assertion);
 });
+
+Given(
+  "You programmatically prepare brands data",
+  function () {
+    brandsApi.cleanUp()
+    brandsApi.setUp()
+  }
+);
