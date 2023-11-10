@@ -16,7 +16,7 @@ class BrandsApi extends BaseAPI {
     });
   }
 
-  searchBrands(brandId: string, brands: object[]): number {
+  searchInBrands(brandId: string, brands: object[]): number {
     // validate brandId 
     if (!brandId.match(dbIdRegex)) {
       throw Error(`Invalid brand id ${brandId}`);
@@ -31,8 +31,35 @@ class BrandsApi extends BaseAPI {
         count++;
       }
       const restOfBrands = brands.slice(1);
-      return count + this.searchBrands(brandId, restOfBrands);
+      return count + this.searchInBrands(brandId, restOfBrands);
     }
+  }
+
+  post(reqBody: object): Cypress.Chainable<Cypress.Response<any>> {
+    return cy.request({
+      url: `${apiHost}${apis.brands.relativeUrl()}`,
+      method: "POST",
+      body: reqBody,
+      failOnStatusCode: false,
+    });
+  }
+
+  createNewBrand(brandData = brandApi.brandData) {
+    return this.post(brandData).then((brandResp) => {
+      // Make sure brand is created
+      if (brandResp.body.slug[0]?.match(/brand(.*)already exists(.*)slug/)) {
+        return; // exit function
+      } else {
+        expect(brandResp.status).to.eq(201);
+        const actualName: string = brandResp.body.name;
+        const actualSlug: string = brandResp.body.slug;
+        const brandId: string = brandResp.body.id;
+        expect(actualName).to.eq(brandData.name);
+        expect(actualSlug).to.eq(brandData.slug);
+
+        return { name: actualName, id: brandId, slug: actualSlug };
+      }
+    });
   }
 
   cleanUp() {
@@ -61,7 +88,7 @@ class BrandsApi extends BaseAPI {
       name: brandApi.brandData.name + " 1",
       slug: brandApi.brandData.slug + "-1",
     };
-    brandApi.create();
+    this.createNewBrand();
 
     cy.then(() => {
       brandApi.resetBrandData();
@@ -69,7 +96,7 @@ class BrandsApi extends BaseAPI {
         name: brandApi.brandData.name + " 2",
         slug: brandApi.brandData.slug + "-2",
       };
-      brandApi.create();
+      this.createNewBrand();
     });
 
     cy.then(() => {

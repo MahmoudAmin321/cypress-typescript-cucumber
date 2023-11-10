@@ -137,7 +137,8 @@ Feature: SUT - Product feature
 
         @program/bdd
         Scenario: When admin changes product details (name, category, brand, price, description), the customer should see the new details
-            Given You programmatically login as "admin"
+            Given You programmatically prepare brands data
+            And You programmatically login as "admin"
             And You have "products" page opened
             And You have "thor hammer" product opened from "admin" side
             When You set text field "name" of "edit product" page to "ttthor hammer edited name"
