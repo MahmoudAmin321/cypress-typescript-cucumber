@@ -1,0 +1,66 @@
+import { apis } from "../support/consts";
+import { ApiInfo } from "../support/models/api";
+import { Base } from "./_common/base.pom";
+
+class Cart extends Base {
+  readonly relativeUrl = () => `/checkout`;
+  readonly cart = () => cy.get("[steptitle=Cart]");
+  readonly itemsTable = {
+    headerCells: () => this.cart().find("thead > tr > th"),
+    items: () => this.cart().find("tbody > tr"),
+    footerCells: () => this.cart().find("tfoot > tr > td"),
+  };
+
+  readonly proceedToCheckout = () => cy.get("[data-test=proceed-1]");
+
+  getApiInfo(): ApiInfo {
+    return apis.specificCart;
+  }
+
+  waitForPage() {
+    return cy.wait(`@${apis.specificCart.interceptorName}`);
+  }
+
+  getButton(bddBtnName: string): Cypress.Chainable<any> {
+    if (bddBtnName.toLowerCase().match(/proceed to checkout/)) {
+      return this.proceedToCheckout();
+    } else {
+      throw Error(`Button [ ${bddBtnName} ] doesn't exist in the map`);
+    }
+  }
+
+  searchInItems(itemName: string): Cypress.Chainable<number> {
+    return this.itemsTable.items().then((items: any) => {
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+
+        if (
+          item.innerText.toLowerCase().match(RegExp(itemName.toLowerCase()))
+        ) {
+          // return index of the found item
+          return i;
+        }
+      }
+      return undefined;
+    });
+  }
+
+  getColumnIndex(columnName: string): Cypress.Chainable<number> {
+    return this.itemsTable.headerCells().then((headerCells: any) => {
+      for (let i = 0; i < headerCells.length; i++) {
+        const headerCell: HTMLElement = headerCells[i];
+        if (
+          headerCell.innerText
+            .toLowerCase()
+            .match(RegExp(columnName.toLowerCase()))
+        ) {
+          // return index of the found item
+          return i;
+        }
+      }
+    });
+  }
+}
+
+const cartPage = new Cart();
+export default cartPage;

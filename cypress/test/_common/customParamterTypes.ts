@@ -2,6 +2,7 @@ import { defineParameterType } from "@badeball/cypress-cucumber-preprocessor";
 import { User } from "../../support/models/userInfo";
 import { SortOptions } from "../../support/models/sort/_sortOptions";
 import { DetailOfProduct } from "../../support/models/productDetails";
+import { CartColumn } from "../../support/models/cartColumn";
 
 const wordRegex = /"^\w+$"/;
 const stringRegex = /"([^"]*)"/;
@@ -27,4 +28,10 @@ defineParameterType({
   name: "productDetail",
   regexp: stringRegex,
   transformer: (str) => new DetailOfProduct(str),
+});
+
+defineParameterType({
+  name: "cartTableColumn",
+  regexp: stringRegex,
+  transformer: (str) => new CartColumn(str),
 });
