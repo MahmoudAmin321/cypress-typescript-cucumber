@@ -5,6 +5,8 @@ import { apis } from "../../support/consts";
 import productDetailsPage from "../../pages/productDetails.pom";
 import { Factory } from "../../pages/_common/factory";
 import brandsApi from "../../testApi/_common/apiPom/brand/brandsApi";
+import cartPage from "../../pages/cart.pom";
+import { CartColumn } from "../../support/models/cartColumn";
 
 When(
   "{word} store details of {int}. card",
@@ -91,10 +93,100 @@ Then("Success toaster {string}", function (bddAssertion: string) {
   productDetailsPage.successToaster().should(assertion);
 });
 
-Given(
-  "You programmatically prepare brands data",
-  function () {
-    brandsApi.cleanUp()
-    brandsApi.setUp()
+Given("You programmatically prepare brands data", function () {
+  brandsApi.cleanUp();
+  brandsApi.setUp();
+});
+
+// Then(
+//   "Row of item {string} {string}",
+//   function (bddProductName: string, bddAssertion: string) {
+//     // search item in cart
+//     let itemIndex: number | undefined;
+//     cartPage.itemsTable.items().then((items: any) => {
+//       itemIndex = cartPage.searchInItems(bddProductName, items);
+//     });
+
+//     // assert
+//     cy.then(() => {
+//       if (bddAssertion.toLowerCase().match(/^exist/)) {
+//         expect(itemIndex).to.not.eq(undefined);
+//         expect(itemIndex).to.be.a("number");
+//       } else if (bddAssertion.toLowerCase().match(/n(o|')t /)) {
+//         expect(itemIndex).to.be(undefined);
+//       } else {
+//         throw Error(`Invalid expected result [${bddAssertion}].`);
+//       }
+//     });
+//   }
+// );
+
+Then(
+  "Row of item {string} {string}",
+  function (bddProductName: string, bddAssertion: string) {
+    // search item in cart
+    cartPage.searchInItems(bddProductName).then((itemIndex) => {
+      // assert
+      if (bddAssertion.toLowerCase().match(/^exist/)) {
+        expect(itemIndex).to.not.eq(undefined);
+        expect(itemIndex).to.be.a("number");
+      } else if (bddAssertion.toLowerCase().match(/n(o|')t /)) {
+        expect(itemIndex).to.be(undefined);
+      } else {
+        throw Error(`Invalid expected result [${bddAssertion}].`);
+      }
+    });
   }
 );
+
+Then(
+  "{cartTableColumn} of {string} is {string}",
+  function (
+    bddCartColumn: CartColumn,
+    bddItemName: string,
+    expectedValue: string
+  ) {
+    // search item in cart
+    cartPage.searchInItems(bddItemName).then((itemIndex) => {
+      // assert
+      cy.then(() => {
+        if (itemIndex == undefined) {
+          throw Error(`Item ${bddItemName} doesn't exist in the cart`);
+        }
+        cartPage.getColumnIndex(bddCartColumn.name).then((columnIndex) => {
+          cartPage.itemsTable
+            .items()
+            .eq(itemIndex)
+            .within(() => {
+              cy.get("td")
+                .eq(columnIndex)
+                .then((itemCell) => {
+                  if (bddCartColumn.name.toLowerCase() === "quantity") {
+                    cy.wrap(itemCell)
+                      .find("input[type=number]")
+                      .invoke("val")
+                      .should("eq", expectedValue);
+                  } else {
+                    expect(itemCell.text().trim().toLowerCase()).to.eq(
+                      expectedValue.trim().toLowerCase()
+                    );
+                  }
+                });
+            });
+        });
+      });
+    });
+  }
+);
+
+Then("Cart total price is {string}", function (expectedPrice: string) {
+  const columnName = new CartColumn("cart total price").name;
+  cartPage.getColumnIndex(columnName).then((columnIndex) => {
+    cartPage.itemsTable
+      .footerCells()
+      .eq(columnIndex)
+      .then((cartTotalPriceCell) => {
+        expect(cartTotalPriceCell.text().trim()).to.eq(expectedPrice);
+      });
+  });
+});

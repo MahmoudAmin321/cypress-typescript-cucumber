@@ -87,12 +87,41 @@ Feature: SUT - Product feature
             When You add product to cart
             Then "Cart" quantity is "3"
 
-        @program/bdd
-        Scenario: upon adding product to cart, item gets added to cart with correct data (name, price, quantity, total)
+        @program/bdd @bug
+        Scenario: bug open mode - upon adding product to cart, item gets added to cart with correct data (name, price, quantity, total)
+            Given You programmatically login as "customer2"
+            And You have "thor hammer" product opened from "customer" side
+            And You set quantity to "3"
+            When You add product to cart
+            And "Cart" quantity is "3"
+            And You click on "cart" button, which redirects to "cart" page
+            Then Row of item "thor hammer" "exists"
+            And "Quantity" of "thor hammer" is "3"
+            And "Unit price" of "thor hammer" is "$11.14"
+            And "Total price" of "thor hammer" is "$33.42"
 
+        @program/bdd @bug
+        Scenario: bug open mode - upon adding further product to cart, the total of this further product is added to the cart total
+            Given You programmatically login as "customer2"
+            And You have "thor hammer" product opened from "customer" side
+            And You set quantity to "3"
+            And You add product to cart
+            And "Cart" quantity is "3"
+            And You click on "cart" button, which redirects to "cart" page
+            And Row of item "thor hammer" "exists"
+            And "Total price" of "thor hammer" is "$33.42"
+            And Cart total price is "$33.42"
+            And You have "slip joint pliers" product opened from "customer" side
+            And You set quantity to "2"
+            When You add product to cart
+            Then "Cart" quantity is "5"
+            When You click on "cart" button, which redirects to "cart" page
+            Then Row of item "slip joint pliers" "exists"
+            And "Total price" of "slip joint pliers" is "$18.34"
+            And Cart total price is "$51.76"
 
-        @program/bdd
-        Scenario: ownership (added product by customerX doesn't get add to cart of customerY)
+        @program/bdd @bug
+        Scenario: bug - ownership (added product by customerX doesn't get add to cart of customerY)
 
 
     Rule: Adding product to favourites
@@ -153,12 +182,13 @@ Feature: SUT - Product feature
             And "Brand" is "Brand name 2"
             And "Price" is "9.13"
             And "Description" is "edited description"
-            # Tear down: Reset name, category, brand
+            # Tear down: Reset name, category, brand, price
             When You have "products" page opened
             And You have "ttthor hammer edited name" product opened from "admin" side
             And You set text field "name" of "edit product" page to "Thor Hammer"
             And You set dropdown "category" of "edit product" page to "Hammer"
             And You set dropdown "brand" of "edit product" page to "Brand name 1"
+            And You set text field "price" of "edit product" page to "11.13"
             And You have saved
             And You have "thor hammer" product opened from "customer" side
             Then "Name" is "Thor Hammer"

@@ -16,7 +16,10 @@ export class Factory {
       return Base.userNavMenu.dashboard();
     } else if (bddBtnName.toLowerCase().match(/products/)) {
       return Base.userNavMenu.products();
-    } else {
+    } 
+    else if (bddBtnName.toLowerCase().match(/cart/)) {
+      return Base.cartIcon();
+    }else {
       throw Error(`Common button [ ${bddBtnName} ] doesn't exist in the map`);
     }
   }

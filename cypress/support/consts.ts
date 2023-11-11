@@ -107,4 +107,14 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     urlRegex: new RegExp(`brands/${dbIdRegex}$`),
     relativeUrl: (brandId: string) => `/brands/${brandId}`,
   },
+  carts: {
+    interceptorName: "carts",
+    urlRegex: /carts$/,
+    relativeUrl: () => "/carts",
+  },
+  specificCart: {
+    interceptorName: "specificCart",
+    urlRegex: new RegExp(`carts/${dbIdRegex}$`),
+    relativeUrl: (cartId: string) => `/carts/${cartId}`,
+  }
 };
