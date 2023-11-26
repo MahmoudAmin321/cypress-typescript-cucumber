@@ -110,7 +110,6 @@ Then(
     let expectedText: string;
     if (bddText.toLowerCase().match(/as stored/)) {
       expectedText = entitiesFactory.getStoredColumn(bddColumnName, bddEntity);
-      console.log("exp ", expectedText);
     } else {
       expectedText = bddText;
     }

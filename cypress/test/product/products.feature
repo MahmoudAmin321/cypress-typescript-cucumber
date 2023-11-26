@@ -57,7 +57,7 @@ Feature: SUT - Products feature
     Rule: Products can be filtered
 
         @program/bdd
-        Scenario: Products can be filtered by price range
+        Scenario: investigate later [Fails upon running all tests] - Products can be filtered by price range
             Given You have "home" page opened
             And You store products prices order
             And Product with price 12.01 "is included"

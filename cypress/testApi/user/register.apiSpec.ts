@@ -26,8 +26,6 @@ describe(`${apis.register.relativeUrl()}`, () => {
     registerApi.setUp().then((userInfo) => {
       userId = userInfo.userId;
 
-      // log
-      console.log("con id ", userId);
       cy.log("id ", userId);
     });
 
