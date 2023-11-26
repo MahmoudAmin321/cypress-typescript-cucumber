@@ -7,6 +7,7 @@ import { Factory } from "../../pages/_common/factory";
 import brandsApi from "../../testApi/_common/apiPom/brand/brandsApi";
 import cartPage from "../../pages/cart.pom";
 import { CartColumn } from "../../support/models/cartColumn";
+import { ToasterType } from "../../support/models/toaterType";
 
 When(
   "{word} store details of {int}. card",
@@ -77,8 +78,8 @@ When("You set quantity to {string}", function (quantity: string) {
   productDetailsPage.details.quantity().clear().type(quantity);
 });
 
-When("You add product to cart", function () {
-  productDetailsPage.details.addToCartBtn().click();
+When("You add product to {string}", function (bddAddBtnName: string) {
+  productDetailsPage.getButton(bddAddBtnName).click();
 });
 
 Then(
@@ -88,38 +89,19 @@ Then(
   }
 );
 
-Then("Success toaster {string}", function (bddAssertion: string) {
-  const assertion = Factory.getAssertion(bddAssertion);
-  productDetailsPage.successToaster().should(assertion);
-});
+Then(
+  "{toasterType} toaster {string}",
+  function (bddToasterType: ToasterType, bddAssertion: string) {
+    const assertion = Factory.getAssertion(bddAssertion);
+
+    productDetailsPage.getToaster(bddToasterType.type).should(assertion);
+  }
+);
 
 Given("You programmatically prepare brands data", function () {
   brandsApi.cleanUp();
   brandsApi.setUp();
 });
-
-// Then(
-//   "Row of item {string} {string}",
-//   function (bddProductName: string, bddAssertion: string) {
-//     // search item in cart
-//     let itemIndex: number | undefined;
-//     cartPage.itemsTable.items().then((items: any) => {
-//       itemIndex = cartPage.searchInItems(bddProductName, items);
-//     });
-
-//     // assert
-//     cy.then(() => {
-//       if (bddAssertion.toLowerCase().match(/^exist/)) {
-//         expect(itemIndex).to.not.eq(undefined);
-//         expect(itemIndex).to.be.a("number");
-//       } else if (bddAssertion.toLowerCase().match(/n(o|')t /)) {
-//         expect(itemIndex).to.be(undefined);
-//       } else {
-//         throw Error(`Invalid expected result [${bddAssertion}].`);
-//       }
-//     });
-//   }
-// );
 
 Then(
   "Row of item {string} {string}",
@@ -190,3 +172,16 @@ Then("Cart total price is {string}", function (expectedPrice: string) {
       });
   });
 });
+
+Then(
+  "{toasterType} toaster contain(s) text {string}",
+  function (bddToasterType: ToasterType, expectedText: string) {
+    productDetailsPage;
+    productDetailsPage
+      .getToaster(bddToasterType.type)
+      .invoke("text")
+      .then((text: string) => {
+        expect(text.trim().toLowerCase()).to.contain(expectedText);
+      });
+  }
+);

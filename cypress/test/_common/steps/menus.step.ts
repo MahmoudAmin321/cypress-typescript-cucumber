@@ -8,9 +8,6 @@ When(
     Base.navIcon().then((navIcon) => {
       const isMenuVisible = navIcon.is(":visible");
 
-      //log
-      console.log("vis ", isMenuVisible);
-
       if (isMenuVisible) {
         const chainableMenu = menus.getMenu(bddMenuName);
         menus.performAction(bddAction, chainableMenu);

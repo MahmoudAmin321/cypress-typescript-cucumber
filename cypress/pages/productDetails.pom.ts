@@ -29,7 +29,11 @@ class ProductDetails extends Base {
       this.details.container().find("[data-test=add-to-favorites]"),
   };
 
-  readonly successToaster = () => cy.get("app-toasts [class*=success]");
+  readonly toasters = {
+    container: () => cy.get("app-toasts"),
+    success: () => this.toasters.container().find("[class*=success]"),
+    failure: () => this.toasters.container().find("[class*=danger]"),
+  }
 
   getApiInfo(): ApiInfo {
     return apis.specificProduct;
@@ -46,6 +50,16 @@ class ProductDetails extends Base {
       return this.details.addToFavoritesBtn();
     } else {
       throw Error(`Button [ ${bddBtnName} ] doesn't exist in the map`);
+    }
+  }
+
+  getToaster(bddToasterType: string): Cypress.Chainable<any> {
+    if (bddToasterType.toLowerCase().match(/success/)) {
+      return this.toasters.success()
+    } else if (bddToasterType.toLowerCase().match(/fail/)) {
+      return this.toasters.failure()
+    } else {
+      throw Error(`Toaster type [ ${bddToasterType} ] doesn't exist in the map`);
     }
   }
 }

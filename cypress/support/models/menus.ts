@@ -21,9 +21,6 @@ class Menus {
     const lower = bddMenuAction.toLowerCase();
     if (lower.toLowerCase().match(/expand/)) {
       return chainableMenu.then((menu) => {
-        //log
-        console.log("att ", menu.attr("aria-expanded"));
-
         if (menu.attr("aria-expanded") === "false") {
           return cy.wrap(menu).click();
         }

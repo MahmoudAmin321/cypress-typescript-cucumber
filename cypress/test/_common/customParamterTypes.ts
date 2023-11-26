@@ -3,8 +3,8 @@ import { User } from "../../support/models/userInfo";
 import { SortOptions } from "../../support/models/sort/_sortOptions";
 import { DetailOfProduct } from "../../support/models/productDetails";
 import { CartColumn } from "../../support/models/cartColumn";
+import { ToasterType } from "../../support/models/toaterType";
 
-const wordRegex = /"^\w+$"/;
 const stringRegex = /"([^"]*)"/;
 
 /**
@@ -34,4 +34,10 @@ defineParameterType({
   name: "cartTableColumn",
   regexp: stringRegex,
   transformer: (str) => new CartColumn(str),
+});
+
+defineParameterType({
+  name: "toasterType",
+  regexp: stringRegex,
+  transformer: (str) => new ToasterType(str),
 });

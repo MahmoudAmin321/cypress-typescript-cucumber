@@ -60,16 +60,16 @@ Feature: SUT - Product feature
             Given You programmatically login as "customer2"
             And You have "thor hammer" product opened from "customer" side
             When You set quantity to " "
-            And You add product to cart
-            Then Success toaster "doesn't exist"
+            And You add product to "cart"
+            Then "Success" toaster "doesn't exist"
             And Cart icon "doesn't exist"
             When You set quantity to "0"
-            And You add product to cart
-            Then Success toaster "doesn't exist"
+            And You add product to "cart"
+            Then "Success" toaster "doesn't exist"
             And Cart icon "doesn't exist"
             When You set quantity to "-1"
-            And You add product to cart
-            Then Success toaster "doesn't exist"
+            And You add product to "cart"
+            Then "Success" toaster "doesn't exist"
             And Cart icon "doesn't exist"
 
         @program/bdd @bug
@@ -78,13 +78,13 @@ Feature: SUT - Product feature
             And You have "thor hammer" product opened from "customer" side
             And Cart icon "doesn't exist"
             When You set quantity to "2"
-            And You add product to cart
+            And You add product to "cart"
             Then Cart icon "exists"
             And "Cart" quantity is "2"
             When You have "CoMbination PlieRs" product opened from "customer" side
             Then Cart icon "exists"
             And "Cart" quantity is "2"
-            When You add product to cart
+            When You add product to "cart"
             Then "Cart" quantity is "3"
 
         @program/bdd @bug
@@ -92,7 +92,7 @@ Feature: SUT - Product feature
             Given You programmatically login as "customer2"
             And You have "thor hammer" product opened from "customer" side
             And You set quantity to "3"
-            When You add product to cart
+            When You add product to "cart"
             And "Cart" quantity is "3"
             And You click on "cart" button, which redirects to "cart" page
             Then Row of item "thor hammer" "exists"
@@ -105,7 +105,7 @@ Feature: SUT - Product feature
             Given You programmatically login as "customer2"
             And You have "thor hammer" product opened from "customer" side
             And You set quantity to "3"
-            And You add product to cart
+            And You add product to "cart"
             And "Cart" quantity is "3"
             And You click on "cart" button, which redirects to "cart" page
             And Row of item "thor hammer" "exists"
@@ -113,7 +113,7 @@ Feature: SUT - Product feature
             And Cart total price is "$33.42"
             And You have "slip joint pliers" product opened from "customer" side
             And You set quantity to "2"
-            When You add product to cart
+            When You add product to "cart"
             Then "Cart" quantity is "5"
             When You click on "cart" button, which redirects to "cart" page
             Then Row of item "slip joint pliers" "exists"
@@ -134,6 +134,10 @@ Feature: SUT - Product feature
 
         @program/bdd
         Scenario: adding product to favourites, while No user is logged in, is Not possible
+            Given You have "thor hammer" product opened from "customer" side
+            When You add product to "favourites"
+            Then "Failure" toaster "exists"
+            And "failure" toaster contains text "can not add product to your favorite"
 
         @program/bdd
         Scenario: increasing quantitiy plays No role in adding product to favourites
