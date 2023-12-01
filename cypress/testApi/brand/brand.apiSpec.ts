@@ -8,24 +8,15 @@ import loginApi from "../_common/apiPom/user/loginApi";
 
 describe(`${apis.specificBrand.relativeUrl("{brandId}")}`, () => {
   before(() => {
-    cy.log("before all tests in this suite");
+    brandsApi.cleanUp();
   });
 
   beforeEach(() => {
-    brandsApi.cleanUp();
-    brandApi.resetBrandData();
-
-    // loginApi
-    //   .login(users.admin.EMAIL, users.admin.PASSWORD)
-    //   .then((loginResp) => {
-    //     // store token
-    //     cy.wrap(loginResp.body.access_token).as(tokenAliasName);
-    //   });
+    brandsApi.setUp();
   });
 
   afterEach(() => {
     brandsApi.cleanUp();
-    brandApi.resetBrandData();
   });
 
   after(() => {
@@ -35,8 +26,6 @@ describe(`${apis.specificBrand.relativeUrl("{brandId}")}`, () => {
   describe("GET brand", () => {
     it("Should get brand by id", () => {
       // Precondition: create new brand
-      brandApi.resetBrandData();
-
       brandsApi.createNewBrand().then((brandInfo) => {
         // get brand by id
         brandApi.get(brandInfo.id).then((brandResp) => {
@@ -44,7 +33,7 @@ describe(`${apis.specificBrand.relativeUrl("{brandId}")}`, () => {
           expect(brandResp.status).to.eq(200);
           expect(brandResp.body.id).to.eq(brandInfo.id);
           expect(brandResp.body.name).to.eq(brandInfo.name);
-          expect(brandResp.body.slug).to.eq(brandApi.brandData.slug);
+          expect(brandResp.body.slug).to.eq(brandApi.brandData().slug);
         });
       });
     });
@@ -64,16 +53,14 @@ describe(`${apis.specificBrand.relativeUrl("{brandId}")}`, () => {
       // Precondition: Create new brand
       brandsApi.createNewBrand().then((brandInfo) => {
         // prepare PUT request body (New brand data)
-        brandApi.brandData.name = brandApi.brandData.name + " updated";
-        brandApi.brandData.slug = brandApi.brandData.name.replace(" ", "-");
+        const brandName = brandApi.brandName + " updated";
+        const brandData = brandApi.brandData(brandName);
 
         // update brand
-        brandApi
-          .update(brandInfo.id, brandApi.brandData)
-          .then((updateBrandResp) => {
-            expect(updateBrandResp.status).to.eq(200);
-            expect(updateBrandResp.body.success).to.eq(true);
-          });
+        brandApi.update(brandInfo.id, brandData).then((updateBrandResp) => {
+          expect(updateBrandResp.status).to.eq(200);
+          expect(updateBrandResp.body.success).to.eq(true);
+        });
         // assert brand is updated correctly
         brandApi.get(brandInfo.id).then((getBrandResp) => {
           const excludedKeys = ["id"];
@@ -83,7 +70,7 @@ describe(`${apis.specificBrand.relativeUrl("{brandId}")}`, () => {
               continue;
             }
 
-            expect(getBrandResp.body[key]).to.equal(brandApi.brandData[key]);
+            expect(getBrandResp.body[key]).to.equal(brandData[key]);
           }
         });
       });
@@ -93,73 +80,70 @@ describe(`${apis.specificBrand.relativeUrl("{brandId}")}`, () => {
       it("Update name only without slug", () => {
         // Precondition: create new brand
         brandsApi.createNewBrand().then((brandInfo) => {
-          delete brandApi.brandData["slug"];
-          brandApi.brandData.name = brandApi.brandData.name + " updated";
+          const brandName = brandApi.brandName + " updated";
+          const brandData = brandApi.brandData(brandName);
+          delete brandData["slug"];
+
           // update
-          brandApi
-            .update(brandInfo.id, brandApi.brandData)
-            .then((updateBrandResp) => {
-              expect(updateBrandResp.status).to.eq(200);
-              expect(updateBrandResp.body.success).to.eq(true);
+          brandApi.update(brandInfo.id, brandData).then((updateBrandResp) => {
+            expect(updateBrandResp.status).to.eq(200);
+            expect(updateBrandResp.body.success).to.eq(true);
 
-              brandApi.get(brandInfo.id).then((getBrandResp) => {
-                // Assert, slug didn't get removed
-                expect(getBrandResp.body.slug).to.be.ok.and.to.equal(
-                  brandInfo.slug
-                );
+            brandApi.get(brandInfo.id).then((getBrandResp) => {
+              // Assert, slug didn't get removed
+              expect(getBrandResp.body.slug).to.be.ok.and.to.equal(
+                brandInfo.slug
+              );
 
-                // Assert, name is updated correctly
-                expect(getBrandResp.body.name).to.equal(
-                  brandApi.brandData.name
-                );
-              });
+              // Assert, name is updated correctly
+              expect(getBrandResp.body.name).to.equal(brandData.name);
             });
+          });
         });
       });
 
       it("Update slug only without name", () => {
         // Precondition: create new brand
         brandsApi.createNewBrand().then((brandInfo) => {
-          delete brandApi.brandData["name"];
-          brandApi.brandData.slug = brandApi.brandData.slug + "-updated";
+          const brandName = brandApi.brandName + " updated";
+          const brandData = brandApi.brandData(brandName);
+          delete brandData["name"];
+
           // update
-          brandApi
-            .update(brandInfo.id, brandApi.brandData)
-            .then((updateBrandResp) => {
-              expect(updateBrandResp.status).to.eq(200);
-              expect(updateBrandResp.body.success).to.eq(true);
+          brandApi.update(brandInfo.id, brandData).then((updateBrandResp) => {
+            expect(updateBrandResp.status).to.eq(200);
+            expect(updateBrandResp.body.success).to.eq(true);
 
-              brandApi.get(brandInfo.id).then((getBrandResp) => {
-                // Assert, name didn't get removed
-                expect(getBrandResp.body.name).to.be.ok.and.to.equal(
-                  brandInfo.name
-                );
+            brandApi.get(brandInfo.id).then((getBrandResp) => {
+              // Assert, name didn't get removed
+              expect(getBrandResp.body.name).to.be.ok.and.to.equal(
+                brandInfo.name
+              );
 
-                // Assert, slug is updated correctly
-                expect(getBrandResp.body.slug).to.equal(
-                  brandApi.brandData.slug
-                );
-              });
+              // Assert, slug is updated correctly
+              expect(getBrandResp.body.slug).to.equal(brandData.slug);
             });
+          });
         });
       });
     });
 
     it("Update brand should fail, if the new slug already exists", () => {
       // Precondition: Create new brand 111
-      brandApi.brandData.name = brandApi.brandData.name + " 111";
-      brandApi.brandData.slug = brandApi.brandData.name.replace(" ", "-");
-      brandsApi.createNewBrand().then((brand111Info) => {
+      const brandName111 = brandApi.brandName + " 111";
+      const brandData111 = brandApi.brandData(brandName111);
+      brandsApi.createNewBrand(brandData111).then((brand111Info) => {
         // Precondition: Create new brand 222
-        brandApi.resetBrandData();
-        brandApi.brandData.name = brandApi.brandData.name + " 222";
-        brandApi.brandData.slug = brandApi.brandData.name.replace(" ", "-");
-        brandsApi.createNewBrand().then((brand222Info) => {
+        const brandName222 = brandApi.brandName + " 222";
+        const brandData222 = brandApi.brandData(brandName222);
+        brandsApi.createNewBrand(brandData222).then((brand222Info) => {
           // update brand 111 with slug of brand 222
-          brandApi.resetBrandData();
-          brandApi.brandData.slug = brand222Info.slug;
+          const updatedBrandData = {
+            name: brandApi.brandData().name,
+            slug: brand222Info.slug,
+          };
           brandApi
-            .update(brand111Info.id, brandApi.brandData)
+            .update(brand111Info.id, updatedBrandData)
             .then((updateBrandResp) => {
               expect(updateBrandResp.status).to.eq(422);
               expect(updateBrandResp.body.message.toLowerCase()).to.eq(
@@ -172,19 +156,20 @@ describe(`${apis.specificBrand.relativeUrl("{brandId}")}`, () => {
 
     it("Should fail upon trying to update a brand with same slug as another existing brand, but different casing", () => {
       // Precondition: Create new brand 111
-      brandApi.brandData.name = brandApi.brandData.name + " 111";
-      brandApi.brandData.slug = brandApi.brandData.name.replace(" ", "-");
-      brandsApi.createNewBrand().then((brand111Info) => {
+      const brandName111 = brandApi.brandName + " 111";
+      const brandData111 = brandApi.brandData(brandName111);
+      brandsApi.createNewBrand(brandData111).then((brand111Info) => {
         // Precondition: Create new brand 222
-        brandApi.resetBrandData();
-        brandApi.brandData.name = brandApi.brandData.name + " 222";
-        brandApi.brandData.slug = brandApi.brandData.name.replace(" ", "-");
-        brandsApi.createNewBrand().then((brand222Info) => {
+        const brandName222 = brandApi.brandName + " 222";
+        const brandData222 = brandApi.brandData(brandName222);
+        brandsApi.createNewBrand(brandData222).then((brand222Info) => {
           // update brand 111 with slug of brand 222, but different casing
-          brandApi.resetBrandData();
-          brandApi.brandData.slug = brand222Info.slug.toUpperCase();
+          const updatedBrandData = {
+            name: brandApi.brandData().name,
+            slug: brand222Info.slug.toUpperCase(),
+          };
           brandApi
-            .update(brand111Info.id, brandApi.brandData)
+            .update(brand111Info.id, updatedBrandData)
             .then((updateBrandResp) => {
               expect(updateBrandResp.status).to.eq(422);
               expect(updateBrandResp.body.message.toLowerCase()).to.eq(
@@ -197,19 +182,20 @@ describe(`${apis.specificBrand.relativeUrl("{brandId}")}`, () => {
 
     it("Update brand should be successful, if the new name already exists", () => {
       // Precondition: Create new brand 111
-      brandApi.brandData.name = brandApi.brandData.name + " 111";
-      brandApi.brandData.slug = brandApi.brandData.name.replace(" ", "-");
-      brandsApi.createNewBrand().then((brand111Info) => {
+      const brandName111 = brandApi.brandName + " 111";
+      const brandData111 = brandApi.brandData(brandName111);
+      brandsApi.createNewBrand(brandData111).then((brand111Info) => {
         // Precondition: Create new brand 222
-        brandApi.resetBrandData();
-        brandApi.brandData.name = brandApi.brandData.name + " 222";
-        brandApi.brandData.slug = brandApi.brandData.name.replace(" ", "-");
-        brandsApi.createNewBrand().then((brand222Info) => {
+        const brandName222 = brandApi.brandName + " 222";
+        const brandData222 = brandApi.brandData(brandName222);
+        brandsApi.createNewBrand(brandData222).then((brand222Info) => {
           // update brand 111 with name of brand 222
-          brandApi.resetBrandData();
-          brandApi.brandData.name = brand222Info.name;
+          const updatedBrandData = {
+            name: brand222Info.name,
+            slug: brandApi.brandData().slug,
+          };
           brandApi
-            .update(brand111Info.id, brandApi.brandData)
+            .update(brand111Info.id, updatedBrandData)
             .then((updateBrandResp) => {
               expect(updateBrandResp.status).to.eq(200);
               expect(updateBrandResp.body.success).to.eq(true);
