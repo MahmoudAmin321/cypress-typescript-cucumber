@@ -27,8 +27,8 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     cy.log("after all tests in this suite");
   });
 
-  it("bug - Should search by first name", () => {
-    const firstName = "this is some kind of fn";
+  it("Should search by first name", () => {
+    const firstName = "is a fn";
 
     // precondition: register multiple users
     cy.then(() => {
@@ -44,42 +44,38 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     });
 
     cy.get(`@${tokenAliasName}`).then((token: any) => {
-      usersSearchApi
-        .search(token, "first_name", firstName)
-        .then((usersSearchResp) => {
-          expect(usersSearchResp.status).equal(200);
-          expect(usersSearchResp.body.data).to.be.an("array");
-          expect(usersSearchResp.body.data.length).to.eq(2);
-          expect(usersSearchResp.body.data[0].first_name).to.eq(firstName);
-          expect(usersSearchResp.body.data[1].first_name).to.eq(firstName);
-        });
+      usersSearchApi.search(token, firstName).then((usersSearchResp) => {
+        expect(usersSearchResp.status).equal(200);
+        expect(usersSearchResp.body.data).to.be.an("array");
+        expect(usersSearchResp.body.data.length).to.eq(2);
+        expect(usersSearchResp.body.data[0].first_name).to.eq(firstName);
+        expect(usersSearchResp.body.data[1].first_name).to.eq(firstName);
+      });
     });
   });
 
-  it("bug - Should search by last name", () => {
-    const lastName = "this is some kind of ln";
+  it("Should search by last name", () => {
+    const lastName = "is a ln";
 
     // precondition: register user
     cy.then(() => {
-      registerApi.registrationData.first_name = lastName;
+      registerApi.registrationData.last_name = lastName;
       registerApi.registrationData.email = "ln1@test.test";
       registerApi.setUp();
     });
 
     cy.get(`@${tokenAliasName}`).then((token: any) => {
-      usersSearchApi
-        .search(token, "last_name", lastName)
-        .then((usersSearchResp) => {
-          expect(usersSearchResp.status).equal(200);
-          expect(usersSearchResp.body.data).to.be.an("array");
-          expect(usersSearchResp.body.data.length).to.eq(1);
-          expect(usersSearchResp.body.data[0].last_name).to.eq(lastName);
-        });
+      usersSearchApi.search(token, lastName).then((usersSearchResp) => {
+        expect(usersSearchResp.status).equal(200);
+        expect(usersSearchResp.body.data).to.be.an("array");
+        expect(usersSearchResp.body.data.length).to.eq(1);
+        expect(usersSearchResp.body.data[0].last_name).to.eq(lastName);
+      });
     });
   });
 
-  it("bug - Should search by city", () => {
-    const city = "this is some kind of city";
+  it("Should search by city", () => {
+    const city = "is a city";
 
     // precondition: register user
     cy.then(() => {
@@ -89,7 +85,7 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     });
 
     cy.get(`@${tokenAliasName}`).then((token: any) => {
-      usersSearchApi.search(token, "city", city).then((usersSearchResp) => {
+      usersSearchApi.search(token, city).then((usersSearchResp) => {
         expect(usersSearchResp.status).equal(200);
         expect(usersSearchResp.body.data).to.be.an("array");
         expect(usersSearchResp.body.data.length).to.eq(1);
@@ -98,8 +94,9 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     });
   });
 
-  it("bug - Should return 404, if search value doesn't exist", () => {
-    const city = "this is some kind of city";
+  it("Should return No data, if search value doesn't exist", () => {
+    const city = "is a city";
+    const nonExitingCity = "doesn't exist";
 
     // precondition: register user
     cy.then(() => {
@@ -109,101 +106,95 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
     });
 
     cy.get(`@${tokenAliasName}`).then((token: any) => {
-      usersSearchApi
-        .search(token, "city", "doesn't exist")
-        .then((usersSearchResp) => {
-          expect(usersSearchResp.status).equal(404);
-          expect(usersSearchResp.body.message.toLowerCase()).contain(
-            "not found"
-          );
-        });
-    });
-  });
-
-  it("bug - Search should be case-insensitive", () => {
-    const city = "this is some kind of city";
-
-    // precondition: register user
-    cy.then(() => {
-      registerApi.registrationData.city = city;
-      registerApi.registrationData.email = "city1@test.test";
-      registerApi.setUp();
-    });
-
-    cy.get(`@${tokenAliasName}`).then((token: any) => {
-      usersSearchApi
-        .search(token, "city", city.toUpperCase())
-        .then((usersSearchResp) => {
-          expect(usersSearchResp.status).equal(200);
-          expect(usersSearchResp.body.data.length).to.eq(1);
-          expect(usersSearchResp.body.data[0].city).to.eq(city);
-        });
-    });
-  });
-
-  it("bug - Search should allow starts with", () => {
-    const city = "this is some kind of city";
-
-    // precondition: register user
-    cy.then(() => {
-      registerApi.registrationData.city = city;
-      registerApi.registrationData.email = "city1@test.test";
-      registerApi.setUp();
-    });
-
-    cy.get(`@${tokenAliasName}`).then((token: any) => {
-      usersSearchApi
-        .search(token, "city", city.substring(0, city.length - 3))
-        .then((usersSearchResp) => {
-          expect(usersSearchResp.status).equal(200);
-          expect(usersSearchResp.body.data.length).to.eq(1);
-          expect(usersSearchResp.body.data[0].city).to.eq(city);
-        });
-    });
-  });
-
-  it("bug - Search should allow contains", () => {
-    const city = "this is some kind of city";
-
-    // precondition: register user
-    cy.then(() => {
-      registerApi.registrationData.city = city;
-      registerApi.registrationData.email = "city1@test.test";
-      registerApi.setUp();
-    });
-
-    cy.get(`@${tokenAliasName}`).then((token: any) => {
-      usersSearchApi
-        .search(token, "city", city.substring(3))
-        .then((usersSearchResp) => {
-          expect(usersSearchResp.status).equal(200);
-          expect(usersSearchResp.body.data.length).to.eq(1);
-          expect(usersSearchResp.body.data[0].city).to.eq(city);
-        });
-    });
-  });
-
-  it("bug - Should return error, upon searching by other key than fn, ln Or city", () => {
-    const email = "customer@practicesoftwaretesting.com";
-
-    // precondition: register user
-    cy.then(() => {
-      registerApi.registrationData.city = email;
-      registerApi.registrationData.email = "email1@test.test";
-      registerApi.setUp();
-    });
-
-    cy.get(`@${tokenAliasName}`).then((token: any) => {
-      usersSearchApi.search(token, "email", email).then((usersSearchResp) => {
-        // Should return, but Not sure which one (so I guess 400)
-        expect(usersSearchResp.status).equal(400); // bad request
+      usersSearchApi.search(token, nonExitingCity).then((usersSearchResp) => {
+        expect(usersSearchResp.status).equal(200);
+        expect(usersSearchResp.body.data).deep.eq([]);
       });
+    });
+  });
+
+  it("Search should be case-insensitive", () => {
+    const city = "is a city";
+
+    // precondition: register user
+    cy.then(() => {
+      registerApi.registrationData.city = city;
+      registerApi.registrationData.email = "city1@test.test";
+      registerApi.setUp();
+    });
+
+    cy.get(`@${tokenAliasName}`).then((token: any) => {
+      usersSearchApi
+        .search(token, city.toUpperCase())
+        .then((usersSearchResp) => {
+          expect(usersSearchResp.status).equal(200);
+          expect(usersSearchResp.body.data.length).to.eq(1);
+          expect(usersSearchResp.body.data[0].city).to.eq(city);
+        });
+    });
+  });
+
+  it("Search should allow starts with", () => {
+    const city = "is a city";
+
+    // precondition: register user
+    cy.then(() => {
+      registerApi.registrationData.city = city;
+      registerApi.registrationData.email = "city1@test.test";
+      registerApi.setUp();
+    });
+
+    cy.get(`@${tokenAliasName}`).then((token: any) => {
+      usersSearchApi
+        .search(token, city.substring(0, city.length - 3))
+        .then((usersSearchResp) => {
+          expect(usersSearchResp.status).equal(200);
+          expect(usersSearchResp.body.data.length).to.eq(1);
+          expect(usersSearchResp.body.data[0].city).to.eq(city);
+        });
+    });
+  });
+
+  it("Search should allow contains", () => {
+    const city = "is a city";
+
+    // precondition: register user
+    cy.then(() => {
+      registerApi.registrationData.city = city;
+      registerApi.registrationData.email = "city1@test.test";
+      registerApi.setUp();
+    });
+
+    cy.get(`@${tokenAliasName}`).then((token: any) => {
+      usersSearchApi
+        .search(token, city.substring(3))
+        .then((usersSearchResp) => {
+          expect(usersSearchResp.status).equal(200);
+          expect(usersSearchResp.body.data.length).to.eq(1);
+          expect(usersSearchResp.body.data[0].city).to.eq(city);
+        });
+    });
+  });
+
+  it("bug - Should return No data, upon searching for other value than fn, ln Or city", () => {
+    // precondition: register user
+    cy.then(() => {
+      registerApi.setUp();
+    });
+
+    cy.get(`@${tokenAliasName}`).then((token: any) => {
+      usersSearchApi
+        .search(token, registerApi.registrationData.email)
+        .then((usersSearchResp) => {
+          expect(usersSearchResp.status).equal(200);
+          expect(usersSearchResp.body.data).deep.eq([]);
+        });
     });
   });
 
   it("Should return unauthorized, if No valid token provided", () => {
     const invalidToken = "";
-    const city = "this is some kind of city";
+    const city = "is a city";
 
     // precondition: register user
     cy.then(() => {
@@ -212,16 +203,14 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
       registerApi.setUp();
     });
 
-    usersSearchApi
-      .search(invalidToken, "city", city)
-      .then((usersSearchResp) => {
-        expect(usersSearchResp.status).to.equal(401);
-        expect(usersSearchResp.body.message).to.equal("Unauthorized");
-      });
+    usersSearchApi.search(invalidToken, city).then((usersSearchResp) => {
+      expect(usersSearchResp.status).to.equal(401);
+      expect(usersSearchResp.body.message).to.equal("Unauthorized");
+    });
   });
 
   it("bug - Should return forbidden, if unauthorized user is trying to search", () => {
-    const city = "this is some kind of city";
+    const city = "is a city";
 
     // precondition: register user
     cy.then(() => {
@@ -236,14 +225,12 @@ describe(`${apis.usersSearch.relativeUrl()}`, () => {
       .then((loginResp) => {
         const customerToken = loginResp.body.access_token;
         // try to search
-        usersSearchApi
-          .search(customerToken, "city", city)
-          .then((usersSearchResp) => {
-            expect(usersSearchResp.status).to.eq(403);
-            expect(usersSearchResp.body.message.toLowerCase()).to.contain(
-              "forbidden"
-            );
-          });
+        usersSearchApi.search(customerToken, city).then((usersSearchResp) => {
+          expect(usersSearchResp.status).to.eq(403);
+          expect(usersSearchResp.body.message.toLowerCase()).to.contain(
+            "forbidden"
+          );
+        });
       });
   });
 });

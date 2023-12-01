@@ -3,11 +3,10 @@ import { apiHost } from "../../../../support/cyEnvVar";
 import { BaseAPI } from "../base.apiPom";
 
 class BrandApi extends BaseAPI {
-  private readonly brandName = "Brand name";
-  private readonly brandSlug = this.brandName.toLowerCase().replace(" ", "-");
-  brandData = {
-    name: this.brandName,
-    slug: this.brandSlug,
+  readonly brandName = "Brand name";
+
+  readonly brandData = (name = this.brandName) => {
+    return { name, slug: name.toLowerCase().replace(/ /g, "-") };
   };
 
   get(brandId: string): Cypress.Chainable<Cypress.Response<any>> {
@@ -42,13 +41,6 @@ class BrandApi extends BaseAPI {
       },
       failOnStatusCode: false,
     });
-  }
-
-  resetBrandData() {
-    this.brandData = {
-      name: this.brandName,
-      slug: this.brandSlug,
-    };
   }
 }
 

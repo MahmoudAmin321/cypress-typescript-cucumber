@@ -53,7 +53,7 @@ describe(`${apis.register.relativeUrl()}`, () => {
         .then((registerResp) => {
           expect(registerResp.status).to.eq(422);
           const respBodyPropertyName = Object.keys(registerResp.body)[0];
-          const field = respBodyPropertyName.replace("_", " ");
+          const field = respBodyPropertyName.replace(/_/g, "-");
           expect(registerResp.body[key]).to.deep.eq([
             `The ${field} field is required.`,
           ]);

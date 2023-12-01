@@ -17,7 +17,7 @@ class BrandsApi extends BaseAPI {
   }
 
   searchInBrands(brandId: string, brands: object[]): number {
-    // validate brandId 
+    // validate brandId
     if (!brandId.match(dbIdRegex)) {
       throw Error(`Invalid brand id ${brandId}`);
     }
@@ -44,7 +44,7 @@ class BrandsApi extends BaseAPI {
     });
   }
 
-  createNewBrand(brandData = brandApi.brandData) {
+  createNewBrand(brandData = brandApi.brandData()) {
     return this.post(brandData).then((brandResp) => {
       // Make sure brand is created
       if (brandResp.body.slug[0]?.match(/brand(.*)already exists(.*)slug/)) {
@@ -83,24 +83,12 @@ class BrandsApi extends BaseAPI {
   }
 
   setUp() {
-    brandApi.resetBrandData();
-    brandApi.brandData = {
-      name: brandApi.brandData.name + " 1",
-      slug: brandApi.brandData.slug + "-1",
-    };
-    this.createNewBrand();
+    let brandData = brandApi.brandData(brandApi.brandName + " 1");
+    this.createNewBrand(brandData);
 
     cy.then(() => {
-      brandApi.resetBrandData();
-      brandApi.brandData = {
-        name: brandApi.brandData.name + " 2",
-        slug: brandApi.brandData.slug + "-2",
-      };
-      this.createNewBrand();
-    });
-
-    cy.then(() => {
-      brandApi.resetBrandData();
+      brandData = brandApi.brandData(brandApi.brandName + " 2");
+      this.createNewBrand(brandData);
     });
   }
 }

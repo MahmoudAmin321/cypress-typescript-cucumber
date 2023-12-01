@@ -5,17 +5,14 @@ import brandsApi from "../_common/apiPom/brand/brandsApi";
 
 describe(`${apis.brands.relativeUrl()}`, () => {
   before(() => {
-    cy.log("before all tests in this suite");
+    brandsApi.cleanUp();
   });
 
   beforeEach(() => {
-    brandApi.resetBrandData();
-    brandsApi.cleanUp();
     brandsApi.setUp();
   });
 
   afterEach(() => {
-    brandApi.resetBrandData();
     brandsApi.cleanUp();
   });
 
@@ -35,7 +32,7 @@ describe(`${apis.brands.relativeUrl()}`, () => {
       );
       expect(brandsResp.body[randomIndex])
         .to.be.an("object")
-        .and.to.include.all.keys(brandApi.brandData);
+        .and.to.include.all.keys(brandApi.brandData());
     });
   });
 
@@ -53,7 +50,8 @@ describe(`${apis.brands.relativeUrl()}`, () => {
   });
 
   it("Should POST brand successfully, upon providing valid body", () => {
-    brandsApi.post(brandApi.brandData).then((brandResp) => {
+    const brandData = brandApi.brandData();
+    brandsApi.post(brandData).then((brandResp) => {
       expect(brandResp.status).to.eq(201);
       expect(brandResp.body.id).to.be.a("string").and.to.be.ok; // ok refers to "truthy"
 
@@ -70,14 +68,14 @@ describe(`${apis.brands.relativeUrl()}`, () => {
       });
 
       // Assert name and slug
-      expect(brandResp.body.name).to.eq(brandApi.brandData.name);
-      expect(brandResp.body.slug).to.eq(brandApi.brandData.slug);
+      expect(brandResp.body.name).to.eq(brandData.name);
+      expect(brandResp.body.slug).to.eq(brandData.slug);
     });
   });
 
   it("adding non-existing property to body doesn't affect creating a new brand", () => {
-    brandApi.brandData["extra"] = "extra property";
-    brandsApi.createNewBrand();
+    const brandDataExtra = { ...brandApi.brandData(), extra: "extra property" };
+    brandsApi.createNewBrand(brandDataExtra);
   });
 
   it("Should succeed upon trying to create a brand with same name as an existing brand, but non-existing slug ", () => {
@@ -86,18 +84,24 @@ describe(`${apis.brands.relativeUrl()}`, () => {
 
     cy.then(() => {
       // non-existing slug
-      brandApi.brandData.slug = `${brandApi.brandData.slug}123`;
+      const brandData = {
+        name: brandApi.brandData().name,
+        slug: brandApi.brandData().slug + "123",
+      };
+      brandsApi.createNewBrand(brandData);
     });
-
-    brandsApi.createNewBrand();
   });
 
   describe(`Should return 422 with correct error msg, upon providing invalid body, when POST a brand`, () => {
     it("already existing slug", () => {
       brandsApi.requestBrands().then((getResp) => {
         const existingSlug = getResp.body[0].slug;
-        brandApi.brandData.slug = existingSlug;
-        brandsApi.post(brandApi.brandData).then((postResp) => {
+        const brandData = {
+          name: brandApi.brandData().name,
+          slug: existingSlug,
+        };
+
+        brandsApi.post(brandData).then((postResp) => {
           expect(postResp.status).to.eq(422);
           expect(postResp.body.slug[0]).to.match(
             /brand(.*)already exist(.*)slug/
@@ -108,8 +112,9 @@ describe(`${apis.brands.relativeUrl()}`, () => {
 
     it("invalid slug", () => {
       const invalidSlug = "";
-      brandApi.brandData.slug = invalidSlug;
-      brandsApi.post(brandApi.brandData).then((brandResp) => {
+      const brandData = { name: brandApi.brandData().name, slug: invalidSlug };
+
+      brandsApi.post(brandData).then((brandResp) => {
         expect(brandResp.status).to.eq(422);
         expect(brandResp.body.slug[0]).to.match(/slug (.*)is required/);
       });
@@ -121,28 +126,29 @@ describe(`${apis.brands.relativeUrl()}`, () => {
 
       cy.then(() => {
         // same as existing slug, but different casing
-        brandApi.brandData.slug = brandApi.brandData.slug.toUpperCase();
-
-        brandApi.brandData.name = brandApi.brandData.name.toUpperCase();
-      });
-
-      brandsApi.post(brandApi.brandData).then((brandResp) => {
-        expect(brandResp.status).to.eq(422);
+        const brandData = brandApi.brandData(brandApi.brandName.toUpperCase());
+        brandsApi.post(brandData).then((brandResp) => {
+          expect(brandResp.status).to.eq(422);
+        });
       });
     });
 
     it("invalid name", () => {
       const invalidName = "       ";
-      brandApi.brandData.name = invalidName;
-      brandsApi.post(brandApi.brandData).then((brandResp) => {
+      const brandData = {
+        name: invalidName,
+        slug: brandApi.brandData().slug,
+      };
+      brandsApi.post(brandData).then((brandResp) => {
         expect(brandResp.status).to.eq(422);
         expect(brandResp.body.name[0]).to.match(/name (.*)is required/);
       });
     });
 
     it("removing existing property from body", () => {
-      delete brandApi.brandData.name;
-      brandsApi.post(brandApi.brandData).then((brandResp) => {
+      const brandData = brandApi.brandData();
+      delete brandData.name;
+      brandsApi.post(brandData).then((brandResp) => {
         expect(brandResp.status).to.eq(422);
         expect(brandResp.body.name[0]).to.match(/name (.*)is required/);
       });

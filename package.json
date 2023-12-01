@@ -6,13 +6,21 @@
   "scripts": {
     "cy:open": "cross-env ./node_modules/.bin/cypress open",
     "cy:run:all": "cross-env ./node_modules/.bin/cypress run --browser chrome",
+    "cy:run:all:report": "cross-env ./node_modules/.bin/cypress run --browser chrome > cypress/reports/out.txt",
     "cy:run:e2e": "cross-env ./node_modules/.bin/cypress run --env tags=\"@e2e and not @todo\" --browser chrome",
+    "cy:run:e2e:report": "cross-env ./node_modules/.bin/cypress run --env tags=\"@e2e and not @todo\" --browser chrome > cypress/reports/out.txt",
     "cy:run:program:bdd": "cross-env ./node_modules/.bin/cypress run --env tags=\"@program/bdd and not @todo\" --browser chrome",
+    "cy:run:program:bdd:report": "cross-env ./node_modules/.bin/cypress run --env tags=\"@program/bdd and not @todo\" --browser chrome > cypress/reports/out.txt",
     "cy:run:program:suite": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/test/**/*.spec.{ts,js}\" --browser chrome",
+    "cy:run:program:suite:report": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/test/**/*.spec.{ts,js}\" --browser chrome > cypress/reports/out.txt",
     "cy:run:program": "cross-env npm run cy:run:program:bdd && npm run cy:run:program:suite",
+    "cy:run:program:report": "cross-env npm run cy:run:program:bdd && npm run cy:run:program:suite > cypress/reports/out.txt",
     "cy:run:gui": "cross-env npm run cy:run:e2e && npm run cy:run:program",
+    "cy:run:gui:report": "cross-env npm run cy:run:e2e && npm run cy:run:program > cypress/reports/out.txt",
     "cy:run:api": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/*.apiSpec.{ts,js}\"",
-    "cy:run:single": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/brands.apiSpec.ts\" --browser chrome"
+    "cy:run:api:report": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/*.apiSpec.{ts,js}\" > cypress/reports/out.txt",
+    "cy:run:single": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/brands.apiSpec.ts\" --browser chrome",
+    "cy:run:single:report": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/brands.apiSpec.ts\" --browser chrome > cypress/reports/out.txt"
   },
   "author": "Mahmoud Mostafa",
   "license": "ISC",
