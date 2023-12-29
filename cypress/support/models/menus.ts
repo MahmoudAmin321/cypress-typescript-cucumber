@@ -1,6 +1,14 @@
 import { Base } from "../../pages/_common/base.pom";
 
 class Menus {
+  getMobileMenu(bddMenuName: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    const lower = bddMenuName.toLowerCase();
+    if (lower.toLowerCase().match(/navigation/)) {
+      return Base.navIcon();
+    } else {
+      throw Error(`Mobile menu name [ ${bddMenuName} ] doesn't exist in the map`);
+    }
+  }
   getMenu(bddMenuName: string): Cypress.Chainable<JQuery<HTMLElement>> {
     const lower = bddMenuName.toLowerCase();
     if (lower.toLowerCase().match(/navigation/)) {

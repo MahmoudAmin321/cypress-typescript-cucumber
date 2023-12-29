@@ -31,7 +31,7 @@ export class User {
   private findUserByBddName(bddName: string): UserInfo | undefined {
     for (let key in users) {
       let value: UserInfo = users[key];
-      if (value.bddName.toLowerCase() === bddName.toLowerCase()) {
+      if (value.bddName.trim().toLowerCase() === bddName.trim().toLowerCase()) {
         return value;
       }
     }

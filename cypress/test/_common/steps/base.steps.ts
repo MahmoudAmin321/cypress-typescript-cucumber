@@ -2,10 +2,10 @@ import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import keyboardFactory from "../../../support/models/keyboardFactory";
 import { Base } from "../../../pages/_common/base.pom";
 import pagesFactory from "../../../pages/_common/pagesFactory";
-import { Helper } from "../../../support/helper";
-import { apis, tokenKeyName } from "../../../support/consts";
+import { apis } from "../../../support/consts";
 import { apiHost } from "../../../support/cyEnvVar";
 import { Factory } from "../../../pages/_common/factory";
+import productsApi from "../../../testApi/_common/apiPom/product/productsApi";
 
 // Anti pattern. Only use as exception, when there is No other option
 Given("{word} wait {int} seconds", function (_: string, seconds: number) {
@@ -68,16 +68,22 @@ When(
   function (bddProductName: string, bddSide: string) {
     const productPage = pagesFactory.getProductPage(bddSide);
 
-    // GET all products (page 1)
-    cy.request({
-      url: `${apiHost}/products?page=1}`,
-      auth: {
-        bearer: window.localStorage.getItem(tokenKeyName),
-      },
-      failOnStatusCode: false,
-    }).then((productsResp) => {
-      const products: object[] = productsResp.body.data;
+    // GET all products of all pages in one array
+    const products: object[] = [];
+    productsApi.get().then((productsResp) => {
+      // get last page
+      const lastPage: number = productsResp.body.last_page;
+      for (let nr = 1; nr <= lastPage; nr++) {
+        productsApi
+          .get(`${apiHost}${apis.products.relativeUrl()}?page=${nr}`)
+          .then((productsResp) => {
+            const currentPageProducts: object[] = productsResp.body.data;
+            products.push(...currentPageProducts);
+          });
+      }
+    });
 
+    cy.then(() => {
       // search for target product
       for (let i = 0; i < products.length; i++) {
         const product = products[i];

@@ -92,7 +92,7 @@ Cypress.Commands.add("loginProgrammatically", (user) => {
   const reqBody = { email: user.EMAIL, password: user.PASSWORD };
 
   const chainable = cy.session(
-    `porgrammatic_login_session_id_for_ ${user.bddName}`,
+    `programmatic_login_session_id_for_ ${user.bddName}`,
     () => {
       cy.request({
         url: `${apiHost}${apis.login.relativeUrl()}`,

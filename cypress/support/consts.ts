@@ -17,6 +17,8 @@ export const tokenAliasName = "token";
 
 export const dbIdRegex = "[\\d\\w]+";
 
+export const undefinedNr = 159258753.14951
+
 // Comment const type to allow syntax error upon accessing non-exiting property
 export const apis /*: { [key: string]: ApiInfo }*/ = {
   register: {
@@ -121,5 +123,15 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     interceptorName: "specificCart",
     urlRegex: new RegExp(`carts/${dbIdRegex}$`),
     relativeUrl: (cartId: string) => `/carts/${cartId}`,
-  }
+  },
+  favorites: {
+    interceptorName: "favorites",
+    urlRegex: /favorites$/,
+    relativeUrl: () => "/favorites",
+  },
+  specificFavorite: {
+    interceptorName: "specificFavorite",
+    urlRegex: new RegExp(`favorites/${dbIdRegex}$`),
+    relativeUrl: (favoriteId: string) => `/favorites/${favoriteId}`,
+  },
 };

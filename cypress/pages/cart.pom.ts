@@ -29,22 +29,6 @@ class Cart extends Base {
     }
   }
 
-  searchInItems(itemName: string): Cypress.Chainable<number> {
-    return this.itemsTable.items().then((items: any) => {
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
-
-        if (
-          item.innerText.toLowerCase().match(RegExp(itemName.toLowerCase()))
-        ) {
-          // return index of the found item
-          return i;
-        }
-      }
-      return undefined;
-    });
-  }
-
   getColumnIndex(columnName: string): Cypress.Chainable<number> {
     return this.itemsTable.headerCells().then((headerCells: any) => {
       for (let i = 0; i < headerCells.length; i++) {

@@ -1,3 +1,4 @@
+import { undefinedNr } from "../../support/consts";
 import { ApiInfo } from "../../support/models/api";
 import { ActionBtns } from "./components/actionBtns";
 
@@ -13,10 +14,14 @@ export abstract class Base {
   static readonly navIcon = () => cy.get("[class=navbar-toggler][type=button]");
 
   static readonly userNavMenu = {
-    menu: () => cy.get("[data-test$=menu]"),
-    myAccount: () => cy.get("[href$=account]"),
+    // admin
     dashboard: () => cy.get("[data-test$=dashboard]"),
     products: () => cy.get("[data-test=nav-admin-products]"),
+    // customer
+    myAccount: () => cy.get("[href$=account]"),
+    myFavorites: () => cy.get("[data-test=nav-my-favorites]"),
+    // both
+    menu: () => cy.get("[data-test$=menu]"),
   };
 
   static readonly categoriesNavMenu = {
@@ -41,6 +46,9 @@ export abstract class Base {
 
   static readonly brands = () =>
     cy.get("[data-test=filters] [data-test^=brand]");
+
+  static readonly specificBrand = (id:string) => 
+    Base.brands().filter(`[value='${id}']`) 
 
   static readonly saveBtn = () => cy.get("[data-test=product-submit]");
 
@@ -87,19 +95,39 @@ export abstract class Base {
    * @returns The chainable common button of the provided BDD name. If the BDD name is invalid, an error is thrown
    */
   static getButton(bddBtnName: string) {
-    if (bddBtnName.toLowerCase().match(/user( *)(menu)*/)) {
-      return Base.userNavMenu.menu();
-    } else if (bddBtnName.toLowerCase().match(/(my)*( *)account/)) {
-      return Base.userNavMenu.myAccount();
-    } else if (bddBtnName.toLowerCase().match(/dash(.*)/)) {
+    const lower = bddBtnName.trim().toLowerCase();
+    if (lower.match(/dash(.*)/)) {
       return Base.userNavMenu.dashboard();
-    } else if (bddBtnName.toLowerCase().match(/products/)) {
+    } else if (lower.match(/products/)) {
       return Base.userNavMenu.products();
-    } 
-    else if (bddBtnName.toLowerCase().match(/cart/)) {
+    } else if (lower.match(/(my)*( *)account/)) {
+      return Base.userNavMenu.myAccount();
+    } else if (lower.match(/my( *)favo/)) {
+      return Base.userNavMenu.myFavorites();
+    } else if (lower.match(/user( *)(menu)*/)) {
+      return Base.userNavMenu.menu();
+    } else if (lower.match(/cart/)) {
       return Base.cartIcon();
-    }else {
+    } else {
       throw Error(`Common button [ ${bddBtnName} ] doesn't exist in the map`);
     }
   }
+
+  static searchInItems(chainableItems: Cypress.Chainable<any>, itemName: string): Cypress.Chainable<number> {
+    return chainableItems.then((items: any) => {
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+
+        if (
+          item.innerText.toLowerCase().match(RegExp(itemName.toLowerCase()))
+        ) {
+          // return index of the found item
+          return i;
+        }
+      }
+
+      return undefinedNr;
+    });
+  }
+ 
 }

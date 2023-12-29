@@ -2,17 +2,24 @@ import { When } from "@badeball/cypress-cucumber-preprocessor";
 import { apis } from "../../../support/consts";
 import checkBoxAction from "../../../support/models/checboxAction";
 import { Base } from "../../../pages/_common/base.pom";
-import brandsFactory from "../../../support/models/brands";
+import brandsSearchApi from "../../../testApi/_common/apiPom/brand/brandsSearchApi";
 
 When(
-  "{word} have {string} {string} brand",
-  function (_: string, cBoxAction: string, bddBrandName: string) {
-    const index = brandsFactory.getBrandIndex(bddBrandName);
+  "You have {string} {string} brand",
+  function (cBoxAction: string, bddBrandName: string) {
+    let id: string = "undefined id";
+    brandsSearchApi.search(bddBrandName.trim()).then((brandsSearchResp) => {
+      const searchResult = brandsSearchResp.body;
+      expect(searchResult).to.be.an("array");
+      expect(searchResult.length).to.eq(1);
+
+      id = searchResult[0].id;
+    });
 
     cy.spyApi(apis.products);
-    const chainableCheckBox = Base.brands().eq(index);
 
     cy.then(() => {
+      const chainableCheckBox = Base.specificBrand(id);
       checkBoxAction.perform(cBoxAction, chainableCheckBox);
     });
 

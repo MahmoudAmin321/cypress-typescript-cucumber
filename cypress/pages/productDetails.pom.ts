@@ -1,5 +1,6 @@
 import { apis } from "../support/consts";
 import { ApiInfo } from "../support/models/api";
+import { toastType } from "../support/models/toaterType";
 import { Base } from "./_common/base.pom";
 
 class ProductDetails extends Base {
@@ -33,6 +34,7 @@ class ProductDetails extends Base {
     container: () => cy.get("app-toasts"),
     success: () => this.toasters.container().find("[class*=success]"),
     failure: () => this.toasters.container().find("[class*=danger]"),
+    warning: () => this.toasters.container().find("[class*=warn]"),
   }
 
   getApiInfo(): ApiInfo {
@@ -53,14 +55,8 @@ class ProductDetails extends Base {
     }
   }
 
-  getToaster(bddToasterType: string): Cypress.Chainable<any> {
-    if (bddToasterType.toLowerCase().match(/success/)) {
-      return this.toasters.success()
-    } else if (bddToasterType.toLowerCase().match(/fail/)) {
-      return this.toasters.failure()
-    } else {
-      throw Error(`Toaster type [ ${bddToasterType} ] doesn't exist in the map`);
-    }
+  getToaster(toasterPropertyName: toastType): Cypress.Chainable<any> {
+    return this.toasters[toasterPropertyName]()
   }
 }
 

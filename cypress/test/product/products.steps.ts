@@ -4,6 +4,7 @@ import { ProductCard } from "../../pages/_common/components/productCard";
 import products from "../../support/models/_common/products";
 import { apis } from "../../support/consts";
 import { Factory } from "../../pages/_common/factory";
+import brandsApi from "../../testApi/_common/apiPom/brand/brandsApi";
 
 Given("{word} store products prices order", function (_: string) {
   // cleanup array (remove all previously stored items)
@@ -86,8 +87,12 @@ Then(
   }
 );
 
-When("Displayed products are less than maximum", function (_: string) {
+When("Displayed products are less than maximum", function () {
   homePage
     .productCards()
     .should("have.length.lessThan", homePage.maxProductsPerPage);
+});
+
+Given("You programmatically setup brands", function () {
+  brandsApi.setUp()
 });
