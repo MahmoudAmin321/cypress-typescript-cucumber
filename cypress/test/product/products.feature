@@ -110,9 +110,10 @@ Feature: SUT - Products feature
         @e2e
         Scenario: When admin changes product details, the customer should see the new details
             Given You login as "admin"
-            And You "expand" "navigation" menu, if needed
+            And You "expand" "navigation" mobile menu, if needed
             And You "expand" "user" menu
-            And You click on "products" button, which redirects to "products" page
+            And You click on "products" common button, which redirects to "products" page
+            And "name" of 5. "product" is "Slip Joint Pliers"
             When You have clicked on "edit" button of 5. "product"
             And You set text field "name" of "edit product" page to "edited name"
             And You set text field "price" of "edit product" page to "9.13"
@@ -124,14 +125,27 @@ Feature: SUT - Products feature
             And You store products prices order
             Then Product with name "edited name" "included"
             And Product with price 9.13 "is included"
+            # Tear down: Reset name, price
+            When You have "products" page opened
+            And You have "edited name" product opened from "admin" side
+            And You set text field "name" of "edit product" page to "Slip Joint Pliers" 
+            And You set text field "price" of "edit product" page to "9.17"
+            And You have saved
+            And You have "Slip Joint Pliers" product opened from "customer" side
+            Then "Name" is "Slip Joint Pliers"
+            And "price" is "9.17"
 
         @program/bdd
         Scenario: When admin changes product brand, the product should disappear from the old brand filteration and appear in the new
             Given You programmatically login as "admin"
+            And You programmatically setup brands
             And You have "products" page opened
             And "name" of 3. "product" is "Bolt Cutters"
+            When You have clicked on "edit" button of 3. "product"
+            And You set dropdown "brand" of "edit product" page to "Brand name 1"
+            And You have saved
             Given You have "home" page opened
-            And You have "selected" "brand name 1" brand
+            And You have "selected" "Brand name 1" brand
             And You store products names
             And Product with name "bolt cutters" "included"
             And You have "products" page opened
@@ -139,11 +153,11 @@ Feature: SUT - Products feature
             And You set dropdown "brand" of "edit product" page to "Brand name 2"
             And You have saved
             And You have "home" page opened
-            And You have "selected" "brand name 1" brand
+            And You have "selected" "Brand name 1" brand
             And You store products names
             Then Product with name "bolt cutters" "not included"
             When You have "unselected" "brand name 1" brand
-            And You have "selected" "brand name 2" brand
+            And You have "selected" "Brand name 2" brand
             And You store products names
             Then Product with name "bolt cutters" "included"
             #Tear down: reset brand

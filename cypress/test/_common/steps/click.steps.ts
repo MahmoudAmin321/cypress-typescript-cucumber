@@ -26,7 +26,7 @@ When(
 );
 
 When(
-  "{word} click on {string} button, which redirects to {string} page",
+  "{word} click on {string} common button, which redirects to {string} page",
   function (_: string, bddBtnName: string, bddIncomingPageName: string) {
     const incomingPage: Base = pagesFactory.getPage(bddIncomingPageName);
     const api = incomingPage.getApiInfo();

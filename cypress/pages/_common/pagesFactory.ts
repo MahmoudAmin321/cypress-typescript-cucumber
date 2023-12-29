@@ -3,6 +3,7 @@ import editProductPage from "../admin/editProduct.pom";
 import productsPage from "../admin/products.pom";
 import cartPage from "../cart.pom";
 import accountPage from "../customer/account.pom";
+import myFavoritesPage from "../customer/myFavorites.pom";
 import homePage from "../home.pom";
 import loginPage from "../login.pom";
 import productDetailsPage from "../productDetails.pom";
@@ -14,25 +15,24 @@ class PagesFactory {
    * @returns The page object of the provided BDD name. If the BDD name is invalid, an error is thrown
    */
   getPage(bddPageName: string) {
-    if (bddPageName.toLowerCase().match(/log(( *)|(-*))in/)) {
-      return loginPage;
-    } else if (bddPageName.toLowerCase().match(/board/)) {
+    const lower = bddPageName.trim().toLowerCase()
+    if (lower.match(/board/)) {
       return dashboardPage;
-    } else if (bddPageName.toLowerCase().match(/a(c+)ount/)) {
-      return accountPage;
-    } else if (bddPageName.toLowerCase().match(/home/)) {
-      return homePage;
-    } 
-    else if (bddPageName.toLowerCase().match(/products/)) {
+    } else if (lower.match(/products/)) {
       return productsPage;
-    }
-    else if (bddPageName.toLowerCase().match(/edit product/)) {
+    } else if (lower.match(/edit product/)) {
       return editProductPage;
-    }
-    else if (bddPageName.toLowerCase().match(/cart/)) {
+    } else if (lower.match(/a(c+)ount/)) {
+      return accountPage;
+    } else if (lower.match(/favo/)) {
+      return myFavoritesPage;
+    } else if (lower.match(/log(( *)|(-*))in/)) {
+      return loginPage;
+    } else if (lower.match(/home/)) {
+      return homePage;
+    } else if (lower.match(/cart/)) {
       return cartPage;
-    }
-    else {
+    } else {
       throw Error(`Page [ ${bddPageName} ] doesn't exist in the map`);
     }
   }

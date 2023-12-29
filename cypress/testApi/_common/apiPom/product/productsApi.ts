@@ -3,9 +3,11 @@ import { apiHost } from "../../../../support/cyEnvVar";
 import { BaseAPI } from "../base.apiPom";
 
 class ProductsApi extends BaseAPI {
-  get(): Cypress.Chainable<Cypress.Response<any>> {
+  get(
+    url: string = `${apiHost}${apis.products.relativeUrl()}`
+  ): Cypress.Chainable<Cypress.Response<any>> {
     return cy.request({
-      url: `${apiHost}${apis.products.relativeUrl()}`,
+      url,
       method: "GET",
       failOnStatusCode: false,
     });

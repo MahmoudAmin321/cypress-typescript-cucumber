@@ -65,4 +65,6 @@ export default defineConfig({
   },
   watchForFileChanges: false,
   video: false,
+  // viewportWidth: 400,
+  // viewportHeight: 629,
 });

@@ -1,5 +1,8 @@
+import cartPage from "../cart.pom";
+import myFavoritesPage from "../customer/myFavorites.pom";
 import productDetailsPage from "../productDetails.pom";
 import { Base } from "./base.pom";
+import { Favorite } from "./components/favorite";
 
 export class Factory {
   static getAssertion(bddAssertion: string): string {
@@ -38,6 +41,38 @@ export class Factory {
       return Base.cartQuantity().invoke("text");
     } else {
       throw Error(`Type [ ${bddType} ] doesn't exist in the map`);
+    }
+  }
+
+  static getChainableItems(bddPageName: string): Cypress.Chainable<any> {
+    const lower = bddPageName.trim().toLowerCase()
+    if (lower.match(/cart/)) {
+      return cartPage.itemsTable.items();
+    }
+    else if (lower.match(/favo/)) {
+      return myFavoritesPage.favorites();
+    } else {
+      throw Error(`Page [ ${bddPageName} ] doesn't exist in the map`);
+    }
+  }
+
+  static getFavoriteDetail(
+    favorite: Favorite,
+    bddDetailName: string
+  ): Cypress.Chainable<any> {
+    const lower = bddDetailName.trim().toLowerCase();
+    if (lower.match(/image/)) {
+      return favorite.image();
+    } else if (lower.match(/name/)) {
+      return favorite.name();
+    } else if (lower.match(/description/)) {
+      return favorite.description();
+    } else if (lower.match(/delete/)) {
+      return favorite.deleteBtn();
+    } else {
+      throw Error(
+        `Favorite detail [ ${bddDetailName} ] doesn't exist in the map`
+      );
     }
   }
 }
