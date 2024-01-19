@@ -13,7 +13,7 @@ import { User } from "../../support/models/userInfo";
 import favoritesApi from "../../testApi/_common/apiPom/favorite/favoritesApi";
 import loginApi from "../../testApi/_common/apiPom/user/loginApi";
 import { Base } from "../../pages/_common/base.pom";
-import { Favorite } from "../../pages/_common/components/favorite";
+import { Favorite } from "../../pages/_common/components/cards/favorite";
 
 When(
   "{word} store details of {int}. card",

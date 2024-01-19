@@ -1,4 +1,4 @@
-import { ProductCard } from "../components/productCard";
+import { ProductCard } from "../components/cards/productCard";
 
 class ProductCards {
   getProductCards(): Cypress.Chainable<ProductCard[]> {

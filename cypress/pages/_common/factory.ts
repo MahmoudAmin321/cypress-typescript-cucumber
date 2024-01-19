@@ -2,7 +2,7 @@ import cartPage from "../cart.pom";
 import myFavoritesPage from "../customer/myFavorites.pom";
 import productDetailsPage from "../productDetails.pom";
 import { Base } from "./base.pom";
-import { Favorite } from "./components/favorite";
+import { Favorite } from "./components/cards/favorite";
 
 export class Factory {
   static getAssertion(bddAssertion: string): string {
