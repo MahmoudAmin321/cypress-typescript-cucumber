@@ -14,6 +14,7 @@ import favoritesApi from "../../testApi/_common/apiPom/favorite/favoritesApi";
 import loginApi from "../../testApi/_common/apiPom/user/loginApi";
 import { Base } from "../../pages/_common/base.pom";
 import { Favorite } from "../../pages/_common/components/cards/favorite";
+import { Helper } from "../../support/helper";
 
 When(
   "{word} store details of {int}. card",
@@ -311,6 +312,46 @@ Then(
             detail.should(assertion);
           }
         });
+    });
+  }
+);
+
+When(
+  "You have card of {string} related product opened",
+  function (bddRelatedProductOrder: string) {
+    const validBddRelatedProductOrder = Helper.validateBddArrEleOrder(
+      bddRelatedProductOrder
+    );
+    
+    // let bddOrder: number = undefined;
+    // if (validBddRelatedProductOrder === "any") {
+
+    // } else {
+    //   bddOrder = Number("1.".split(".")[0]);
+    // }
+
+    // productDetailsPage.relatedProducts().its("length");
+
+    // cy.then (()=>{
+    //   productDetailsPage
+    //   .relatedProducts()
+    //   .eq(bddOrder - 1)
+    //   .click();
+
+    // })
+
+    productDetailsPage.relatedProducts().then((relatedProductsJQueryObj) => {
+      const relatedProductsArray = relatedProductsJQueryObj.toArray();
+
+      // interpret string bdd order to number
+      const bddOrder: number =
+        validBddRelatedProductOrder === "any"
+          ? Helper.getRandomInteger(1, relatedProductsArray.length)
+          : Number(validBddRelatedProductOrder.split(".")[0]);
+
+      cy.spyApi(apis.specificProduct);
+      cy.wrap(relatedProductsArray[bddOrder - 1]).click();
+      productDetailsPage.waitForPage();
     });
   }
 );

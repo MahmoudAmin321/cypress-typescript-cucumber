@@ -208,18 +208,22 @@ Feature: SUT - Product feature
 
         @program/bdd
         Scenario: related products are of the same category of the current product
-        
+            Given You have "thor hammer" product opened from "customer" side
+            And "category" is "hammer"
+            When You have card of "any" related product opened
+            Then "category" is "hammer"
+
         @program/bdd
         Scenario: chaning category of product (i.e. hammer to pliers) moves the product to related products of the new category
-        # TODO 
+        # TODO
         # product "hammer" exists in related products of "thor hammer"
         # product "hammer" doesn't exist in related products of "combination pliers"
-        # from admin, set category of product "Hammer" to "pliers" 
+        # from admin, set category of product "Hammer" to "pliers"
         # then product "hammer" doesn't exist in related products of "thor hammer"
         # and product "hammer" exists in related products of "combination pliers"
         # tear down: reset category to of product "hammer" to "Hammer"
 
-        @program/bdd
+        @program/bdd @only
         Scenario: clicking on more information link redirects to the details page of the product
 
 
