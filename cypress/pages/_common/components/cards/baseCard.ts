@@ -5,6 +5,6 @@ export class BaseCard {
 
   constructor(cardContainer: () => JQuery<HTMLElement>) {
     this.image = () => cy.wrap(cardContainer()).find("img");
-    this.name = () => cy.wrap(cardContainer()).find("[data-test=product-name]");
+    this.name = () => cy.wrap(cardContainer()).find("[class=card-title]");
   }
 }

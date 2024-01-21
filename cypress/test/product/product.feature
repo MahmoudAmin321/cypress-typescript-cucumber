@@ -88,7 +88,7 @@ Feature: SUT - Product feature
             Then "Cart" quantity is "3"
 
         @program/bdd @bug
-        Scenario: bug open mode - upon adding product to cart, item gets added to cart with correct data (name, price, quantity, total)
+        Scenario: bug - upon adding product to cart, item gets added to cart with correct data (name, price, quantity, total)
             Given You programmatically login as "customer2"
             And You have "thor hammer" product opened from "customer" side
             And You set quantity to "3"
@@ -101,7 +101,7 @@ Feature: SUT - Product feature
             And "Total price" of "thor hammer" is "$33.42"
 
         @program/bdd @bug
-        Scenario: bug open mode - upon adding further product to cart, the total of this further product is added to the cart total
+        Scenario: bug - upon adding further product to cart, the total of this further product is added to the cart total
             Given You programmatically login as "customer2"
             And You have "thor hammer" product opened from "customer" side
             And You set quantity to "3"
@@ -215,17 +215,43 @@ Feature: SUT - Product feature
 
         @program/bdd
         Scenario: chaning category of product (i.e. hammer to pliers) moves the product to related products of the new category
-        # TODO
-        # product "hammer" exists in related products of "thor hammer"
-        # product "hammer" doesn't exist in related products of "combination pliers"
-        # from admin, set category of product "Hammer" to "pliers"
-        # then product "hammer" doesn't exist in related products of "thor hammer"
-        # and product "hammer" exists in related products of "combination pliers"
-        # tear down: reset category to of product "hammer" to "Hammer"
+            # setup: reset category to original
+            And You programmatically login as "admin"
+            Given You have "products" page opened
+            And You have "thor hammer" product opened from "admin" side
+            And You set dropdown "category" of "edit product" page to "Hammer"
+            And You have saved
+            And You have "thor hammer" product opened from "customer" side
+            And "category" is "hammer"
+            #----
+            And You have "Claw Hammer with Shock Reduction Grip" product opened from "customer" side
+            And "category" is "hammer"
+            And You have "combination pliers" product opened from "customer" side
+            And "category" is "pliers"
+            And product "Thor Hammer" "does not exist" in related products
+            And You have "products" page opened
+            And You have "thor hammer" product opened from "admin" side
+            When You set dropdown "category" of "edit product" page to "Pliers"
+            And You have saved
+            And You have "Claw Hammer with Shock Reduction Grip" product opened from "customer" side
+            Then product "Thor Hammer" "doesn't exist" in related products
+            When You have "combination pliers" product opened from "customer" side
+            Then product "Thor Hammer" "exists" in related products
+            # tear down: reset category to original
+            When You have "products" page opened
+            And You have "thor hammer" product opened from "admin" side
+            And You set dropdown "category" of "edit product" page to "Hammer"
+            And You have saved
+            And You have "thor hammer" product opened from "customer" side
+            And "category" is "hammer"
 
-        @program/bdd @only
+        @program/bdd
         Scenario: clicking on more information link redirects to the details page of the product
-
+            Given You have "thor hammer" product opened from "customer" side
+            And You store details of 1. related card
+            When You have more info btn of 1. related product clicked
+            #Then Product details should be same as in related card
+            Then Product details should be same as in "related card"
 
     Rule: Group of individual scenarios
 
@@ -235,7 +261,7 @@ Feature: SUT - Product feature
             And You have "home" page opened
             When You store details of 1. card
             And You have 1. card opened
-            Then Product details should be same as in card
+            Then Product details should be same as in "card with price"
 
         @program/bdd
         Scenario: When admin changes product details (name, category, brand, price, description), the customer should see the new details
