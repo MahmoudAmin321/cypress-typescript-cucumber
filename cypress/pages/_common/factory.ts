@@ -2,7 +2,7 @@ import cartPage from "../cart.pom";
 import myFavoritesPage from "../customer/myFavorites.pom";
 import productDetailsPage from "../productDetails.pom";
 import { Base } from "./base.pom";
-import { Favorite } from "./components/favorite";
+import { Favorite } from "./components/cards/favorite";
 
 export class Factory {
   static getAssertion(bddAssertion: string): string {
@@ -45,11 +45,10 @@ export class Factory {
   }
 
   static getChainableItems(bddPageName: string): Cypress.Chainable<any> {
-    const lower = bddPageName.trim().toLowerCase()
+    const lower = bddPageName.trim().toLowerCase();
     if (lower.match(/cart/)) {
       return cartPage.itemsTable.items();
-    }
-    else if (lower.match(/favo/)) {
+    } else if (lower.match(/favo/)) {
       return myFavoritesPage.favorites();
     } else {
       throw Error(`Page [ ${bddPageName} ] doesn't exist in the map`);

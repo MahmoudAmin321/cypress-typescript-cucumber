@@ -1,4 +1,4 @@
-import { ProductCard } from "../../../pages/_common/components/productCard";
+import { ProductCard } from "../../../pages/_common/components/cards/productCard";
 import homePage from "../../../pages/home.pom";
 import { SortBase } from "./sortBase";
 import { SortOrder } from "./_sortFactory";

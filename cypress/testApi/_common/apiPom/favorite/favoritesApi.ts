@@ -1,7 +1,7 @@
 import { apis } from "../../../../support/consts";
 import { apiHost } from "../../../../support/cyEnvVar";
 import { BaseAPI } from "../base.apiPom";
-import favoriteApi from "./favoriteApi copy";
+import favoriteApi from "./favoriteApi";
 
 class FavoritesApi extends BaseAPI {
   get(token: string): Cypress.Chainable<Cypress.Response<any>> {

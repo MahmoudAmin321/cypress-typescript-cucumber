@@ -30,6 +30,8 @@ class ProductDetails extends Base {
       this.details.container().find("[data-test=add-to-favorites]"),
   };
 
+  readonly relatedProducts = ()=> cy.get("[class='card'][href*='product/']")
+
   readonly toasters = {
     container: () => cy.get("app-toasts"),
     success: () => this.toasters.container().find("[class*=success]"),

@@ -1,6 +1,6 @@
 import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import homePage from "../../pages/home.pom";
-import { ProductCard } from "../../pages/_common/components/productCard";
+import { ProductCard } from "../../pages/_common/components/cards/productCard";
 import products from "../../support/models/_common/products";
 import { apis } from "../../support/consts";
 import { Factory } from "../../pages/_common/factory";
@@ -94,5 +94,5 @@ When("Displayed products are less than maximum", function () {
 });
 
 Given("You programmatically setup brands", function () {
-  brandsApi.setUp()
+  brandsApi.setUp();
 });

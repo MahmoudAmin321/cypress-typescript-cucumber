@@ -1,13 +1,11 @@
-export class Favorite {
-  readonly image: () => Cypress.Chainable<JQuery<HTMLElement>>;
-  readonly name: () => Cypress.Chainable<JQuery<HTMLElement>>;
+import { BaseCard } from "./baseCard";
+
+export class Favorite extends BaseCard {
   readonly description: () => Cypress.Chainable<JQuery<HTMLElement>>;
   readonly deleteBtn: () => Cypress.Chainable<JQuery<HTMLElement>>;
 
   constructor(favoriteContainer: () => JQuery<HTMLElement>) {
-    this.image = () => cy.wrap(favoriteContainer()).find("img");
-    this.name = () =>
-      cy.wrap(favoriteContainer()).find("[data-test=product-name]");
+    super(favoriteContainer);
     this.description = () =>
       cy.wrap(favoriteContainer()).find("[data-test=product-description]");
     this.deleteBtn = () =>

@@ -13,13 +13,15 @@ import { User } from "../../support/models/userInfo";
 import favoritesApi from "../../testApi/_common/apiPom/favorite/favoritesApi";
 import loginApi from "../../testApi/_common/apiPom/user/loginApi";
 import { Base } from "../../pages/_common/base.pom";
-import { Favorite } from "../../pages/_common/components/favorite";
+import { Favorite } from "../../pages/_common/components/cards/favorite";
+import { Helper } from "../../support/helper";
+import { RelatedProductCard } from "../../pages/_common/components/cards/relatedProduct";
 
 When(
   "{word} store details of {int}. card",
   function (_: string, cardNr: number) {
-    homePage.productCards().then(($cards) => {
-      const card = $cards[cardNr - 1];
+    homePage.productCards().then((cards) => {
+      const card = cards[cardNr - 1];
       card
         .image()
         .invoke("attr", "src")
@@ -44,33 +46,80 @@ When(
   }
 );
 
+When(
+  "{word} store details of {int}. related card",
+  function (_: string, cardNr: number) {
+    productDetailsPage
+      .relatedProducts()
+      .eq(cardNr - 1)
+      .then(($card) => {
+        const relatedCardComp: RelatedProductCard = new RelatedProductCard(
+          () => $card
+        );
+
+        relatedCardComp
+          .image()
+          .invoke("attr", "src")
+          .then((src: string) => {
+            productCardInfo.image.src = src.trim();
+          });
+        relatedCardComp
+          .name()
+          .invoke("text")
+          .then((text: string) => {
+            productCardInfo.name.text = text.trim();
+          });
+      });
+  }
+);
+
 When("{word} have {int}. card opened", function (_: string, cardNr: number) {
-  homePage.productCards().then(($cards) => {
-    const card = $cards[cardNr - 1];
+  homePage.productCards().then((cards) => {
+    const card = cards[cardNr - 1];
     cy.spyApi(apis.specificProduct);
     card.name().click();
     productDetailsPage.waitForPage();
   });
 });
 
-Then("Product details should be same as in card", function () {
-  productDetailsPage.details
-    .image()
-    .invoke("attr", "src")
-    .should("eq", productCardInfo.image.src);
+When(
+  "{word} have more info btn of {int}. related product clicked",
+  function (_: string, cardNr: number) {
+    productDetailsPage
+      .relatedProducts()
+      .eq(cardNr - 1)
+      .then(($card) => {
+        const cardComp = new RelatedProductCard(() => $card);
+        cy.spyApi(apis.specificProduct);
+        cardComp.moreInfo().click();
+        productDetailsPage.waitForPage();
+      });
+  }
+);
 
-  productDetailsPage.details
-    .name()
-    .invoke("text")
-    .should("eq", productCardInfo.name.text);
+Then(
+  "Product details should be same as in {string}",
+  function (cardType: string) {
+    productDetailsPage.details
+      .image()
+      .invoke("attr", "src")
+      .should("eq", productCardInfo.image.src);
 
-  productDetailsPage.details
-    .unitPrice()
-    .invoke("text")
-    .then((text) => {
-      expect(`$${text}`).to.eq(productCardInfo.price.text);
-    });
-});
+    productDetailsPage.details
+      .name()
+      .invoke("text")
+      .should("eq", productCardInfo.name.text);
+
+    if (cardType.trim().toLowerCase().match(/price/)) {
+      productDetailsPage.details
+        .unitPrice()
+        .invoke("text")
+        .then((text) => {
+          expect(`$${text}`).to.eq(productCardInfo.price.text);
+        });
+    }
+  }
+);
 
 When("You increase quantity", function () {
   productDetailsPage.details.increaseQuantity().click();
@@ -312,5 +361,41 @@ Then(
           }
         });
     });
+  }
+);
+
+When(
+  "You have card of {string} related product opened",
+  function (bddRelatedProductOrder: string) {
+    const validBddRelatedProductOrder = Helper.validateBddArrEleOrder(
+      bddRelatedProductOrder
+    );
+
+    productDetailsPage.relatedProducts().then((relatedProductsJQueryObj) => {
+      const relatedProductsArray = relatedProductsJQueryObj.toArray();
+
+      // interpret string bdd order to number
+      const bddOrder: number =
+        validBddRelatedProductOrder === "any"
+          ? Helper.getRandomInteger(1, relatedProductsArray.length)
+          : Number(validBddRelatedProductOrder.split(".")[0]);
+
+      cy.spyApi(apis.specificProduct);
+      cy.wrap(relatedProductsArray[bddOrder - 1]).click();
+      productDetailsPage.waitForPage();
+    });
+  }
+);
+
+Then(
+  "product {string} {string} in related products",
+  function (bddRelatedProductName: string, bddAssertion: string) {
+    const assertion = Factory.getAssertion(bddAssertion);
+
+    // in .feature step, product name has to be passed case-sensitively
+    productDetailsPage
+      .relatedProducts()
+      .filter(`:contains("${bddRelatedProductName}")`)
+      .should(assertion);
   }
 );
