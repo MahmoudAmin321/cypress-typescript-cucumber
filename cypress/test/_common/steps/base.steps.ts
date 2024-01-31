@@ -3,7 +3,6 @@ import keyboardFactory from "../../../support/models/keyboardFactory";
 import { Base } from "../../../pages/_common/base.pom";
 import pagesFactory from "../../../pages/_common/pagesFactory";
 import { apis } from "../../../support/consts";
-import { apiHost } from "../../../support/cyEnvVar";
 import { Factory } from "../../../pages/_common/factory";
 import productsApi from "../../../testApi/_common/apiPom/product/productsApi";
 
@@ -69,30 +68,9 @@ When(
     const productPage = pagesFactory.getProductPage(bddSide);
 
     // GET all products of all pages in one array
-    const products: object[] = [];
-    productsApi.get().then((productsResp) => {
-      // get last page
-      const lastPage: number = productsResp.body.last_page;
-      for (let nr = 1; nr <= lastPage; nr++) {
-        productsApi
-          .get(`${apiHost}${apis.products.relativeUrl()}?page=${nr}`)
-          .then((productsResp) => {
-            const currentPageProducts: object[] = productsResp.body.data;
-            products.push(...currentPageProducts);
-          });
-      }
-    });
-
-    cy.then(() => {
-      // search for target product
-      for (let i = 0; i < products.length; i++) {
-        const product = products[i];
-        if (product["name"].toLowerCase() === bddProductName.toLowerCase()) {
-          // store id of the target product
-          productPage.storedId = product["id"];
-          break;
-        }
-      }
+    productsApi.getAllProducts().then((products) => {
+      // search for target product and store it
+      productPage.storedId = productsApi.search(bddProductName, products)
       // throw error if product Not found in products
       cy.then(() => {
         if (!productPage.storedId) {
@@ -109,6 +87,7 @@ When(
     });
   }
 );
+
 
 Then("Cart icon {string}", function (bddAssertion: string) {
   const assertion = Factory.getAssertion(bddAssertion);

@@ -20,4 +20,16 @@ export class Helper {
 
     return lowerTrimmed;
   }
+
+  static excludeKeys<T>(obj: T, keysToExclude: (keyof T)[]): T {
+    const result: Partial<T> = {};
+  
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key) && !keysToExclude.includes(key)) {
+        result[key] = obj[key];
+      }
+    }
+  
+    return result as T;
+  }
 }
