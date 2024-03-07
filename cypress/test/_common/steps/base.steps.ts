@@ -5,6 +5,9 @@ import pagesFactory from "../../../pages/_common/pagesFactory";
 import { apis } from "../../../support/consts";
 import { Factory } from "../../../pages/_common/factory";
 import productsApi from "../../../testApi/_common/apiPom/product/productsApi";
+import productDetailsPage from "../../../pages/productDetails.pom";
+import cartPage from "../../../pages/cart.pom";
+import { CartColumn } from "../../../support/models/cartColumn";
 
 // Anti pattern. Only use as exception, when there is No other option
 Given("{word} wait {int} seconds", function (_: string, seconds: number) {
@@ -70,7 +73,7 @@ When(
     // GET all products of all pages in one array
     productsApi.getAllProducts().then((products) => {
       // search for target product and store it
-      productPage.storedId = productsApi.search(bddProductName, products)
+      productPage.storedId = productsApi.search(bddProductName, products);
       // throw error if product Not found in products
       cy.then(() => {
         if (!productPage.storedId) {
@@ -88,8 +91,57 @@ When(
   }
 );
 
-
 Then("Cart icon {string}", function (bddAssertion: string) {
   const assertion = Factory.getAssertion(bddAssertion);
   Base.cartIcon().should(assertion);
 });
+
+Then(
+  "{cartTableColumn} of {string} is {string}",
+  function (
+    bddCartColumn: CartColumn,
+    bddItemName: string,
+    expectedValue: string
+  ) {
+    cartPage.getItemCell(bddCartColumn, bddItemName).then((itemCell) => {
+      // assert
+      if (bddCartColumn.name.trim().toLowerCase() === "quantity") {
+        cy.wrap(itemCell)
+          .find("input[type=number]")
+          .invoke("val")
+          .should("eq", expectedValue);
+      } else {
+        expect(itemCell.text().trim().toLowerCase()).to.eq(
+          expectedValue.trim().toLowerCase()
+        );
+      }
+    });
+  }
+);
+
+Then("Cart total price is {string}", function (expectedPrice: string) {
+  const columnName = new CartColumn("cart total price").name;
+  cartPage.getColumnIndex(columnName).then((columnIndex) => {
+    cartPage.itemsTable
+      .footerCells()
+      .eq(columnIndex)
+      .then((cartTotalPriceCell) => {
+        expect(cartTotalPriceCell.text().trim()).to.eq(expectedPrice);
+      });
+  });
+});
+
+When("You add product to {string}", function (bddAddBtnName: string) {
+  productDetailsPage.getButton(bddAddBtnName).click();
+});
+
+When("You set quantity to {string}", function (quantity: string) {
+  productDetailsPage.details.quantity().clear().type(quantity);
+});
+
+Then(
+  "{string} quantity is {string}",
+  function (bddType: string, bddQuantity: string) {
+    Factory.getQuantityText(bddType).should("equal", bddQuantity);
+  }
+);

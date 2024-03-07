@@ -20,7 +20,7 @@
     "cy:run:api": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/*.apiSpec.{ts,js}\"",
     "cy:run:api:report": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/*.apiSpec.{ts,js}\" > cypress/reports/out.txt",
     "cy:run:single": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/test/**/products.feature\" --browser chrome",
-    "cy:run:single:report": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/brands.apiSpec.ts\" --browser chrome > cypress/reports/out.txt"
+    "cy:run:single:report": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/test/**/cart.feature\" --browser chrome > cypress/reports/out.txt"
   },
   "author": "Mahmoud Mostafa",
   "license": "ISC",
