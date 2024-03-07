@@ -5,8 +5,6 @@ import { apis, tokenKeyName, undefinedNr } from "../../support/consts";
 import productDetailsPage from "../../pages/productDetails.pom";
 import { Factory } from "../../pages/_common/factory";
 import brandsApi from "../../testApi/_common/apiPom/brand/brandsApi";
-import cartPage from "../../pages/cart.pom";
-import { CartColumn } from "../../support/models/cartColumn";
 import { ToasterType } from "../../support/models/toaterType";
 import myFavoritesPage from "../../pages/customer/myFavorites.pom";
 import { User } from "../../support/models/userInfo";
@@ -129,21 +127,6 @@ When("You decrease quantity", function () {
   productDetailsPage.details.decreaseQuantity().click();
 });
 
-When("You set quantity to {string}", function (quantity: string) {
-  productDetailsPage.details.quantity().clear().type(quantity);
-});
-
-When("You add product to {string}", function (bddAddBtnName: string) {
-  productDetailsPage.getButton(bddAddBtnName).click();
-});
-
-Then(
-  "{string} quantity is {string}",
-  function (bddType: string, bddQuantity: string) {
-    Factory.getQuantityText(bddType).should("equal", bddQuantity);
-  }
-);
-
 Then(
   "{toasterType} toaster {string}",
   function (bddToasterType: ToasterType, bddAssertion: string) {
@@ -177,59 +160,6 @@ Then(
     });
   }
 );
-
-Then(
-  "{cartTableColumn} of {string} is {string}",
-  function (
-    bddCartColumn: CartColumn,
-    bddItemName: string,
-    expectedValue: string
-  ) {
-    const cartChainableItems = cartPage.itemsTable.items();
-    // search item in cart
-    Base.searchInItems(cartChainableItems, bddItemName).then((itemIndex) => {
-      // assert
-      cy.then(() => {
-        if (itemIndex == undefined) {
-          throw Error(`Item ${bddItemName} doesn't exist in the cart`);
-        }
-        cartPage.getColumnIndex(bddCartColumn.name).then((columnIndex) => {
-          cartPage.itemsTable
-            .items()
-            .eq(itemIndex)
-            .within(() => {
-              cy.get("td")
-                .eq(columnIndex)
-                .then((itemCell) => {
-                  if (bddCartColumn.name.toLowerCase() === "quantity") {
-                    cy.wrap(itemCell)
-                      .find("input[type=number]")
-                      .invoke("val")
-                      .should("eq", expectedValue);
-                  } else {
-                    expect(itemCell.text().trim().toLowerCase()).to.eq(
-                      expectedValue.trim().toLowerCase()
-                    );
-                  }
-                });
-            });
-        });
-      });
-    });
-  }
-);
-
-Then("Cart total price is {string}", function (expectedPrice: string) {
-  const columnName = new CartColumn("cart total price").name;
-  cartPage.getColumnIndex(columnName).then((columnIndex) => {
-    cartPage.itemsTable
-      .footerCells()
-      .eq(columnIndex)
-      .then((cartTotalPriceCell) => {
-        expect(cartTotalPriceCell.text().trim()).to.eq(expectedPrice);
-      });
-  });
-});
 
 Then(
   "{toasterType} toaster contain(s) text {string}",
@@ -281,47 +211,6 @@ When(
 Then("favorites count is {int}", function (bddFavoritesCount: number) {
   myFavoritesPage.favorites().should("have.length", bddFavoritesCount);
 });
-
-Then(
-  "{cartTableColumn} of {string} is {string}",
-  function (
-    bddCartColumn: CartColumn,
-    bddItemName: string,
-    expectedValue: string
-  ) {
-    const cartChainableItems = cartPage.itemsTable.items();
-    // search item in cart
-    Base.searchInItems(cartChainableItems, bddItemName).then((itemIndex) => {
-      // assert
-      cy.then(() => {
-        if (itemIndex == undefined) {
-          throw Error(`Item ${bddItemName} doesn't exist in the cart`);
-        }
-        cartPage.getColumnIndex(bddCartColumn.name).then((columnIndex) => {
-          cartPage.itemsTable
-            .items()
-            .eq(itemIndex)
-            .within(() => {
-              cy.get("td")
-                .eq(columnIndex)
-                .then((itemCell) => {
-                  if (bddCartColumn.name.toLowerCase() === "quantity") {
-                    cy.wrap(itemCell)
-                      .find("input[type=number]")
-                      .invoke("val")
-                      .should("eq", expectedValue);
-                  } else {
-                    expect(itemCell.text().trim().toLowerCase()).to.eq(
-                      expectedValue.trim().toLowerCase()
-                    );
-                  }
-                });
-            });
-        });
-      });
-    });
-  }
-);
 
 Then(
   "For {string} favorite, {string} {string} {string}",

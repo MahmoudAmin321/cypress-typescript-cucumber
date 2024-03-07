@@ -119,7 +119,7 @@ export abstract class Base {
         const item = items[i];
 
         if (
-          item.innerText.toLowerCase().match(RegExp(itemName.toLowerCase()))
+          item.innerText.trim().toLowerCase().match(RegExp(itemName.trim().toLowerCase()))
         ) {
           // return index of the found item
           return i;

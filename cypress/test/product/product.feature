@@ -5,9 +5,9 @@ Feature: SUT - Product feature
         - BDD tags and statuses -> README.md
 
         Feature rules:
-        * [Scenarios_Titles_Defined] - Adding product to cart
-        * [Scenarios_Titles_Defined] - Adding product to favourites
-        * [Scenarios_Titles_Defined] - related products
+        * [Scenarios_Defined] - Adding product to cart
+        * [Scenarios_Defined] - Adding product to favourites
+        * [Scenarios_Defined] - related products
         * [Scenarios_Defined] - Group of individual scenarios
 
 
@@ -144,6 +144,8 @@ Feature: SUT - Product feature
             And You have "thor hammer" product opened from "customer" side
             When You add product to "favourites"
             And "Success" toaster "exists"
+            # wait for toaster to disappear
+            And "Success" toaster "doesn't exist"
             And You "expand" "navigation" mobile menu, if needed
             And You "expand" "user" menu
             And You click on "my favourites" common button, which redirects to "my favorites" page
