@@ -134,4 +134,9 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     urlRegex: new RegExp(`favorites/${dbIdRegex}$`),
     relativeUrl: (favoriteId: string) => `/favorites/${favoriteId}`,
   },
+  images: {
+    interceptorName: "images",
+    urlRegex: /images$/,
+    relativeUrl: () => "/images",
+  },
 };
