@@ -108,15 +108,16 @@ describe(`${apis.specificUser.relativeUrl("{userId}")}`, () => {
           const excludedKeys = [
             "id",
             "created_at",
+            "enabled", 
             "failed_login_attempts",
             "provider",
           ];
 
           for (const key in getUserResp.body) {
+            
             // skip properties, that don't exist in both objects
             if (
-              excludedKeys.includes(key) ||
-              userApi.userData[key] == userApi.userData["password"]
+              excludedKeys.includes(key)
             ) {
               continue;
             }

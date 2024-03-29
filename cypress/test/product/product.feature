@@ -78,13 +78,13 @@ Feature: SUT - Product feature
             And You have "thor hammer" product opened from "customer" side
             And Cart icon "doesn't exist"
             When You set quantity to "2"
-            And You add product to "cart"
+            And You have added product to "cart"
             Then Cart icon "exists"
             And "Cart" quantity is "2"
             When You have "CoMbination PlieRs" product opened from "customer" side
             Then Cart icon "exists"
             And "Cart" quantity is "2"
-            When You add product to "cart"
+            When You have added product to "cart"
             Then "Cart" quantity is "3"
 
         @program/bdd @bug
@@ -92,7 +92,7 @@ Feature: SUT - Product feature
             Given You programmatically login as "customer2"
             And You have "thor hammer" product opened from "customer" side
             And You set quantity to "3"
-            When You add product to "cart"
+            When You have added product to "cart"
             And "Cart" quantity is "3"
             And You click on "cart" common button, which redirects to "cart" page
             Then Item "thor hammer" of "cart" page "exists"
@@ -105,7 +105,7 @@ Feature: SUT - Product feature
             Given You programmatically login as "customer2"
             And You have "thor hammer" product opened from "customer" side
             And You set quantity to "3"
-            And You add product to "cart"
+            And You have added product to "cart"
             And "Cart" quantity is "3"
             And You click on "cart" common button, which redirects to "cart" page
             And Item "thor hammer" of "cart" page "exists"
@@ -113,7 +113,7 @@ Feature: SUT - Product feature
             And Cart total price is "$33.42"
             And You have "slip joint pliers" product opened from "customer" side
             And You set quantity to "2"
-            When You add product to "cart"
+            When You have added product to "cart"
             Then "Cart" quantity is "5"
             When You click on "cart" common button, which redirects to "cart" page
             Then Item "slip joint pliers" of "cart" page "exists"
@@ -131,7 +131,7 @@ Feature: SUT - Product feature
             Given You programmatically login as "customer2"
             And You programmatically have all favourites of "logged in user" deleted
             And You have "thor hammer" product opened from "customer" side
-            When You add product to "favourites"
+            When You have added product to "favourites"
             Then "Success" toaster "exists"
             And "success" toaster contains text "product added to your favorites list."
             # tear down
@@ -142,7 +142,7 @@ Feature: SUT - Product feature
             Given You programmatically login as "customer2"
             And You programmatically have all favourites of "logged in user" deleted
             And You have "thor hammer" product opened from "customer" side
-            When You add product to "favourites"
+            When You have added product to "favourites"
             And "Success" toaster "exists"
             # wait for toaster to disappear
             And "Success" toaster "doesn't exist"
@@ -162,7 +162,7 @@ Feature: SUT - Product feature
             Given You programmatically login as "customer2"
             And You programmatically have all favourites of "logged in user" deleted
             And You have "thor hammer" product opened from "customer" side
-            And You add product to "favourites"
+            And You have added product to "favourites"
             And "Success" toaster "exists"
             When You add product to "favourites"
             Then "warning" toaster "exists"
@@ -184,7 +184,7 @@ Feature: SUT - Product feature
             And You have "thor hammer" product opened from "customer" side
             When You set quantity to "25"
             And "Product" quantity is "25"
-            And You add product to "favourites"
+            And You have added product to "favourites"
             Then "Success" toaster "exists"
             When You have "my favourites" page opened
             Then favorites count is 1
@@ -198,7 +198,7 @@ Feature: SUT - Product feature
             And You programmatically login as "customer2"
             And You programmatically have all favourites of "logged in user" deleted
             And You have "thor hammer" product opened from "customer" side
-            And You add product to "favourites"
+            And You have added product to "favourites"
             And "Success" toaster "exists"
             And You programmatically login as "customer1"
             When You have "my favourites" page opened
@@ -222,6 +222,7 @@ Feature: SUT - Product feature
             Given You have "products" page opened
             And You have "thor hammer" product opened from "admin" side
             And You set dropdown "category" of "edit product" page to "Hammer"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             And You have "thor hammer" product opened from "customer" side
             And "category" is "hammer"
@@ -234,6 +235,7 @@ Feature: SUT - Product feature
             And You have "products" page opened
             And You have "thor hammer" product opened from "admin" side
             When You set dropdown "category" of "edit product" page to "Pliers"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             And You have "Claw Hammer with Shock Reduction Grip" product opened from "customer" side
             Then product "Thor Hammer" "doesn't exist" in related products
@@ -243,6 +245,7 @@ Feature: SUT - Product feature
             When You have "products" page opened
             And You have "thor hammer" product opened from "admin" side
             And You set dropdown "category" of "edit product" page to "Hammer"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             And You have "thor hammer" product opened from "customer" side
             And "category" is "hammer"
@@ -276,6 +279,7 @@ Feature: SUT - Product feature
             And You set dropdown "brand" of "edit product" page to "Brand name 2"
             And You set text field "price" of "edit product" page to "9.13"
             And You set text field "description" of "edit product" page to "edited description"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             And You have "ttthor hammer edited name" product opened from "customer" side
             Then "Name" is "ttthor hammer edited name"
@@ -291,6 +295,7 @@ Feature: SUT - Product feature
             And You set dropdown "brand" of "edit product" page to "Brand name 1"
             And You set text field "price" of "edit product" page to "11.14"
             And You set text field "description" of "edit product" page to "Donec malesuada tempus purus. Integer sit amet arcu magna. Sed vel laoreet ligula, non sollicitudin ex. Mauris euismod ac dolor venenatis lobortis. Aliquam iaculis at diam nec accumsan. Ut sodales sed elit et imperdiet. Maecenas vitae molestie mauris. Integer quis placerat libero, in finibus diam. Interdum et malesuada fames ac ante ipsum primis in faucibus"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             And You have "thor hammer" product opened from "customer" side
             Then "Name" is "Thor Hammer"

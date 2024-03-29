@@ -60,7 +60,7 @@ describe(`${apis.login.relativeUrl()}`, () => {
   it("Should lock account upon making multiple failed login attempts", () => {
     const failedAttempts = 3;
     let registeredEmail: string;
-    let incorrectPW: "incorrectPW";
+    let incorrectPW = "incorrectPW";
     let userId: string;
 
     // Precondition

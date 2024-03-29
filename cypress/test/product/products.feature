@@ -117,6 +117,7 @@ Feature: SUT - Products feature
             When You have clicked on "edit" button of 5. "product"
             And You set text field "name" of "edit product" page to "edited name"
             And You set text field "price" of "edit product" page to "9.13"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             And You have "products" page opened
             Then "name" of 5. "product" "is" "edited name"
@@ -130,6 +131,7 @@ Feature: SUT - Products feature
             And You have "edited name" product opened from "admin" side
             And You set text field "name" of "edit product" page to "Slip Joint Pliers" 
             And You set text field "price" of "edit product" page to "9.17"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             And You have "Slip Joint Pliers" product opened from "customer" side
             Then "Name" is "Slip Joint Pliers"
@@ -143,6 +145,7 @@ Feature: SUT - Products feature
             And "name" of 3. "product" is "Bolt Cutters"
             When You have clicked on "edit" button of 3. "product"
             And You set dropdown "brand" of "edit product" page to "Brand name 1"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             Given You have "home" page opened
             And You have "selected" "Brand name 1" brand
@@ -151,6 +154,7 @@ Feature: SUT - Products feature
             And You have "products" page opened
             When You have clicked on "edit" button of 3. "product"
             And You set dropdown "brand" of "edit product" page to "Brand name 2"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             And You have "home" page opened
             And You have "selected" "Brand name 1" brand
@@ -164,6 +168,7 @@ Feature: SUT - Products feature
             When You have "products" page opened
             And You have "bolt cutters" product opened from "admin" side
             And You set dropdown "brand" of "edit product" page to "Brand name 1"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             And You have "bolt cutters" product opened from "customer" side
             Then "Brand" is "Brand name 1"

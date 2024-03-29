@@ -12,10 +12,11 @@ describe(`${apis.forgotPW.relativeUrl()}`, () => {
 
   beforeEach(() => {
     usersApi.cleanUp();
+    registerApi.resetRegistrationData();
   });
 
   afterEach(() => {
-    cy.log("after each test in this suite");
+    registerApi.resetRegistrationData();
   });
 
   after(() => {
@@ -44,11 +45,11 @@ describe(`${apis.forgotPW.relativeUrl()}`, () => {
     });
   });
 
-  it("bug - Should reset pw to default value", () => {
+  it("Should reset pw to default value", () => {
     let userId: string;
 
     // precondition: register user with pw other than welcome01
-    registerApi.registrationData.password = "different01";
+    registerApi.registrationData.password = "Different_01";
     const register = registerApi.setUp();
     register.then((userInfo) => {
       userId = userInfo.userId;
@@ -84,7 +85,7 @@ describe(`${apis.forgotPW.relativeUrl()}`, () => {
 
     // login with new pw -> should be successful
     cy.then(() => {
-      registerApi.resetRegistrationData();
+      registerApi.registrationData.password = "welcome02";
     });
     cy.then(() => {
       loginApi

@@ -6,9 +6,12 @@ import loginApi from "./loginApi";
 import userApi from "./userApi";
 
 class UsersApi extends BaseAPI {
-  getUsers(token: string): Cypress.Chainable<Cypress.Response<any>> {
+  getUsers(
+    token: string,
+    pageNr = 1
+  ): Cypress.Chainable<Cypress.Response<any>> {
     return cy.request({
-      url: `${apiHost}${apis.users.relativeUrl()}`,
+      url: `${apiHost}${apis.users.relativeUrl()}?page=${pageNr}`,
       auth: {
         bearer: token,
       },
@@ -32,12 +35,19 @@ class UsersApi extends BaseAPI {
       );
 
       usersApi.getUsers(adminToken).then((usersResp) => {
-        const users: object[] = usersResp.body.data;
-        users.forEach((user) => {
-          if (!usersToBeKept.includes(user["email"])) {
-            userApi.deleteUser(user["id"], adminToken);
-          }
-        });
+        const lastPage: number = usersResp.body.last_page;
+
+        for (let pageNr = 1; pageNr <= lastPage; pageNr++) {
+          usersApi.getUsers(adminToken, pageNr).then((usersResp) => {
+            const users: object[] = usersResp.body.data;
+
+            users.forEach((user) => {
+              if (!usersToBeKept.includes(user["email"])) {
+                userApi.deleteUser(user["id"], adminToken);
+              }
+            });
+          });
+        }
       });
     });
   }

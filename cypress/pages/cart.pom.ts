@@ -8,7 +8,15 @@ class Cart extends Base {
   readonly cart = () => cy.get("[steptitle=Cart]");
   readonly itemsTable = {
     headerCells: () => this.cart().find("thead > tr > th"),
-    items: () => this.cart().find("tbody > tr"),
+    
+    // items: () => this.cart().find("tbody > tr"),
+    items: () => this.cart().find("tbody > tr").should(($items) => {
+      if ($items.length === 0) {
+        // If No items found, return undefinedNr
+        return undefinedNr;
+      }
+    }),
+
     footerCells: () => this.cart().find("tfoot > tr > td"),
   };
 
@@ -31,9 +39,20 @@ class Cart extends Base {
   }
 
   getColumnIndex(columnName: string): Cypress.Chainable<number> {
-    return this.itemsTable.headerCells().then((headerCells: any) => {
-      for (let i = 0; i < headerCells.length; i++) {
-        const headerCell: HTMLElement = headerCells[i];
+    return this.itemsTable.headerCells().then(($headerCells) => {
+      const headerCellsArray: HTMLElement[] = $headerCells.toArray();
+      if (
+        columnName
+          .trim()
+          .toLowerCase()
+          .match(/delete/)
+      ) {
+        // return last index of the array
+        return headerCellsArray.length - 1;
+      }
+
+      for (let i = 0; i < headerCellsArray.length; i++) {
+        const headerCell: HTMLElement = headerCellsArray[i];
         if (
           headerCell.innerText
             .trim()
@@ -53,19 +72,22 @@ class Cart extends Base {
   ): Cypress.Chainable<JQuery<HTMLElement>> {
     const cartChainableItems = this.itemsTable.items();
     // search item in cart
-    return Base.searchInItems(cartChainableItems, bddItemName).then((itemIndex) => {
-      return cy.then(() => {
-        if (itemIndex == undefinedNr) {
-          throw Error(`Item ${bddItemName} doesn't exist in the cart`);
-        }
-        return this.getColumnIndex(bddCartColumn.name).then((columnIndex) => {
-          return this.itemsTable
-            .items()
-            .eq(itemIndex)
-            .find("td").eq(columnIndex)
+    return Base.searchInItems(cartChainableItems, bddItemName).then(
+      (itemIndex) => {
+        return cy.then(() => {
+          if (itemIndex == undefinedNr) {
+            throw Error(`Item ${bddItemName} doesn't exist in the cart`);
+          }
+          return this.getColumnIndex(bddCartColumn.name).then((columnIndex) => {
+            return this.itemsTable
+              .items()
+              .eq(itemIndex)
+              .find("td")
+              .eq(columnIndex);
+          });
         });
-      });
-    });
+      }
+    );
   }
 }
 
