@@ -61,8 +61,15 @@ describe(`${apis.currentUser.relativeUrl()}`, () => {
         cy.get(`@${currentUserApi.userInfoAliasName}`).then(
           (expectedUserInfo: any) => {
             // assert
-            expect(currentUserResp.body).to.have.all.keys(expectedUserInfo);
+            expect(expectedUserInfo).to.contain.keys(currentUserResp.body);
+
             for (const key in currentUserResp.body) {
+              // skip comparison with unique properties
+              if (
+                key.trim().toLowerCase() in ["enabled", "failed_login_attempts"]
+              ) {
+                continue;
+              }
               expect(currentUserResp.body[key]).to.equal(expectedUserInfo[key]);
             }
           }

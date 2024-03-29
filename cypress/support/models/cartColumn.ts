@@ -17,6 +17,8 @@ export class CartColumn {
       return "Price";
     } else if (bddCartColumnName.toLowerCase().match(/total price/)) {
       return "Total";
+    } else if (bddCartColumnName.toLowerCase().match(/remove|delete/)) {
+      return "Empty - Delete";
     } else {
       return undefined;
     }

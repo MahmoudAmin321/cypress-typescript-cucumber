@@ -21,16 +21,18 @@ Feature: SUT - Cart feature
             When You have "products" page opened
             And You have "thor hammer" product opened from "admin" side
             And You set text field "price" of "edit product" page to "11.14"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             When You have "products" page opened
             And You have "bolt cutters" product opened from "admin" side
             And You set text field "price" of "edit product" page to "48.41"
+            And You set text field "stock" of "edit product" page to "25"
             And You have saved
             # add multi products
             Given You have "thor hammer" product opened from "customer" side
-            And You add product to "cart"
+            And You have added product to "cart"
             Given You have "bolt cutters" product opened from "customer" side
-            And You add product to "cart"
+            And You have added product to "cart"
             And You click on "cart" common button, which redirects to "cart" page
             # change quantity in cart
             When You set "quantity" of "thor hammer" to "3"
@@ -42,11 +44,11 @@ Feature: SUT - Cart feature
             And Cart total price is "$81.83"
 
         @program/bdd
-        Scenario: ambiguous - Changing quantity affects cart icon correctly
+        Scenario: Changing quantity affects cart icon correctly
             Given You programmatically login as "customer2"
             And You have "thor hammer" product opened from "customer" side
             And You set quantity to "3"
-            When You add product to "cart"
+            When You have added product to "cart"
             And "Cart" quantity is "3"
             And You click on "cart" common button, which redirects to "cart" page
             # change quantity in cart
@@ -61,20 +63,74 @@ Feature: SUT - Cart feature
     Rule: Deleted items from cart
 
         @program/bdd
-        Scenario: Deleting items from cart affects amounts (nr of rows in cart, cart total) correctly
-        # add multi products to cart
-        # delete one item from cart
-        # should affect nr of rows in cart
-        # should affect cart total price
+        Scenario: Deleting items from cart affects amounts (cart rows and total) correctly
+            # set up: set products unit price
+            Given You programmatically login as "admin"
+            When You have "products" page opened
+            And You have "thor hammer" product opened from "admin" side
+            And You set text field "price" of "edit product" page to "11.14"
+            And You set text field "stock" of "edit product" page to "25"
+            And You have saved
+            When You have "products" page opened
+            And You have "bolt cutters" product opened from "admin" side
+            And You set text field "price" of "edit product" page to "48.41"
+            And You set text field "stock" of "edit product" page to "25"
+            And You have saved
+            # add multi products
+            Given You have "thor hammer" product opened from "customer" side
+            And You have added product to "cart"
+            Given You have "bolt cutters" product opened from "customer" side
+            And You have added product to "cart"
+            And You click on "cart" common button, which redirects to "cart" page
+            And Item "thor hammer" of "cart" page "exists"
+            And Item "bolt cutters" of "cart" page "exists"
+            # intitial cart total price
+            And Cart total price is "$59.55"
+            # delete one item from cart
+            When You have "deleted" "thor hammer" from cart
+            # should affect cart rows
+            Then Item "thor hammer" of "cart" page "doesn't exist"
+            And Item "bolt cutters" of "cart" page "exists"
+            # should affect cart total price
+            And Cart total price is "$48.41"
+            # teardown: make cart empty
+            When You have "deleted" "bolt cutters" from cart
+            Then Cart total price is "$0.00"
 
         @program/bdd
         Scenario: Deleting items from cart affects cart icon correctly
-        # add multi products to cart
-        # delete one item from cart
-        # should update Nr in cart icon correclty
-        # delete all remaining items from cart
-        # cart should be empty
-        # cart icon should disappear
+            # set up: set products unit price
+            Given You programmatically login as "admin"
+            When You have "products" page opened
+            And You have "thor hammer" product opened from "admin" side
+            And You set text field "price" of "edit product" page to "11.14"
+            And You set text field "stock" of "edit product" page to "25"
+            And You have saved
+            Given You have "products" page opened
+            And You have "bolt cutters" product opened from "admin" side
+            And You set text field "price" of "edit product" page to "48.41"
+            And You set text field "stock" of "edit product" page to "25"
+            And You have saved
+            # add multi products
+            Given You have "thor hammer" product opened from "customer" side
+            And You have added product to "cart"
+            Given You have "bolt cutters" product opened from "customer" side
+            And You have added product to "cart"
+            And Cart icon "exists"
+            And "Cart" quantity is "2"
+            And You click on "cart" common button, which redirects to "cart" page
+            # delete one item from cart
+            When You have "deleted" "thor hammer" from cart
+            # should update Nr in cart icon correclty
+            Then "Cart" quantity is "1"
+            # delete all remaining items from cart
+            When You have "deleted" "bolt cutters" from cart
+            # cart should be empty
+            Then Item "thor hammer" of "cart" page "doesn't exist"
+            Then Item "bolt cutters" of "cart" page "doesNot exist"
+            And Cart total price is "$0.00"
+            # cart icon should disappear
+            And Cart icon "doesNot exist"
 
 
     Rule: login step in checkout

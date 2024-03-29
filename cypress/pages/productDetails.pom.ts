@@ -30,14 +30,14 @@ class ProductDetails extends Base {
       this.details.container().find("[data-test=add-to-favorites]"),
   };
 
-  readonly relatedProducts = ()=> cy.get("[class='card'][href*='product/']")
+  readonly relatedProducts = () => cy.get("[class='card'][href*='product/']");
 
   readonly toasters = {
     container: () => cy.get("app-toasts"),
     success: () => this.toasters.container().find("[class*=success]"),
     failure: () => this.toasters.container().find("[class*=danger]"),
     warning: () => this.toasters.container().find("[class*=warn]"),
-  }
+  };
 
   getApiInfo(): ApiInfo {
     return apis.specificProduct;
@@ -47,18 +47,30 @@ class ProductDetails extends Base {
     return cy.wait(`@${apis.specificProduct.interceptorName}`);
   }
 
-  getButton(bddBtnName: string): Cypress.Chainable<any> {
+  getButton(bddBtnName: string) {
+    return null;
+  }
+  
+  getButtonAndItsAssociations(bddBtnName: string) {
     if (bddBtnName.toLowerCase().match(/cart/)) {
-      return this.details.addToCartBtn();
+      return {
+        spy: () => cy.spyApi(apis.specificCart, "POST"),
+        btn: this.details.addToCartBtn,
+        wait: () => cy.wait(`@${apis.specificCart.interceptorName}`),
+      };
     } else if (bddBtnName.toLowerCase().match(/favo/)) {
-      return this.details.addToFavoritesBtn();
+      return {
+        spy: () => cy.spyApi(apis.favorites, "POST"),
+        btn: this.details.addToFavoritesBtn,
+        wait: () => cy.wait(`@${apis.favorites.interceptorName}`),
+      };
     } else {
       throw Error(`Button [ ${bddBtnName} ] doesn't exist in the map`);
     }
   }
 
   getToaster(toasterPropertyName: toastType): Cypress.Chainable<any> {
-    return this.toasters[toasterPropertyName]()
+    return this.toasters[toasterPropertyName]();
   }
 }
 

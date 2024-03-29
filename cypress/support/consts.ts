@@ -17,7 +17,7 @@ export const tokenAliasName = "token";
 
 export const dbIdRegex = "[\\d\\w]+";
 
-export const undefinedNr = 159258753.14951
+export const undefinedNr = 159258753.14951;
 
 // Comment const type to allow syntax error upon accessing non-exiting property
 export const apis /*: { [key: string]: ApiInfo }*/ = {
@@ -82,7 +82,7 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
   categories: {
     interceptorName: "categories",
     urlRegex: /categories$/,
-    relativeUrl: () => "/categories"
+    relativeUrl: () => "/categories",
   },
   specificCategory: {
     interceptorName: "specificCategory",
@@ -92,7 +92,7 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
   products: {
     interceptorName: "products",
     urlRegex: /products(.*)\?/,
-    relativeUrl: () => "/products"
+    relativeUrl: () => "/products",
   },
   specificProduct: {
     interceptorName: "specificProduct",
@@ -123,6 +123,17 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     interceptorName: "specificCart",
     urlRegex: new RegExp(`carts/${dbIdRegex}$`),
     relativeUrl: (cartId: string) => `/carts/${cartId}`,
+  },
+  specificCartProduct: {
+    interceptorName: "specificCartProduct",
+    urlRegex: new RegExp(`carts/${dbIdRegex}/product/${dbIdRegex}$`),
+    relativeUrl: (cartId: string, productId: string) =>
+      `/carts/${cartId}/product/${productId}`,
+  },
+  cartProductQuantity: {
+    interceptorName: "cartProductQuantity",
+    urlRegex: new RegExp(`carts/${dbIdRegex}/product/quantity$`),
+    relativeUrl: (cartId: string) => `/carts/${cartId}/product/quantity`,
   },
   favorites: {
     interceptorName: "favorites",

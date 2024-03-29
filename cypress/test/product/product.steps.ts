@@ -142,26 +142,6 @@ Given("You programmatically prepare brands data", function () {
 });
 
 Then(
-  "Item {string} of {string} page {string}",
-  function (bddItemName: string, bddPageName: string, bddAssertion: string) {
-    const chainableItems = Factory.getChainableItems(bddPageName);
-    // search for item
-    Base.searchInItems(chainableItems, bddItemName).then((itemIndex) => {
-      // assert
-      if (bddAssertion.toLowerCase().match(/^exist/)) {
-        expect(itemIndex).to.not.eq(undefined);
-        expect(itemIndex).to.be.a("number");
-      } else if (bddAssertion.toLowerCase().match(/n(o|')t /)) {
-        expect(itemIndex).to.eq(undefinedNr);
-        // cy.wrap(itemIndex).should("eq", undefined)
-      } else {
-        throw Error(`Invalid expected result [${bddAssertion}].`);
-      }
-    });
-  }
-);
-
-Then(
   "{toasterType} toaster contain(s) text {string}",
   function (bddToasterType: ToasterType, expectedText: string) {
     productDetailsPage

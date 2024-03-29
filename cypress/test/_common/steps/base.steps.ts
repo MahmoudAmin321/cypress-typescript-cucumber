@@ -2,7 +2,7 @@ import { Given, Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import keyboardFactory from "../../../support/models/keyboardFactory";
 import { Base } from "../../../pages/_common/base.pom";
 import pagesFactory from "../../../pages/_common/pagesFactory";
-import { apis } from "../../../support/consts";
+import { apis, undefinedNr } from "../../../support/consts";
 import { Factory } from "../../../pages/_common/factory";
 import productsApi from "../../../testApi/_common/apiPom/product/productsApi";
 import productDetailsPage from "../../../pages/productDetails.pom";
@@ -132,7 +132,19 @@ Then("Cart total price is {string}", function (expectedPrice: string) {
 });
 
 When("You add product to {string}", function (bddAddBtnName: string) {
-  productDetailsPage.getButton(bddAddBtnName).click();
+  productDetailsPage.getButtonAndItsAssociations(bddAddBtnName).btn().click();
+  
+  // static wait for unhappy cases
+  cy.wait(1500);
+});
+
+When("You have added product to {string}", function (bddAddBtnName: string) {
+  // intercept
+  productDetailsPage.getButtonAndItsAssociations(bddAddBtnName).spy()
+
+  productDetailsPage.getButtonAndItsAssociations(bddAddBtnName).btn().click();
+
+  productDetailsPage.getButtonAndItsAssociations(bddAddBtnName).wait();
 });
 
 When("You set quantity to {string}", function (quantity: string) {
@@ -143,5 +155,25 @@ Then(
   "{string} quantity is {string}",
   function (bddType: string, bddQuantity: string) {
     Factory.getQuantityText(bddType).should("equal", bddQuantity);
+  }
+);
+
+
+Then(
+  "Item {string} of {string} page {string}",
+  function (bddItemName: string, bddPageName: string, bddAssertion: string) {
+    const chainableItems = Factory.getChainableItems(bddPageName);
+    // search for item
+    Base.searchInItems(chainableItems, bddItemName).then((itemIndex) => {
+      // assert
+      if (bddAssertion.toLowerCase().match(/^exist/)) {
+        expect(itemIndex).to.not.eq(undefined);
+        expect(itemIndex).to.be.a("number");
+      } else if (bddAssertion.toLowerCase().match(/n(o|')t /)) {
+        expect(itemIndex).to.eq(undefinedNr);
+      } else {
+        throw Error(`Invalid expected result [${bddAssertion}].`);
+      }
+    });
   }
 );
