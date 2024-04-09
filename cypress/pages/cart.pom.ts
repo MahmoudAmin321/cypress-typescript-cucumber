@@ -2,25 +2,55 @@ import { apis, undefinedNr } from "../support/consts";
 import { ApiInfo } from "../support/models/api";
 import { CartColumn } from "../support/models/cartColumn";
 import { Base } from "./_common/base.pom";
+import loginPage from "./login.pom";
 
 class Cart extends Base {
   readonly relativeUrl = () => `/checkout`;
-  readonly cart = () => cy.get("[steptitle=Cart]");
-  readonly itemsTable = {
-    headerCells: () => this.cart().find("thead > tr > th"),
-    
-    // items: () => this.cart().find("tbody > tr"),
-    items: () => this.cart().find("tbody > tr").should(($items) => {
-      if ($items.length === 0) {
-        // If No items found, return undefinedNr
-        return undefinedNr;
-      }
-    }),
+  
+  readonly cartStep = {
+    container: () => cy.get("[steptitle=Cart]"),
 
-    footerCells: () => this.cart().find("tfoot > tr > td"),
+    itemsTable: {
+      headerCells: () => this.cartStep.container().find("thead > tr > th"),
+
+      items: () =>
+        this.cartStep
+          .container()
+          .find("tbody > tr")
+          .should(($items) => {
+            if ($items.length === 0) {
+              // If No items found, return undefinedNr
+              return undefinedNr;
+            }
+          }),
+
+      footerCells: () => this.cartStep.container().find("tfoot > tr > td"),
+    },
+
+    proceedBtn: () => cy.get("[data-test=proceed-1]"),
   };
 
-  readonly proceedToCheckout = () => cy.get("[data-test=proceed-1]");
+  readonly signInStep = {
+    container: () => cy.get("[steptitle='Sign in']"),
+    email: () => loginPage.form.email(),
+    proceedBtn: () => cy.get("[data-test=proceed-2]"),
+  };
+
+  readonly addressStep = {
+    container: () => cy.get("[steptitle=Address]"),
+    address: () => cy.get("[data-test=address]"),
+    city: () => cy.get("[data-test=city]"),
+    state: () => cy.get("[data-test=state]"),
+    country: () => cy.get("[data-test=country]"),
+    postcode: () => cy.get("[data-test=postcode]"),
+    proceedBtn: () => cy.get("[data-test=proceed-3]"),
+  };
+
+  readonly paymentStep = {
+    container: () => cy.get("[steptitle=Payment]"),
+    paymentMethod: () => cy.get("[data-test=payment-method]"),
+    proceedBtn: () => cy.get("[data-test=finish]"),
+  };
 
   getApiInfo(): ApiInfo {
     return apis.specificCart;
@@ -30,16 +60,27 @@ class Cart extends Base {
     return cy.wait(`@${apis.specificCart.interceptorName}`);
   }
 
-  getButton(bddBtnName: string): Cypress.Chainable<any> {
-    if (bddBtnName.toLowerCase().match(/proceed to checkout/)) {
-      return this.proceedToCheckout();
+  getStep(bddStepName: string) {
+    const lowerTrimmed = bddStepName.toLowerCase().trim();
+    if (lowerTrimmed.match(/cart/)) {
+      return this.cartStep;
+    } else if (lowerTrimmed.match(/sign(-| )*in/)) {
+      return this.signInStep;
+    } else if (lowerTrimmed.match(/address/)) {
+      return this.addressStep;
+    } else if (lowerTrimmed.match(/payment/)) {
+      return this.paymentStep;
     } else {
-      throw Error(`Button [ ${bddBtnName} ] doesn't exist in the map`);
+      throw Error(`step [ ${bddStepName} ] doesn't exist in the map`);
     }
   }
 
+  getButton(bddBtnName: string): Cypress.Chainable<any> {
+    return null;
+  }
+
   getColumnIndex(columnName: string): Cypress.Chainable<number> {
-    return this.itemsTable.headerCells().then(($headerCells) => {
+    return this.cartStep.itemsTable.headerCells().then(($headerCells) => {
       const headerCellsArray: HTMLElement[] = $headerCells.toArray();
       if (
         columnName
@@ -70,7 +111,7 @@ class Cart extends Base {
     bddCartColumn: CartColumn,
     bddItemName: string
   ): Cypress.Chainable<JQuery<HTMLElement>> {
-    const cartChainableItems = this.itemsTable.items();
+    const cartChainableItems = this.cartStep.itemsTable.items();
     // search item in cart
     return Base.searchInItems(cartChainableItems, bddItemName).then(
       (itemIndex) => {
@@ -79,7 +120,7 @@ class Cart extends Base {
             throw Error(`Item ${bddItemName} doesn't exist in the cart`);
           }
           return this.getColumnIndex(bddCartColumn.name).then((columnIndex) => {
-            return this.itemsTable
+            return this.cartStep.itemsTable
               .items()
               .eq(itemIndex)
               .find("td")

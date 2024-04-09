@@ -137,16 +137,36 @@ Feature: SUT - Cart feature
 
         @program/bdd
         Scenario: checkout cannot be completed without login
-        # while No user is logged in, add item to cart
-        # proceed
-        # sign in step should display login fields
-        # proceed btn should Not be displayed
+            Given You have "thor hammer" product opened from "customer" side
+            And You have added product to "cart"
+            And You click on "cart" common button, which redirects to "cart" page
+            When You click on proceed button of "cart" step
+            Then "sign in" step "is displayed"
+            And proceed button of "sign in" step "doesn't exist"
 
         @program/bdd
         Scenario: upon login in cart, user can proceed to next checkout step
+            Given You have "thor hammer" product opened from "customer" side
+            And You have added product to "cart"
+            And You click on "cart" common button, which redirects to "cart" page
+            And You click on proceed button of "cart" step
+            And "sign in" step "is displayed"
+            When You login in cart as "customer2"
+            Then proceed button of "sign-in" step "exists"
+            When You click on proceed button of "Sign - in" step
+            Then "address" step "is displayed"
 
         @program/bdd
         Scenario: upon login before adding products to cart, checkout can continue without requiring user to login again
+            When You programmatically login as "customer2"
+            And You have "thor hammer" product opened from "customer" side
+            And You have added product to "cart"
+            And You click on "cart" common button, which redirects to "cart" page
+            And You click on proceed button of "cart" step
+            And proceed button of "sign-in" step "exists"
+            Then "sign in" step "includes" text "you are already logged in"
+            When You click on proceed button of "Sign - in" step
+            Then "address" step "is displayed"
 
 
     Rule: Address step in checkout

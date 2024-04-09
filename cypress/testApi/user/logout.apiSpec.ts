@@ -23,7 +23,7 @@ describe(`${apis.logout.relativeUrl()}`, () => {
     cy.log("after all tests in this suite");
   });
 
-  it("Should destroy the provided valid token", () => {
+  it("bug - Should destroy the provided valid token", () => {
         
     
         // logout (destroy the token)

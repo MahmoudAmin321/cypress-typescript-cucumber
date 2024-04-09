@@ -23,7 +23,7 @@ export class Factory {
     } else if (lower.match(/contain/)) {
       result += "contain";
       return result;
-    } else if (lower.match(/visible/)) {
+    } else if (lower.match(/visible|displayed/)) {
       result += "be.visible";
       return result;
     } else if (lower.match(/include/)) {
@@ -47,7 +47,7 @@ export class Factory {
   static getChainableItems(bddPageName: string): Cypress.Chainable<any> {
     const lower = bddPageName.trim().toLowerCase();
     if (lower.match(/cart/)) {
-      return cartPage.itemsTable.items();
+      return cartPage.cartStep.itemsTable.items();
     } else if (lower.match(/favo/)) {
       return myFavoritesPage.favorites();
     } else {
