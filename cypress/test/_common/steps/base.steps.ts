@@ -122,7 +122,7 @@ Then(
 Then("Cart total price is {string}", function (expectedPrice: string) {
   const columnName = new CartColumn("cart total price").name;
   cartPage.getColumnIndex(columnName).then((columnIndex) => {
-    cartPage.itemsTable
+    cartPage.cartStep.itemsTable
       .footerCells()
       .eq(columnIndex)
       .then((cartTotalPriceCell) => {

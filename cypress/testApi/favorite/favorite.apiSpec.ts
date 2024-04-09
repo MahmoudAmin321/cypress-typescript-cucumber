@@ -97,7 +97,7 @@ describe(`${apis.specificFavorite.relativeUrl("{favoriteId}")}`, () => {
     
   });
 
-  it("Should return unauthorized, if expired token is provided", () => {
+  it("bug - Should return unauthorized, if expired token is provided", () => {
     cy.get(`@${user1.tokenAliasName}`).then((user1Token: any) => {
       let user1FavoId: string = undefined;
       // precondition: add favo to user
