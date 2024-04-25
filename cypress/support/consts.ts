@@ -15,7 +15,7 @@ export const tokenKeyName = "auth-token";
 
 export const tokenAliasName = "token";
 
-export const dbIdRegex = "[\\d\\w]+";
+export const dbIdRegex = "[\\da-zA-Z]{26}";
 
 export const undefinedNr = 159258753.14951;
 
