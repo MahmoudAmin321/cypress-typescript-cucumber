@@ -25,14 +25,14 @@ describe("Login", () => {
     loginPage.validations
       .email()
       .invoke("text")
-      .should("match", /E-mail is required.( *)/);
+      .should("match", /E(-*)mail is required(\.*)( *)/);
 
     // without click
     loginPage.form.email().type("dummy").clear();
     loginPage.validations
       .email()
       .invoke("text")
-      .should("match", /E-mail is required.( *)/);
+      .should("match", /E(-*)mail is required(\.*)( *)/);
   });
 
   it("Upon entering invalid email, correct msg should be displayed", () => {
@@ -44,13 +44,13 @@ describe("Login", () => {
     loginPage.validations
       .email()
       .invoke("text")
-      .should("match", /E-mail format is invalid.( *)/);
+      .should("match", /E(-*)mail format is invalid(\.*)( *)/);
 
     // without click
     loginPage.form.email().clear().type("invalid@");
     loginPage.validations
       .email()
       .invoke("text")
-      .should("match", /E-mail format is invalid.( *)/);
+      .should("match", /E(-*)mail format is invalid(\.*)( *)/);
   });
 });

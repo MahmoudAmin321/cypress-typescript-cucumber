@@ -173,13 +173,62 @@ Feature: SUT - Cart feature
 
         @program/bdd
         Scenario: address data are prefilled from user profile
+            Given You programmatically login as "customer2"
+            # set address data in user profile
+            And You have "my profile" page opened
+            And You set "profile" "address" field to "Ttest street 125"
+            And You set "profile" "city" field to "t city"
+            And You set "profile" "state" field to ""
+            And You set "profile" "country" field to "t country"
+            And You set "profile" "postal code" field to ""
+            And You have updated user profile
+            # go to address step in cart
+            When You have "thor hammer" product opened from "customer" side
+            And You have added product to "cart"
+            And You click on "cart" common button, which redirects to "cart" page
+            And You click on proceed button of "cart" step
+            And "sign in" step "is visible"
+            And You click on proceed button of "sign in" step
+            And "address" step "is visible"
+            # expected result
+            Then "checkout" "address" field value is "Ttest street 125"
+            And "checkout" "city" field value is "t city"
+            And "checkout" "state" field value is ""
+            And "checkout" "country" field value is "t country"
+            And "checkout" "postal code" field value is ""
 
         @program/bdd
         Scenario: checkout cannot continue wihout filling all mandatory address data
+            Given You programmatically login as "customer2"
+            And You have "thor hammer" product opened from "customer" side
+            And You have added product to "cart"
+            And You click on "cart" common button, which redirects to "cart" page
+            And You click on proceed button of "cart" step
+            And "sign in" step "is visible"
+            And You click on proceed button of "sign in" step
+            And "address" step "is visible"
+            When You set "checkout" "address" field to ""
+            Then proceed button of "address" step "is disabled"
+
 
         @program/bdd
         Scenario: checkout can continue to next step upon filling all mandatory address data
-
+            Given You programmatically login as "customer2"
+            And You have "thor hammer" product opened from "customer" side
+            And You have added product to "cart"
+            And You click on "cart" common button, which redirects to "cart" page
+            And You click on proceed button of "cart" step
+            And "sign in" step "is visible"
+            And You click on proceed button of "sign in" step
+            And "address" step "is visible"
+            When You set "checkout" "address" field to "test address test"
+            When You set "checkout" "city" field to "test city test"
+            And You set "checkout" "state" field to "test state test"
+            And You set "checkout" "country" field to "test country test"
+            And You set "checkout" "postal code" field to "123789"
+            Then proceed button of "address" step "is enabled"
+            When  You click on proceed button of "address" step
+            Then "payment" step "is displayed"
 
     Rule: payment step in checkout
 

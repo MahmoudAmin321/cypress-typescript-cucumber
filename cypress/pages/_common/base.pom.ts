@@ -56,6 +56,14 @@ export abstract class Base {
 
   static readonly paginator = () => cy.get("app-pagination .pagination");
 
+  static readonly addressFields= {
+    address: () => cy.get("[data-test=address]"),
+    city: () => cy.get("[data-test=city]"),
+    state: () => cy.get("[data-test=state]"),
+    country: () => cy.get("[data-test=country]"),
+    postcode: () => cy.get("[data-test=postcode]"),
+  }
+
   getApiInfo(): ApiInfo {
     return null;
   }

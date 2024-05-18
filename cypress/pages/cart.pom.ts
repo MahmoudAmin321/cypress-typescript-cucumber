@@ -6,9 +6,9 @@ import loginPage from "./login.pom";
 
 class Cart extends Base {
   readonly relativeUrl = () => `/checkout`;
-  
+
   readonly cartStep = {
-    container: () => cy.get("[steptitle=Cart]"),
+    container: () => cy.get("app-cart"),
 
     itemsTable: {
       headerCells: () => this.cartStep.container().find("thead > tr > th"),
@@ -31,23 +31,19 @@ class Cart extends Base {
   };
 
   readonly signInStep = {
-    container: () => cy.get("[steptitle='Sign in']"),
+    container: () => cy.get("app-login"),
     email: () => loginPage.form.email(),
     proceedBtn: () => cy.get("[data-test=proceed-2]"),
   };
 
   readonly addressStep = {
-    container: () => cy.get("[steptitle=Address]"),
-    address: () => cy.get("[data-test=address]"),
-    city: () => cy.get("[data-test=city]"),
-    state: () => cy.get("[data-test=state]"),
-    country: () => cy.get("[data-test=country]"),
-    postcode: () => cy.get("[data-test=postcode]"),
+    container: () => cy.get("app-address"),
+    addressFields: Base.addressFields,
     proceedBtn: () => cy.get("[data-test=proceed-3]"),
   };
 
   readonly paymentStep = {
-    container: () => cy.get("[steptitle=Payment]"),
+    container: () => cy.get("app-payment"),
     paymentMethod: () => cy.get("[data-test=payment-method]"),
     proceedBtn: () => cy.get("[data-test=finish]"),
   };

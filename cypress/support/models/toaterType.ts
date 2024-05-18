@@ -13,7 +13,7 @@ export class ToasterType {
     const lower = bddToasterType.toLowerCase()
     if (lower.match(/^success/)) {
       return "success";
-    } else if (lower.match(/^fail/)) {
+    } else if (lower.match(/^(fail|err)/)) {
       return "failure";
     } 
     else if (lower.match(/^warn/)) {

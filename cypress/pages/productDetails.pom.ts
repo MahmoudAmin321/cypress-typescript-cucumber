@@ -33,10 +33,9 @@ class ProductDetails extends Base {
   readonly relatedProducts = () => cy.get("[class='card'][href*='product/']");
 
   readonly toasters = {
-    container: () => cy.get("app-toasts"),
+    container: () => cy.get("[id=toast-container]"),
     success: () => this.toasters.container().find("[class*=success]"),
-    failure: () => this.toasters.container().find("[class*=danger]"),
-    warning: () => this.toasters.container().find("[class*=warn]"),
+    failure: () => this.toasters.container().find("[class*=error]"),
   };
 
   getApiInfo(): ApiInfo {
@@ -50,7 +49,7 @@ class ProductDetails extends Base {
   getButton(bddBtnName: string) {
     return null;
   }
-  
+
   getButtonAndItsAssociations(bddBtnName: string) {
     if (bddBtnName.toLowerCase().match(/cart/)) {
       return {

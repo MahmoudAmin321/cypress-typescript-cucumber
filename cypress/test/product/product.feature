@@ -165,8 +165,8 @@ Feature: SUT - Product feature
             And You have added product to "favourites"
             And "Success" toaster "exists"
             When You add product to "favourites"
-            Then "warning" toaster "exists"
-            And "Warning" toaster contains text "product already in your favorites list."
+            Then "failure" toaster "exists"
+            And "failure" toaster contains text "product already in your favorites list."
             # tear down
             When You programmatically have all favourites of "logged in user" deleted
 

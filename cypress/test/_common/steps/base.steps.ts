@@ -133,14 +133,14 @@ Then("Cart total price is {string}", function (expectedPrice: string) {
 
 When("You add product to {string}", function (bddAddBtnName: string) {
   productDetailsPage.getButtonAndItsAssociations(bddAddBtnName).btn().click();
-  
+
   // static wait for unhappy cases
   cy.wait(1500);
 });
 
 When("You have added product to {string}", function (bddAddBtnName: string) {
   // intercept
-  productDetailsPage.getButtonAndItsAssociations(bddAddBtnName).spy()
+  productDetailsPage.getButtonAndItsAssociations(bddAddBtnName).spy();
 
   productDetailsPage.getButtonAndItsAssociations(bddAddBtnName).btn().click();
 
@@ -158,7 +158,6 @@ Then(
   }
 );
 
-
 Then(
   "Item {string} of {string} page {string}",
   function (bddItemName: string, bddPageName: string, bddAssertion: string) {
@@ -175,5 +174,31 @@ Then(
         throw Error(`Invalid expected result [${bddAssertion}].`);
       }
     });
+  }
+);
+
+When(
+  "You set {string} {string} field to {string}",
+  function (bddPageName: string, bddFieldName: string, bddFieldValue: string) {
+    const field = Factory.getField(bddPageName, bddFieldName);
+
+    // need the wait before clear to wait the app to load the field value, then clear it
+    // otherwise, clear occurs before load, hence field has value again
+    // reference: https://github.com/cypress-io/cypress/issues/4937#issuecomment-518694485
+    cy.wait(1500);
+
+    if (bddFieldValue) {
+      field.clear().type(bddFieldValue).should("have.value", bddFieldValue);
+    } else {
+      field.clear().should("have.value", "");
+    }
+  }
+);
+
+Then(
+  "{string} {string} field value is {string}",
+  function (bddPageName: string, bddFieldName: string, expectedValue: string) {
+    const field = Factory.getField(bddPageName, bddFieldName);
+    field.invoke("val").should("eq", expectedValue);
   }
 );
