@@ -1,5 +1,6 @@
 import cartPage from "../cart.pom";
 import myFavoritesPage from "../customer/myFavorites.pom";
+import myProfilePage from "../customer/myProfile.pom";
 import productDetailsPage from "../productDetails.pom";
 import { Base } from "./base.pom";
 import { Favorite } from "./components/cards/favorite";
@@ -28,6 +29,12 @@ export class Factory {
       return result;
     } else if (lower.match(/include/)) {
       result += "include";
+      return result;
+    }else if (lower.match(/disabled/)) {
+      result += "be.disabled";
+      return result;
+    } else if (lower.match(/enabled/)) {
+      result += "be.enabled";
       return result;
     } else {
       throw Error(`Invalid expected result [${bddAssertion}].`);
@@ -74,4 +81,38 @@ export class Factory {
       );
     }
   }
+
+  static getAddressField(
+    bddFieldName: string
+  ): Cypress.Chainable<any> {
+    const lower = bddFieldName.trim().toLowerCase();
+    if (lower.match(/address/)) {
+      return Base.addressFields.address();
+    }else if (lower.match(/post(.*)code/)) {
+      return Base.addressFields.postcode();
+    }else if (lower.match(/city/)) {
+      return Base.addressFields.city();
+    }else if (lower.match(/state/)) {
+      return Base.addressFields.state();
+    }else if (lower.match(/country/)) {
+      return Base.addressFields.country();
+    } else {
+      throw Error(
+        `Field [ ${bddFieldName} ] doesn't exist in the map`
+      );
+    }
+  }
+
+  // function is meant for Only profile page and address step in checkout
+  static getField (bddPageName: string, bddFieldName: string) {
+    const lower = bddPageName.toLowerCase().trim();
+    if (lower === "profile") {
+      return myProfilePage.getProfileField(bddFieldName);
+    } else if (lower === "checkout") {
+      return Factory.getAddressField(bddFieldName);
+    }
+    else {
+      throw Error(`Page [ ${bddPageName} ] is Neither profile Nor checkout`)
+    }
+  };
 }

@@ -49,6 +49,7 @@ When(
   }
 );
 
+
 Then(
   "{string} step {string}",
   function (bddStepName: string, bddAssertion: string) {

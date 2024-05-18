@@ -4,6 +4,7 @@ import productsPage from "../admin/products.pom";
 import cartPage from "../cart.pom";
 import accountPage from "../customer/account.pom";
 import myFavoritesPage from "../customer/myFavorites.pom";
+import myProfilePage from "../customer/myProfile.pom";
 import homePage from "../home.pom";
 import loginPage from "../login.pom";
 import productDetailsPage from "../productDetails.pom";
@@ -26,6 +27,8 @@ class PagesFactory {
       return accountPage;
     } else if (lower.match(/favo/)) {
       return myFavoritesPage;
+    } else if (lower.match(/profile/)) {
+      return myProfilePage;
     } else if (lower.match(/log(( *)|(-*))in/)) {
       return loginPage;
     } else if (lower.match(/home/)) {

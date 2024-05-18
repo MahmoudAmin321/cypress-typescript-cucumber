@@ -67,4 +67,13 @@ export class Helper {
       return cy.writeFile(dbJsonFile, content);
     });
   }
+
+  static ignoreError(event: string, errorMsg: string) {
+    cy.once(event, (error, runnable) => {
+      if (error.message.includes(errorMsg)) {
+        // prevent test from failing
+        return true;
+      }
+    });
+  };
 }

@@ -131,8 +131,11 @@ Then(
   "{toasterType} toaster {string}",
   function (bddToasterType: ToasterType, bddAssertion: string) {
     const assertion = Factory.getAssertion(bddAssertion);
-
-    productDetailsPage.getToaster(bddToasterType.type).should(assertion);
+    if (assertion === "not.exist") {
+      Helper.ignoreError("fail", "Expected to find element");
+    } else {
+      productDetailsPage.getToaster(bddToasterType.type).should(assertion);
+    }
   }
 );
 

@@ -36,7 +36,7 @@ When(
       cy.spyApi(api);
     }
 
-    Base.getButton(bddBtnName).click();
+    Base.getButton(bddBtnName).click({force: true});
 
     incomingPage.waitForPage();
   }
