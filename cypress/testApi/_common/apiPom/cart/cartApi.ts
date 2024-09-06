@@ -3,6 +3,28 @@ import { apiHost } from "../../../../support/cyEnvVar";
 import { BaseAPI } from "../base.apiPom";
 
 class CartApi extends BaseAPI {
+  get(cartId: string): Cypress.Chainable<Cypress.Response<any>> {
+    return cy.request({
+      url: `${apiHost}${apis.specificCart.relativeUrl(cartId)}`,
+      method: "GET",
+      failOnStatusCode: false,
+    });
+  }
+  
+  readonly defaultProductQuantity = 1;
+
+  addProductToCart(
+    cartId: string,
+    requestBody: object
+  ): Cypress.Chainable<Cypress.Response<any>> {
+    return cy.request({
+      url: `${apiHost}${apis.specificCart.relativeUrl(cartId)}`,
+      method: "POST",
+      body: requestBody,
+      failOnStatusCode: false,
+    });
+  }
+
   delete(cartId: string): Cypress.Chainable<Cypress.Response<any>> {
     return cy.request({
       url: `${apiHost}${apis.specificCart.relativeUrl(cartId)}`,
