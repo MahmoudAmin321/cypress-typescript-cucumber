@@ -1,6 +1,10 @@
 import { apis } from "../../../../support/consts";
 import { apiHost } from "../../../../support/cyEnvVar";
 import { BaseAPI } from "../base.apiPom";
+import brandApi from "../brand/brandApi";
+import brandsApi from "../brand/brandsApi";
+import categoriesApi from "../category/categoriesApi";
+import imagesApi from "../image/imageApi";
 
 class ProductsApi extends BaseAPI {
   get(
@@ -19,6 +23,74 @@ class ProductsApi extends BaseAPI {
       method: "POST",
       body: reqBody,
       failOnStatusCode: false,
+    });
+  }
+  getDefaultProductReqBodyData(): Cypress.Chainable<{
+    name: string;
+    description: string;
+    price: number;
+    category_id: string;
+    brand_id: string;
+    product_image_id: string;
+    is_location_offer: number;
+    is_rental: number;
+  }> {
+    // get image id (i.e. 1st id)
+    return imagesApi.get().then((imgsResp) => {
+      const imgId: string = imgsResp.body[0].id;
+
+      // get category id (i.e. 1st id)
+      return categoriesApi.get().then((categoriesResp) => {
+        const categoryId: string = categoriesResp.body[0].id;
+
+        // get brand id (i.e. 1st id)
+        return brandsApi.requestBrands().then((brandsResp) => {
+          const brandId: string = brandsResp.body[0].id;
+
+          // prepare request body default data
+          const defaultData = {
+            name: "test product name",
+            description: "default product description",
+            price: 15.55,
+            category_id: categoryId,
+            brand_id: brandId,
+            product_image_id: imgId,
+            is_location_offer: 1,
+            is_rental: 0,
+          };
+
+          return cy.then(() => {
+            return defaultData;
+          });
+        });
+      });
+    });
+  }
+
+  /**
+   * 
+   * @param chainableData example: 
+   * const data = cy.then(() => {
+            return {
+              name: "test product name",
+              description: "default product description",
+              price: 15.55,
+              category_id: "01J5NJE24JKAC8QHZ4J8FDMR6E",
+              brand_id: "01J5NJE24C19MWBN8Z5TDP0MKJ",
+              product_image_id: "01J5NJE24RJ49F42C9JQSTXHAK",
+              is_location_offer: 1,
+              is_rental: 0,
+            };
+          });
+          
+          productsApi.createProduct(data)
+   * @returns 
+   */
+  createProduct(
+    chainableData = this.getDefaultProductReqBodyData()
+  ): Cypress.Chainable<Cypress.Response<any>> {
+    return chainableData.then((furtherData) => {
+      return this.post(furtherData);
     });
   }
 
@@ -71,7 +143,7 @@ class ProductsApi extends BaseAPI {
       if (!productId) {
         throw new Error(`product ${productName} Not found`);
       }
-      return productId
+      return productId;
     });
   }
 }

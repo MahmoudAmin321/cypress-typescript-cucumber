@@ -3,7 +3,7 @@ import { apiHost } from "../../support/cyEnvVar";
 import cartApi from "../_common/apiPom/cart/cartApi";
 import cartsApi from "../_common/apiPom/cart/cartsApi";
 
-describe("testttttt", () => {
+describe(`${apis.carts.relativeUrl()}`, () => {
   before(() => {
     cy.log("before all tests in this suite");
   });
