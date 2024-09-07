@@ -45,6 +45,24 @@ class Cart extends Base {
   readonly paymentStep = {
     container: () => cy.get("app-payment"),
     paymentMethod: () => cy.get("[data-test=payment-method]"),
+    methods: {
+      bankTransfer: {
+        option: () => cy.get("option[value=bank-transfer]"),
+        fields: {
+          bankName: () => cy.get("[data-test=bank_name]"),
+          accountName: () => cy.get("[data-test=account_name]"),
+          accountNr: () => cy.get("[data-test=account_number]"),
+        },
+      },
+      giftCard: {
+        option: () => cy.get("option[value=gift-card]"),
+        fields: {
+          cardNr: () => cy.get("[data-test=gift_card_number]"),
+          validationCode: () => cy.get("[data-test=validation_code]"),
+        },
+      },
+    },
+    
     proceedBtn: () => cy.get("[data-test=finish]"),
   };
 
@@ -68,6 +86,43 @@ class Cart extends Base {
       return this.paymentStep;
     } else {
       throw Error(`step [ ${bddStepName} ] doesn't exist in the map`);
+    }
+  }
+
+  getPaymentMethod(bddMethodName: string) {
+    const lowerTrimmed = bddMethodName.toLowerCase().trim();
+    if (lowerTrimmed.match(/bank(.*)transfer/)) {
+      return this.paymentStep.methods.bankTransfer.option();
+    } 
+    else if (lowerTrimmed.match(/gift/)) {
+      return this.paymentStep.methods.giftCard.option();
+    } else {
+      throw Error(`payment method [ ${bddMethodName} ] doesn't exist in the map`);
+    }
+  }
+
+  getPaymentField(bddFieldName: string) {
+    const lowerTrimmed = bddFieldName.toLowerCase().trim();
+    // fields of bank transfer payment method
+    if (lowerTrimmed.match(/bank(.*)name/)) {
+      return this.paymentStep.methods.bankTransfer.fields.bankName();
+    } 
+    else if (lowerTrimmed.match(/account(.*)name/)) {
+      return this.paymentStep.methods.bankTransfer.fields.accountName();
+    }
+    else if (lowerTrimmed.match(/account(.*)n(.*)r/)) {
+      return this.paymentStep.methods.bankTransfer.fields.accountNr();
+    } 
+    // fields of gift card payment method
+    else if (lowerTrimmed.match(/gift(.*)card(.*)n(.*)r/)) {
+      return this.paymentStep.methods.giftCard.fields.cardNr();
+    } 
+    else if (lowerTrimmed.match(/valid(.*)code/)) {
+      return this.paymentStep.methods.giftCard.fields.validationCode();
+    } 
+    // 
+    else {
+      throw Error(`payment field [ ${bddFieldName} ] doesn't exist in the map`);
     }
   }
 

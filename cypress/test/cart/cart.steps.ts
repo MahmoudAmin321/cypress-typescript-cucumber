@@ -49,7 +49,6 @@ When(
   }
 );
 
-
 Then(
   "{string} step {string}",
   function (bddStepName: string, bddAssertion: string) {
@@ -74,5 +73,46 @@ Then(
     const step = cartPage.getStep(bddStepName);
     const assertion = Factory.getAssertion(bddAssertion);
     step.proceedBtn().should(assertion);
+  }
+);
+
+When(
+  "{string} payment method {string}",
+  function (bddMethodName: string, bddAssertion: string) {
+    const assertion = Factory.getAssertion(bddAssertion);
+    cartPage.getPaymentMethod(bddMethodName).then(($methodOption) => {
+      if (assertion.includes("not")) {
+        cartPage.paymentStep
+          .paymentMethod()
+          .should("not.have.value", $methodOption.val());
+      } else {
+        cartPage.paymentStep
+          .paymentMethod()
+          .should("have.value", $methodOption.val());
+      }
+    });
+  }
+);
+
+Then(
+  "in payment step, {string} field {string}",
+  function (bddFieldName: string, bddAssertion: string) {
+    const field = cartPage.getPaymentField(bddFieldName);
+    const assertion = Factory.getAssertion(bddAssertion);
+    field.should(assertion);
+  }
+);
+
+When(
+  "You have {string} payment method selected",
+  function (bddMethodName: string) {
+    cartPage.getPaymentMethod(bddMethodName).then(($methodOption) => {
+      // select
+      cartPage.paymentStep.paymentMethod().select($methodOption.val());
+      // assert
+      cartPage.paymentStep
+        .paymentMethod()
+        .should("have.value", $methodOption.val());
+    });
   }
 );

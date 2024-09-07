@@ -15,7 +15,7 @@ Feature: SUT - Cart feature
     Rule: Added items to cart
 
         @program/bdd
-        Scenario: Changing quantity affects amounts (unit price, item total, cart total) correctly
+        Scenario: bug - Changing quantity affects amounts (unit price, item total, cart total) correctly
             # set up: set products unit price
             Given You programmatically login as "admin"
             When You have "products" page opened
@@ -63,7 +63,7 @@ Feature: SUT - Cart feature
     Rule: Deleted items from cart
 
         @program/bdd
-        Scenario: Deleting items from cart affects amounts (cart rows and total) correctly
+        Scenario: bug - Deleting items from cart affects amounts (cart rows and total) correctly
             # set up: set products unit price
             Given You programmatically login as "admin"
             When You have "products" page opened
@@ -98,7 +98,7 @@ Feature: SUT - Cart feature
             Then Cart total price is "$0.00"
 
         @program/bdd
-        Scenario: Deleting items from cart affects cart icon correctly
+        Scenario: bug - Deleting items from cart affects cart icon correctly
             # set up: set products unit price
             Given You programmatically login as "admin"
             When You have "products" page opened
@@ -230,13 +230,55 @@ Feature: SUT - Cart feature
             When  You click on proceed button of "address" step
             Then "payment" step "is displayed"
 
+
     Rule: payment step in checkout
 
         @program/bdd
         Scenario: upon selecting bank transfer as payment method, the corresponding fields get displayed
+            Given You programmatically login as "customer2"
+            And You have "thor hammer" product opened from "customer" side
+            And You have added product to "cart"
+            And You click on "cart" common button, which redirects to "cart" page
+            And You click on proceed button of "cart" step
+            And "sign in" step "is visible"
+            And You click on proceed button of "sign in" step
+            And "address" step "is visible"
+            And You set "checkout" "state" field to "test state test"
+            And You set "checkout" "postal code" field to "123789"
+            And proceed button of "address" step "is enabled"
+            And  You click on proceed button of "address" step
+            And "payment" step "is displayed"
+            When "bank transfer" payment method "Not selected"
+            Then in payment step, "bank name" field "doesN't exist"
+            And in payment step, "account name" field "doesN't exist"
+            And in payment step, "account nr" field "doesN't exist"
+            When You have "bank transfer" payment method selected
+            Then in payment step, "bank name" field "exists"
+            And in payment step, "account name" field "exists"
+            And in payment step, "account number" field "exists"
 
         @program/bdd
         Scenario: upon selecting gift card as payment method, the corresponding fields get displayed
-
+        Given You programmatically login as "customer2"
+            And You have "thor hammer" product opened from "customer" side
+            And You have added product to "cart"
+            And You click on "cart" common button, which redirects to "cart" page
+            And You click on proceed button of "cart" step
+            And "sign in" step "is visible"
+            And You click on proceed button of "sign in" step
+            And "address" step "is visible"
+            And You set "checkout" "state" field to "test state test"
+            And You set "checkout" "postal code" field to "123789"
+            And proceed button of "address" step "is enabled"
+            And  You click on proceed button of "address" step
+            And "payment" step "is displayed"
+            When "gift card" payment method "Not selected"
+            Then in payment step, "gift card nr" field "doesN't exist"
+            And in payment step, "validation code" field "doesN't exist"
+            When You have "gift card" payment method selected
+            Then in payment step, "gift card nr" field "exists"
+            And in payment step, "validation code" field "exists"
+            
         @program/bdd
         Scenario: upon selecting payment method and confirming, payment is successful
+        #TODO

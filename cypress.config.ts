@@ -7,7 +7,7 @@ export default defineConfig({
     CURRENT_TESTING_ENV: "SPRINT5",
     TESTING_ENVS: {
       SPRINT5: {
-        UI_HOST: "https://practicesoftwaretesting.com/#",
+        UI_HOST: "https://practicesoftwaretesting.com",
         API_HOST: "https://api.practicesoftwaretesting.com",
       },
       SPRINT5_BUGS: {
