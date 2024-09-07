@@ -13,7 +13,8 @@ class Account extends Base {
   }
 
   waitForPage() {
-    return cy.wait(`@${apis.currentUser.interceptorName}`);
+    // return cy.wait(`@${apis.currentUser.interceptorName}`);
+    return this.assertPage()
   }
 
   assertPage() {

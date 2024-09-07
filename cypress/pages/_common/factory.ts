@@ -36,6 +36,9 @@ export class Factory {
     } else if (lower.match(/enabled/)) {
       result += "be.enabled";
       return result;
+    } else if (lower.match(/selected/)) {
+      result += "be.selected";
+      return result;
     } else {
       throw Error(`Invalid expected result [${bddAssertion}].`);
     }
