@@ -150,4 +150,9 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     urlRegex: /images$/,
     relativeUrl: () => "/images",
   },
+  paymentCheck: {
+    interceptorName: "paymentCheck",
+    urlRegex: /payment\/check$/,
+    relativeUrl: () => "/payment/check",
+  }
 };

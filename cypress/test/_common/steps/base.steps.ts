@@ -36,12 +36,12 @@ When(
     _: string,
     bddTextFieldName: string,
     bddPageName: string,
-    bddIncomigValue: string
+    bddIncomingValue: string
   ) {
     const page: Base = pagesFactory.getPage(bddPageName);
     const textField = page.getTextField(bddTextFieldName);
 
-    textField.clear().type(bddIncomigValue);
+    textField.clear().type(bddIncomingValue);
   }
 );
 
