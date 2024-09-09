@@ -62,8 +62,9 @@ class Cart extends Base {
         },
       },
     },
-    
     proceedBtn: () => cy.get("[data-test=finish]"),
+    successMsg: () =>
+      this.paymentStep.container().find("[class*='alert-success']"),
   };
 
   getApiInfo(): ApiInfo {
@@ -93,36 +94,61 @@ class Cart extends Base {
     const lowerTrimmed = bddMethodName.toLowerCase().trim();
     if (lowerTrimmed.match(/bank(.*)transfer/)) {
       return this.paymentStep.methods.bankTransfer.option();
-    } 
-    else if (lowerTrimmed.match(/gift/)) {
+    } else if (lowerTrimmed.match(/gift/)) {
       return this.paymentStep.methods.giftCard.option();
     } else {
-      throw Error(`payment method [ ${bddMethodName} ] doesn't exist in the map`);
+      throw Error(
+        `payment method [ ${bddMethodName} ] doesn't exist in the map`
+      );
     }
   }
 
+  // all fields (text field Or dropdown Or ...)
   getPaymentField(bddFieldName: string) {
     const lowerTrimmed = bddFieldName.toLowerCase().trim();
     // fields of bank transfer payment method
     if (lowerTrimmed.match(/bank(.*)name/)) {
       return this.paymentStep.methods.bankTransfer.fields.bankName();
-    } 
-    else if (lowerTrimmed.match(/account(.*)name/)) {
+    } else if (lowerTrimmed.match(/account(.*)name/)) {
       return this.paymentStep.methods.bankTransfer.fields.accountName();
-    }
-    else if (lowerTrimmed.match(/account(.*)n(.*)r/)) {
+    } else if (lowerTrimmed.match(/account(.*)n(.*)r/)) {
       return this.paymentStep.methods.bankTransfer.fields.accountNr();
-    } 
+    }
     // fields of gift card payment method
     else if (lowerTrimmed.match(/gift(.*)card(.*)n(.*)r/)) {
       return this.paymentStep.methods.giftCard.fields.cardNr();
-    } 
-    else if (lowerTrimmed.match(/valid(.*)code/)) {
+    } else if (lowerTrimmed.match(/valid(.*)code/)) {
       return this.paymentStep.methods.giftCard.fields.validationCode();
-    } 
-    // 
+    }
+    //
     else {
       throw Error(`payment field [ ${bddFieldName} ] doesn't exist in the map`);
+    }
+  }
+
+  // only text fields
+  getTextField(bddTextFieldName: string) {
+    const lowerTrimmed = bddTextFieldName.toLowerCase();
+
+    // fields of bank transfer payment method
+    if (lowerTrimmed.match(/bank(.*)name/)) {
+      return this.paymentStep.methods.bankTransfer.fields.bankName();
+    } else if (lowerTrimmed.match(/account(.*)name/)) {
+      return this.paymentStep.methods.bankTransfer.fields.accountName();
+    } else if (lowerTrimmed.match(/account(.*)n(.*)r/)) {
+      return this.paymentStep.methods.bankTransfer.fields.accountNr();
+    }
+    // fields of gift card payment method
+    else if (lowerTrimmed.match(/gift(.*)card(.*)n(.*)r/)) {
+      return this.paymentStep.methods.giftCard.fields.cardNr();
+    } else if (lowerTrimmed.match(/valid(.*)code/)) {
+      return this.paymentStep.methods.giftCard.fields.validationCode();
+    }
+    //
+    else {
+      throw Error(
+        `Text field [ ${bddTextFieldName} ] doesn't exist in the map`
+      );
     }
   }
 

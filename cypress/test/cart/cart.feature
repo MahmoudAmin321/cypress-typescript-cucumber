@@ -259,7 +259,7 @@ Feature: SUT - Cart feature
 
         @program/bdd
         Scenario: upon selecting gift card as payment method, the corresponding fields get displayed
-        Given You programmatically login as "customer2"
+            Given You programmatically login as "customer2"
             And You have "thor hammer" product opened from "customer" side
             And You have added product to "cart"
             And You click on "cart" common button, which redirects to "cart" page
@@ -278,7 +278,27 @@ Feature: SUT - Cart feature
             When You have "gift card" payment method selected
             Then in payment step, "gift card nr" field "exists"
             And in payment step, "validation code" field "exists"
-            
+
         @program/bdd
         Scenario: upon selecting payment method and confirming, payment is successful
-        #TODO
+            Given You programmatically login as "customer2"
+            And You have "thor hammer" product opened from "customer" side
+            And You have added product to "cart"
+            And You click on "cart" common button, which redirects to "cart" page
+            And You click on proceed button of "cart" step
+            And "sign in" step "is visible"
+            And You click on proceed button of "sign in" step
+            And "address" step "is visible"
+            And You set "checkout" "state" field to "test state test"
+            And You set "checkout" "postal code" field to "123789"
+            And proceed button of "address" step "is enabled"
+            And  You click on proceed button of "address" step
+            And "payment" step "is displayed"
+            And You have "bank transfer" payment method selected
+            And in payment step, "bank name" field "exists"
+            When You set text field "bank name" of "cart - payment step" page to "test bank name"
+            And You set text field "account name" of "cart - payment step" page to "test account name"
+            And You set text field "account nr" of "cart - payment step" page to "12345"
+            And in payment step, You have confirmed
+            Then in payment step, success msg "exists"
+            And in payment step, success msg contains text "  PayMEnt was succeSSful "

@@ -116,3 +116,35 @@ When(
     });
   }
 );
+
+When("in payment step, You have confirmed", function () {
+  // spy
+  cy.spyApi(apis.paymentCheck, "POST");
+
+  // do action (confirm)
+  cartPage.paymentStep.proceedBtn().click();
+
+  // wait
+  cy.wait(`@${apis.paymentCheck.interceptorName}`);
+});
+
+Then("in payment step, success msg {string}", function (bddAssertion: string) {
+  const assertion = Factory.getAssertion(bddAssertion);
+  cartPage.paymentStep.successMsg().should(assertion);
+});
+
+Then(
+  "in payment step, success msg contains text {string}",
+  function (expectedText: string) {
+    cartPage.paymentStep
+      .successMsg()
+      .invoke("text")
+      .then((text: string) => {
+        expect(text.trim().toLowerCase()).to.contain(
+          expectedText.trim().toLowerCase()
+        );
+      });
+
+    //.should("contain", bddMsgText);
+  }
+);
