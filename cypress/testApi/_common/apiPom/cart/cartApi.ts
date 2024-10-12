@@ -10,7 +10,7 @@ class CartApi extends BaseAPI {
       failOnStatusCode: false,
     });
   }
-  
+
   readonly defaultProductQuantity = 1;
 
   addProductToCart(
@@ -39,10 +39,6 @@ class CartApi extends BaseAPI {
     cy.readFile(dbJsonFile).then((content) => {
       const cartIds: string[] = content.cart_ids;
 
-      //log
-      cy.log("content ", content);
-      cy.log("cart ids ", cartIds);
-
       // delete carts
       cartIds.forEach((id, currentIndex, ids) => {
         this.delete(id).then((deleteCartResp) => {
@@ -50,12 +46,6 @@ class CartApi extends BaseAPI {
           if (deleteCartResp.isOkStatusCode || deleteCartResp.status === 404) {
             currentIndex = 0;
             ids.splice(currentIndex, 1);
-
-            //log
-            cy.log("ci ", currentIndex);
-            cy.log("content ", content);
-            cy.log("cart ids ", cartIds);
-            cy.log("ids ", ids);
 
             cy.writeFile(dbJsonFile, content);
           } else {
