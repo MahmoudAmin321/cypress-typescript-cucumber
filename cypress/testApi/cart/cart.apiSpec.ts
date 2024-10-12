@@ -19,7 +19,8 @@ describe(`${apis.specificCart.relativeUrl("{cartId}")}`, () => {
   });
 
   after(() => {
-    cy.log("after all tests in this suite");
+    // delete stored carts
+    cartApi.setUp();
   });
 
   describe("add items to cart & retrieve cart", () => {
@@ -75,11 +76,118 @@ describe(`${apis.specificCart.relativeUrl("{cartId}")}`, () => {
         });
       });
 
+      it("should add product to Only target cart", () => {
+        // precondition: create 1st cart
+        cartsApi.createAndStoreCart().then((postCartResp) => {
+          const cartId1: string = postCartResp.body.id;
+
+          // precondition: create 2nd cart
+          cartsApi.createAndStoreCart().then((postCartResp) => {
+            const cartId2: string = postCartResp.body.id;
+
+            // precondition: create product
+            productsApi.createProduct().then((productResp) => {
+              const productId: string = productResp.body.id;
+              const reqBody = {
+                product_id: productId,
+                quantity: cartApi.defaultProductQuantity,
+              };
+
+              // add product to cart
+              cartApi
+                .addProductToCart(cartId1, reqBody)
+                .then((addProdToCartResp) => {
+                  // assert
+                  expect(addProdToCartResp.isOkStatusCode).to.eq(true);
+
+                  // make sure, product got added to cart1
+                  cartApi.get(cartId1).then((cartResp) => {
+                    expect(cartResp.body.cart_items[0].product_id).to.eq(
+                      productId
+                    );
+                  });
+
+                  // make sure, product Not added to cart2
+                  cartApi.get(cartId2).then((cartResp) => {
+                    expect(cartResp.body.cart_items).to.deep.eq([]);
+                  });
+                });
+            });
+          });
+        });
+      });
+
+      it("should return Not found, if invalid cart id is passed", () => {
+        const invalidCartId = "invalid cart id";
+        // precondition: create product
+        productsApi.createProduct().then((productResp) => {
+          const productId: string = productResp.body.id;
+          const reqBody = {
+            product_id: productId,
+            quantity: cartApi.defaultProductQuantity,
+          };
+
+          // add product to cart
+          cartApi
+            .addProductToCart(invalidCartId, reqBody)
+            .then((addProdToCartResp) => {
+              // assert
+              expect(addProdToCartResp.status).to.eq(404);
+              const errorMsg: string =
+                addProdToCartResp.body.message.toLowerCase();
+              expect(errorMsg).to.include("not found");
+            });
+        });
+      });
+
+      it("bug - passing product id should be mandatory", () => {
+        // precondition: create cart
+        cartsApi.createAndStoreCart().then((postCartResp) => {
+          const cartId: string = postCartResp.body.id;
+          const reqBody = {
+            quantity: cartApi.defaultProductQuantity,
+          };
+
+          // add product to cart
+          cartApi
+            .addProductToCart(cartId, reqBody)
+            .then((addProdToCartResp) => {
+              // assert
+              expect(addProdToCartResp.status).to.eq(422);
+              const errorMsg: string =
+                addProdToCartResp.body.message.toLowerCase();
+              expect(errorMsg).to.include("product id is mandatory");
+            });
+        });
+      });
+
+      it("bug - passing quantity should be mandatory", () => {
+        // precondition: create cart
+        cartsApi.createAndStoreCart().then((postCartResp) => {
+          const cartId: string = postCartResp.body.id;
+          // precondition: create product
+          productsApi.createProduct().then((productResp) => {
+            const productId: string = productResp.body.id;
+            
+            const reqBody = {
+              product_id: productId,
+            };
+
+            // add product to cart
+            cartApi
+              .addProductToCart(cartId, reqBody)
+              .then((addProdToCartResp) => {
+                // assert
+                expect(addProdToCartResp.status).to.eq(422);
+                const errorMsg: string =
+                  addProdToCartResp.body.message.toLowerCase();
+                expect(errorMsg).to.include("quantity is mandatory");
+              });
+          });
+        });
+      });
+
       // TODO
-      ///t should add product to Only target cart
-      ///t should return Not found, if invalid cart id is passed
-      ///t passing product id should be mandatory
-      ///t passing quantity should be mandatory
       //------ should return error, if invalid product id is passed
       ///////////t non-existing
       ///////////t bool

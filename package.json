@@ -19,7 +19,7 @@
     "cy:run:gui:report": "cross-env npm run cy:run:e2e && npm run cy:run:program > cypress/reports/out.txt",
     "cy:run:api": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/*.apiSpec.{ts,js}\"",
     "cy:run:api:report": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/*.apiSpec.{ts,js}\" > cypress/reports/out.txt",
-    "cy:run:single": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/test/**/products.feature\" --browser chrome",
+    "cy:run:single": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/testApi/**/cart.apiSpec.{ts,js}\" --browser chrome",
     "cy:run:single:report": "cross-env ./node_modules/.bin/cypress run --spec \"cypress/test/**/cart.feature\" --browser chrome > cypress/reports/out.txt"
   },
   "author": "Mahmoud Mostafa",
