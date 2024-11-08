@@ -1,3 +1,4 @@
+import categoriesPage from "./categories.pom";
 import productsPage from "./products.pom";
 
 class EntitiesFactory {
@@ -5,11 +6,9 @@ class EntitiesFactory {
     const lower = bddEntityName.toLowerCase();
     if (lower.match(/product/)) {
       return productsPage;
-    }
-    //  else if (lower.match(/categor/)) {
-    //   return categoriesPage;
-    // }
-    else {
+    } else if (lower.match(/categor/)) {
+      return categoriesPage;
+    } else {
       throw Error(`Entity [ ${bddEntityName} ] doesn't exist in the map`);
     }
   }
@@ -19,18 +18,16 @@ class EntitiesFactory {
     const lower = bddColumnName.toLowerCase();
 
     if (lower.match(/id$/)) {
-      return (id: string) => (storedRowInfo.id = id);
+      return (id: string) => (storedRowInfo["id"] = id);
     } else if (lower.match(/name/)) {
-      return (name: string) => (storedRowInfo.name = name);
+      return (name: string) => (storedRowInfo["name"] = name);
     } else if (lower.match(/stock/)) {
-      return (stock: string) => (storedRowInfo.stock = stock);
+      return (stock: string) => (storedRowInfo["stock"] = stock);
     } else if (lower.match(/price/)) {
-      return (price: string) => (storedRowInfo.price = price);
-    }
-    // else if (lower.match(/slug/)) {
-    //   return (slug: string) => storedRowInfo.slug = slug
-    // }
-    else {
+      return (price: string) => (storedRowInfo["price"] = price);
+    } else if (lower.match(/slug/)) {
+      return (slug: string) => (storedRowInfo["slug"] = slug);
+    } else {
       throw Error(`Column [ ${bddColumnName} ] doesn't exist in the map`);
     }
   }
@@ -40,24 +37,26 @@ class EntitiesFactory {
     const lower = bddColumnName.toLowerCase();
 
     if (lower.match(/id$/)) {
-      return storedRowInfo.id;
+      return storedRowInfo["id"];
     } else if (lower.match(/name/)) {
-      return storedRowInfo.name;
+      return storedRowInfo["name"];
     } else if (lower.match(/stock/)) {
-      return storedRowInfo.stock ;
+      return storedRowInfo["stock"];
     } else if (lower.match(/price/)) {
-      return storedRowInfo.price;
-    }
-    // else if (lower.match(/slug/)) {
-    //   return storedRowInfo.slug;
-    // }
-    else {
+      return storedRowInfo["price"];
+    } else if (lower.match(/slug/)) {
+      return storedRowInfo["slug"];
+    } else {
       throw Error(`Column [ ${bddColumnName} ] doesn't exist in the map`);
     }
   }
 
-  getColumnFromDOM(bddColumnName: string, bddEntityName: string, rowNr: number) {
-    const table = this.getEntity(bddEntityName).table;
+  getColumnFromDOM(
+    bddColumnName: string,
+    bddEntityName: string,
+    rowNr: number
+  ) {
+    const table: any = this.getEntity(bddEntityName).table;
     const lower = bddColumnName.toLowerCase();
 
     if (lower.match(/id$/)) {
@@ -68,11 +67,9 @@ class EntitiesFactory {
       return table.nthStock(rowNr);
     } else if (lower.match(/price/)) {
       return table.nthPrice(rowNr);
-    }
-    // else if (lower.match(/slug/)) {
-    //   return table.nthSlug(rowNr);
-    // }
-    else {
+    } else if (lower.match(/slug/)) {
+      return table.nthSlug(rowNr);
+    } else {
       throw Error(`Column [ ${bddColumnName} ] doesn't exist in the map`);
     }
   }

@@ -1,3 +1,6 @@
+import categoriesPage from "../admin/categories.pom";
+import addCategoryPage from "../admin/categoryForm/addCategory.pom";
+import editCategoryPage from "../admin/categoryForm/editCategory.pom";
 import dashboardPage from "../admin/dashboard.pom";
 import editProductPage from "../admin/editProduct.pom";
 import productsPage from "../admin/products.pom";
@@ -16,14 +19,20 @@ class PagesFactory {
    * @returns The page object of the provided BDD name. If the BDD name is invalid, an error is thrown
    */
   getPage(bddPageName: string) {
-    const lower = bddPageName.trim().toLowerCase()
+    const lower = bddPageName.trim().toLowerCase();
     if (lower.match(/board/)) {
       return dashboardPage;
     } else if (lower.match(/products/)) {
       return productsPage;
     } else if (lower.match(/edit product/)) {
       return editProductPage;
-    } else if (lower.match(/a(c+)ount/)) {
+    } else if (lower.match(/categories/)) {
+      return categoriesPage;
+    } else if (lower.match(/add categor/)) {
+      return addCategoryPage;
+    } else if (lower.match(/edit categor/)) {
+      return editCategoryPage;
+    }else if (lower.match(/a(c+)ount/)) {
       return accountPage;
     } else if (lower.match(/favo/)) {
       return myFavoritesPage;

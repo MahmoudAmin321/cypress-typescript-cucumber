@@ -60,15 +60,9 @@ Then(
   }
 );
 
-// Unused yet
 When(
-  "{word} store {string} of {int}. {string}",
-  function (
-    _: string,
-    bddColumnName: string,
-    rowNr: number,
-    bddEntity: string
-  ) {
+  "You store {string} of {int}. {string}",
+  function (bddColumnName: string, rowNr: number, bddEntity: string) {
     // get from DOM
     const column = entitiesFactory.getColumnFromDOM(
       bddColumnName,
@@ -86,18 +80,18 @@ When(
   }
 );
 
-When("{word} have saved", function (_: string) {
-  // spy api
-  cy.spyApi(apis.specificProduct, "PUT");
+When("You save", function () {
+  Base.saveBtn().click();
+});
 
+When("{word} have saved", function (_: string) {
   // save
   Base.saveBtn().click();
 
-  // wait for api
-  cy.wait(`@${apis.specificProduct.interceptorName}`);
+  // make sure, save occurred
+  Base.successMsg().should("be.visible");
 });
 
-// Unused yet
 Then(
   "{string} of {int}. {string} {string} {string}",
   function (
@@ -108,7 +102,12 @@ Then(
     bddText: string
   ) {
     let expectedText: string;
-    if (bddText.toLowerCase().match(/as stored/)) {
+    if (
+      bddText
+        .toLowerCase()
+        .trim()
+        .match(/as stored/)
+    ) {
       expectedText = entitiesFactory.getStoredColumn(bddColumnName, bddEntity);
     } else {
       expectedText = bddText;

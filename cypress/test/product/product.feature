@@ -215,6 +215,7 @@ Feature: SUT - Product feature
             When You have card of "any" related product opened
             Then "category" is "hammer"
 
+        # test fails, because some mandatory data in product form is Not filled (image)
         @program/bdd
         Scenario: chaning category of product (i.e. hammer to pliers) moves the product to related products of the new category
             # setup: reset category to original
@@ -268,6 +269,7 @@ Feature: SUT - Product feature
             And You have 1. card opened
             Then Product details should be same as in "card with price"
 
+        # test fails, because some mandatory data in product form is Not filled (image & stock)
         @program/bdd
         Scenario: When admin changes product details (name, category, brand, price, description), the customer should see the new details
             Given You programmatically prepare brands data

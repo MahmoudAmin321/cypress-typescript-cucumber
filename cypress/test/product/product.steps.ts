@@ -146,12 +146,14 @@ Given("You programmatically prepare brands data", function () {
 
 Then(
   "{toasterType} toaster contain(s) text {string}",
-  function (bddToasterType: ToasterType, expectedText: string) {
+  function (bddToasterType: ToasterType, bddExpectedText: string) {
     productDetailsPage
       .getToaster(bddToasterType.type)
       .invoke("text")
       .then((text: string) => {
-        expect(text.trim().toLowerCase()).to.contain(expectedText);
+        expect(text.trim().toLowerCase()).to.contain(
+          bddExpectedText.trim().toLowerCase()
+        );
       });
   }
 );

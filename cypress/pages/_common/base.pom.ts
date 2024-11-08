@@ -1,5 +1,6 @@
 import { undefinedNr } from "../../support/consts";
 import { ApiInfo } from "../../support/models/api";
+
 import { ActionBtns } from "./components/actionBtns";
 
 export abstract class Base {
@@ -47,22 +48,26 @@ export abstract class Base {
   static readonly brands = () =>
     cy.get("[data-test=filters] [data-test^=brand]");
 
-  static readonly specificBrand = (id:string) => 
-    Base.brands().filter(`[value='${id}']`) 
+  static readonly specificBrand = (id: string) =>
+    Base.brands().filter(`[value='${id}']`);
 
-  static readonly saveBtn = () => cy.get("[data-test=product-submit]");
+  static readonly saveBtn = () => cy.get("[type=submit]");
 
   static readonly resetBtn = () => cy.get("[data-test$=reset]");
 
   static readonly paginator = () => cy.get("app-pagination .pagination");
 
-  static readonly addressFields= {
+  static readonly addressFields = {
     address: () => cy.get("[data-test=address]"),
     city: () => cy.get("[data-test=city]"),
     state: () => cy.get("[data-test=state]"),
     country: () => cy.get("[data-test=country]"),
     postcode: () => cy.get("[data-test=postcode]"),
-  }
+  };
+
+  static successMsg = () => cy.get("[class*=success]");
+
+  static errorMsg = () => cy.get("[class*=error], [class*=danger]");
 
   getApiInfo(): ApiInfo {
     return null;
@@ -121,13 +126,19 @@ export abstract class Base {
     }
   }
 
-  static searchInItems(chainableItems: Cypress.Chainable<any>, itemName: string): Cypress.Chainable<number> {
+  static searchInItems(
+    chainableItems: Cypress.Chainable<any>,
+    itemName: string
+  ): Cypress.Chainable<number> {
     return chainableItems.then((items: any) => {
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
 
         if (
-          item.innerText.trim().toLowerCase().match(RegExp(itemName.trim().toLowerCase()))
+          item.innerText
+            .trim()
+            .toLowerCase()
+            .match(RegExp(itemName.trim().toLowerCase()))
         ) {
           // return index of the found item
           return i;
@@ -137,5 +148,15 @@ export abstract class Base {
       return undefinedNr;
     });
   }
- 
+
+  static getFeedbackElement(fdbkType: string): Cypress.Chainable<any> {
+    const value = fdbkType.toLowerCase().trim();
+    if (value.match(/^success/)) {
+      return Base.successMsg();
+    } else if (value.match(/^(fail|er(.*)r)/)) {
+      return Base.errorMsg();
+    } else {
+      throw Error(`Feedback type ${fdbkType} doesNot exist in the map`);
+    }
+  }
 }
