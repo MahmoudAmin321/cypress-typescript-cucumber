@@ -8,6 +8,8 @@ import productsApi from "../../../testApi/_common/apiPom/product/productsApi";
 import productDetailsPage from "../../../pages/productDetails.pom";
 import cartPage from "../../../pages/cart.pom";
 import { CartColumn } from "../../../support/models/cartColumn";
+import entitiesFactory from "../../../pages/admin/entitiesFactory";
+import { Helper } from "../../../support/helper";
 
 // Anti pattern. Only use as exception, when there is No other option
 Given("{word} wait {int} seconds", function (_: string, seconds: number) {
@@ -40,8 +42,24 @@ When(
   ) {
     const page: Base = pagesFactory.getPage(bddPageName);
     const textField = page.getTextField(bddTextFieldName);
+    cy.then(() => {
+      let expectedText: string;
+      if (
+        bddIncomingValue
+          .toLowerCase()
+          .trim()
+          .match(/as stored/)
+      ) {
+        expectedText = entitiesFactory.getStoredColumn(
+          bddTextFieldName,
+          bddPageName
+        );
+      } else {
+        expectedText = bddIncomingValue;
+      }
 
-    textField.clear().type(bddIncomingValue);
+      textField.clear().type(expectedText);
+    });
   }
 );
 
@@ -200,5 +218,30 @@ Then(
   function (bddPageName: string, bddFieldName: string, expectedValue: string) {
     const field = Factory.getField(bddPageName, bddFieldName);
     field.invoke("val").should("eq", expectedValue);
+  }
+);
+
+Then(
+  "{string} feedback {string}",
+  function (bddFeedbackType: string, bddAssertion: string) {
+    const assertion = Factory.getAssertion(bddAssertion);
+    if (assertion === "not.exist") {
+      Helper.ignoreError("fail", "Expected to find element");
+    } else {
+      Base.getFeedbackElement(bddFeedbackType).should(assertion);
+    }
+  }
+);
+
+Then(
+  "{string} feedback contain(s) text {string}",
+  function (bddFeedbackType: string, bddExpectedText: string) {
+    Base.getFeedbackElement(bddFeedbackType)
+      .invoke("text")
+      .then((text: string) => {
+        expect(text.trim().toLowerCase()).to.contain(
+          bddExpectedText.trim().toLowerCase()
+        );
+      });
   }
 );

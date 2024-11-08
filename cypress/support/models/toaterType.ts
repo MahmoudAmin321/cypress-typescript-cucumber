@@ -1,4 +1,4 @@
-export type toastType = "success" | "failure" | "warning"
+export type toastType = "success" | "failure" | "warning";
 export class ToasterType {
   type: toastType;
 
@@ -10,15 +10,14 @@ export class ToasterType {
   }
 
   private getToasterType(bddToasterType: string): toastType | undefined {
-    const lower = bddToasterType.toLowerCase()
-    if (lower.match(/^success/)) {
+    const value = bddToasterType.toLowerCase().trim();
+    if (value.match(/^success/)) {
       return "success";
-    } else if (lower.match(/^(fail|err)/)) {
+    } else if (value.match(/^(fail|er(.*)r)/)) {
       return "failure";
-    } 
-    else if (lower.match(/^warn/)) {
+    } else if (value.match(/^warn/)) {
       return "warning";
-    }else {
+    } else {
       return undefined;
     }
   }
