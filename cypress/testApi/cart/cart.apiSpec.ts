@@ -168,7 +168,7 @@ describe(`${apis.specificCart.relativeUrl("{cartId}")}`, () => {
           // precondition: create product
           productsApi.createProduct().then((productResp) => {
             const productId: string = productResp.body.id;
-            
+
             const reqBody = {
               product_id: productId,
             };
@@ -187,20 +187,117 @@ describe(`${apis.specificCart.relativeUrl("{cartId}")}`, () => {
         });
       });
 
-      // TODO
-      //------ should return error, if invalid product id is passed
-      ///////////t non-existing
-      ///////////t bool
-      ///////////t alphabetic char
-      ///////////t special char (i.e. $)
-      //------ should return error, if invalid quantity is passed
-      ///////////t 0
-      ///////////t -ve
-      ///////////t bool
-      ///////////t alphabetic char
-      ///////////t special char (i.e. $)
+      describe.skip("should return error, if invalid product id is passed", () => {
+        function testInvalidProduct(invalidProductId) {
+          // precondition: create cart
+          cartsApi.createAndStoreCart().then((postCartResp) => {
+            const cartId: string = postCartResp.body.id;
+
+            const reqBody = {
+              product_id: invalidProductId,
+              quantity: cartApi.defaultProductQuantity,
+            };
+
+            // add product to cart
+            cartApi
+              .addProductToCart(cartId, reqBody)
+              .then((addProdToCartResp) => {
+                // assert
+                expect(addProdToCartResp.status).to.eq(422);
+                const errorMsg: string =
+                  addProdToCartResp.body.message.toLowerCase();
+                expect(errorMsg).to.include("invalid product");
+              });
+          });
+        }
+
+        it("bug - non-existing", () => {
+          testInvalidProduct("nonExistingProdId");
+        });
+
+        it("bug - boolean", () => {
+          testInvalidProduct(true);
+        });
+
+        it("bug - special char", () => {
+          testInvalidProduct("$§&*");
+        });
+      });
+
+      describe("should return error, if invalid quantity is passed", () => {
+        function sendInvaildQuantity(
+          invalidQuantity
+        ): Cypress.Chainable<Cypress.Response<any>> {
+          // precondition: create cart
+          return cartsApi.createAndStoreCart().then((postCartResp) => {
+            const cartId: string = postCartResp.body.id;
+
+            // precondition: create product
+            return productsApi.createProduct().then((productResp) => {
+              const productId: string = productResp.body.id;
+
+              const reqBody = {
+                product_id: productId,
+                quantity: invalidQuantity,
+              };
+
+              // add product to cart
+              return cartApi.addProductToCart(cartId, reqBody);
+            });
+          });
+        }
+
+        function assertInvalidNumericQuantity(
+          addProdToCartResp: Cypress.Response<any>
+        ) {
+          expect(addProdToCartResp.status).to.eq(422);
+          const errorMsg: string = addProdToCartResp.body.message.toLowerCase();
+          expect(errorMsg).to.include("invalid quantity");
+        }
+
+        function assertNonNumericQuantity(
+          addProdToCartResp: Cypress.Response<any>
+        ) {
+          expect(addProdToCartResp.status).to.eq(400);
+          const errorMsg: string = addProdToCartResp.body.message.toLowerCase();
+          expect(errorMsg).to.include(
+            "non-numeric value passed to increment method"
+          );
+        }
+
+        it("bug - zero", () => {
+          sendInvaildQuantity(0).then((addProdToCartResp) => {
+            assertInvalidNumericQuantity(addProdToCartResp);
+          });
+        });
+
+        it("bug - -ve nr", () => {
+          sendInvaildQuantity(-1).then((addProdToCartResp) => {
+            assertInvalidNumericQuantity(addProdToCartResp);
+          });
+        });
+
+        it("boolean", () => {
+          sendInvaildQuantity(true).then((addProdToCartResp) => {
+            assertNonNumericQuantity(addProdToCartResp);
+          });
+        });
+
+        it("bug - alphabetic char", () => {
+          sendInvaildQuantity("A").then((addProdToCartResp) => {
+            assertNonNumericQuantity(addProdToCartResp);
+          });
+        });
+
+        it("bug - special char", () => {
+          sendInvaildQuantity("$").then((addProdToCartResp) => {
+            assertNonNumericQuantity(addProdToCartResp);
+          });
+        });
+      });
     });
 
+    // TODO
     describe("retrieve cart", () => {
       ///t response of cart with items should have correct structure (key, type if needed)
       ///t response of empty cart should have empty items
