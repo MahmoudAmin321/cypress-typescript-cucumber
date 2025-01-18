@@ -27,11 +27,11 @@
   "devDependencies": {
     "@babel/core": "^7.22.1",
     "@babel/preset-env": "^7.22.4",
-    "@badeball/cypress-cucumber-preprocessor": "^17.2.1",
+    "@badeball/cypress-cucumber-preprocessor": "^22.0.0",
     "@cypress/webpack-preprocessor": "^5.17.1",
     "babel-loader": "^9.1.2",
     "cross-env": "^7.0.3",
-    "cypress": "^12.13.0",
+    "cypress": "^14.0.0",
     "ts-loader": "^9.4.3",
     "tsconfig-paths-webpack-plugin": "^4.0.1",
     "typescript": "^5.0.4",

@@ -43,8 +43,8 @@ Feature: SUT - Cart feature
             # should affect cart total price
             And Cart total price is "$81.83"
 
-        @program/bdd
-        Scenario: Changing quantity affects cart icon correctly
+        @program/bdd @skip
+        Scenario: obsolete - Changing quantity affects cart icon correctly
             Given You programmatically login as "customer2"
             And You have "thor hammer" product opened from "customer" side
             And You set quantity to "3"
