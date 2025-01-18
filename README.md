@@ -11,6 +11,7 @@
 - SUT:
   - UI: https://practicesoftwaretesting.com/
   - Swagger: https://api.practicesoftwaretesting.com/
+  - Repo: https://github.com/testsmith-io/practice-software-testing
 
 ## Prerequisites
 
