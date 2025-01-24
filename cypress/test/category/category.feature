@@ -27,10 +27,19 @@ Feature: SUT - Category feature
             Then "error" feedback "is displayed"
             And "error" feedback contain text " caTegory already exists with tHis Slug  "
 
-        #TODO
+        
         @program/bdd
         Scenario: creating a category with unique slug is possible
+        Given You programmatically login as "admin"
+            And You have "categories" page opened
+            When You have "add category" page opened
+            And You set text field "name" of " add category" page to "cat name 11111"
+            And You set text field "slug" of "add category " page to "slug-11111"
+            And You save
+            Then " sUccesS " feedback "is displayed"
+            And "success" feedback contain text " caTegory SaVeD  "
 
+        #TODO
         @program/bdd
         Scenario: creating a category with duplicate name is possible
 
