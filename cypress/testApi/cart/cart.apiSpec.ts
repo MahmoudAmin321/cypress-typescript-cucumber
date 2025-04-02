@@ -297,16 +297,93 @@ describe(`${apis.specificCart.relativeUrl("{cartId}")}`, () => {
       });
     });
 
-    // TODO
     describe("retrieve cart", () => {
-      ///t response of cart with items should have correct structure (key, type if needed)
-      ///t response of empty cart should have empty items
-      ///t in response, cart id should be same as request parameter
-      ///t should return Not found, if invalid cart id is passed
-      //t  should retrieve same product id as added product to cart
-      /////////1 add item to cart
-      ////////2 retrieve cart
-      ///////3 product id in 2 should be same as 1
+      it("response of cart with items should have correct structure", () => {
+        // precondition: create cart
+        cartsApi.createAndStoreCart().then((postCartResp) => {
+          const cartId: string = postCartResp.body.id;
+
+          // precondition: create product
+          productsApi.createProduct().then((productResp) => {
+            const productId: string = productResp.body.id;
+            const reqBody = {
+              product_id: productId,
+              quantity: cartApi.defaultProductQuantity,
+            };
+
+            // precondition: add product to cart
+            cartApi.addProductToCart(cartId, reqBody).then(() => {
+              // retrieve cart
+              cartApi.get(cartId).then((cartResp) => {
+                expect(cartResp.body.id).to.be.a("string").and.to.be.ok; // ok refers to "truthy"
+                expect(cartResp.body)
+                  .to.have.property("cart_items")
+                  .that.is.an("array").and.to.be.ok;
+                expect(cartResp.body.cart_items[0].product_id).to.be.a("string")
+                  .and.to.be.ok; // ok refers to "truthy"
+                expect(cartResp.body.cart_items[0].quantity).to.be.a("number");
+              });
+            });
+          });
+        });
+      });
+
+      it("response of empty cart should have empty items", () => {
+        // precondition: create cart
+        cartsApi.createAndStoreCart().then((postCartResp) => {
+          const cartId: string = postCartResp.body.id;
+
+          // retrieve cart
+          cartApi.get(cartId).then((cartResp) => {
+            expect(cartResp.body.cart_items).to.deep.eq([]);
+          });
+        });
+      });
+
+      it("in response, cart id should be same as request parameter", () => {
+        // precondition: create cart
+        cartsApi.createAndStoreCart().then((postCartResp) => {
+          const cartId: string = postCartResp.body.id;
+
+          // retrieve cart
+          cartApi.get(cartId).then((cartResp) => {
+            expect(cartResp.body.id).to.eq(cartId);
+          });
+        });
+      });
+
+      it("should retrieve same product id as added product to cart", () => {
+        // precondition: create cart
+        cartsApi.createAndStoreCart().then((postCartResp) => {
+          const cartId: string = postCartResp.body.id;
+
+          // precondition: create product
+          productsApi.createProduct().then((productResp) => {
+            const productId: string = productResp.body.id;
+            const reqBody = {
+              product_id: productId,
+              quantity: cartApi.defaultProductQuantity,
+            };
+
+            // precondition: add product to cart
+            cartApi.addProductToCart(cartId, reqBody).then(() => {
+              // retrieve cart
+              cartApi.get(cartId).then((cartResp) => {
+                expect(cartResp.body.cart_items[0].product_id).to.eq(productId);
+              });
+            });
+          });
+        });
+      });
+
+      it("should return Not found, if invalid cart id is passed", () => {
+        const invalidCartId = "ABC123EDFafsadflaflafdadskf";
+
+        // retrieve cart
+        cartApi.get(invalidCartId).then((cartResp) => {
+          expect(cartResp.status).to.eq(404);
+        });
+      });
     });
 
     it("upon adding multiple quantities of same product, should retrieve total quantities", () => {});
