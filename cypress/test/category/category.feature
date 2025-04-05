@@ -6,7 +6,7 @@ Feature: SUT - Category feature
         - BDD tags and statuses -> README.md
 
         Feature rules:
-        * [Scenarios_Titles_Defined] -user can create category (admin protal + effect on customer portal)
+        * [Scenarios_Titles_Defined] - user can create category (admin protal + effect on customer portal)
         * [Scenarios_Titles_Defined] - user can update category (admin protal + effect on customer portal)
         * [Scenarios_Titles_Defined] - user can delete category (admin protal + effect on customer portal)
 
@@ -27,10 +27,10 @@ Feature: SUT - Category feature
             Then "error" feedback "is displayed"
             And "error" feedback contain text " caTegory already exists with tHis Slug  "
 
-        
+
         @program/bdd
         Scenario: creating a category with unique slug is possible
-        Given You programmatically login as "admin"
+            Given You programmatically login as "admin"
             And You have "categories" page opened
             When You have "add category" page opened
             And You set text field "name" of " add category" page to "cat name 11111"
@@ -39,10 +39,22 @@ Feature: SUT - Category feature
             Then " sUccesS " feedback "is displayed"
             And "success" feedback contain text " caTegory SaVeD  "
 
-        #TODO
+
         @program/bdd
         Scenario: creating a category with duplicate name is possible
+            Given You programmatically login as "admin"
+            And You have "categories" page opened
+            And You have "add category" page opened
+            And You set text field "name" of " add category" page to "cat name 1234567"
+            And You set text field "slug" of "add category " page to "slug-1234567"
+            And You save
+            And " sUccesS " feedback "is displayed"
+            When You set text field "name" of " add category" page to "cat name 1234567"
+            And You set text field "slug" of "add category " page to "diff-slug-1234567"
+            And You save
+            Then " sUccesS " feedback "is displayed"
 
+        #TODO
         @program/bdd
         Scenario: created category gets appended to parent category DDL (admin portal)
 
