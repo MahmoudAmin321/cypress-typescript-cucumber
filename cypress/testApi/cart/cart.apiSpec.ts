@@ -386,12 +386,17 @@ describe(`${apis.specificCart.relativeUrl("{cartId}")}`, () => {
       });
     });
 
-    // TODO
-    it("upon adding multiple quantities of same product, should retrieve total quantities", () => {});
+    it("upon adding multiple quantities of same product, should retrieve total quantities", () => {
+      cartApi.checkQuantity(3);
+    });
 
-    it("upon adding quantity of different products, should retrieve correct quantity for each product", () => {});
+    it("upon adding quantity of different products, should retrieve correct quantity for each product", () => {
+      cartApi.checkQuantity(3);
+      cartApi.checkQuantity(5);
+    });
   });
 
+  // TODO
   describe("delete cart", () => {
     ///t cart created without user sign in can be deleted without authorization
     ///t bug - cart created by signed-in user, can be deleted Only by this user

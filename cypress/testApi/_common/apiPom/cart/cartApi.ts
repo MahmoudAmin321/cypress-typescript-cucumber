@@ -1,6 +1,8 @@
 import { apis } from "../../../../support/consts";
 import { apiHost } from "../../../../support/cyEnvVar";
 import { BaseAPI } from "../base.apiPom";
+import productsApi from "../product/productsApi";
+import cartsApi from "./cartsApi";
 
 class CartApi extends BaseAPI {
   get(cartId: string): Cypress.Chainable<Cypress.Response<any>> {
@@ -54,6 +56,31 @@ class CartApi extends BaseAPI {
               `problem in deleting cart id ${id}. Response from delete api was ${deleteCartResp}`
             );
           }
+        });
+      });
+    });
+  }
+
+  checkQuantity(inputQuantity) {
+    // precondition: create cart
+    cartsApi.createAndStoreCart().then((postCartResp) => {
+      const cartId: string = postCartResp.body.id;
+
+      // precondition: create product
+      productsApi.createProduct().then((productResp) => {
+        const productId: string = productResp.body.id;
+
+        const reqBody = {
+          product_id: productId,
+          quantity: inputQuantity,
+        };
+
+        // precondition: add product to cart
+        this.addProductToCart(cartId, reqBody).then(() => {
+          // retrieve cart
+          this.get(cartId).then((cartResp) => {
+            expect(cartResp.body.cart_items[0].quantity).to.eq(inputQuantity);
+          });
         });
       });
     });
