@@ -84,6 +84,11 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     urlRegex: /categories$/,
     relativeUrl: () => "/categories",
   },
+  SearchIncategories: {
+    interceptorName: "searchInCategories",
+    urlRegex: /categories\/search\?q=(.+)/,
+    relativeUrl: () => null,
+  },
   specificCategory: {
     interceptorName: "specificCategory",
     urlRegex: new RegExp(`categories/${dbIdRegex}$`),
@@ -154,5 +159,5 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
     interceptorName: "paymentCheck",
     urlRegex: /payment\/check$/,
     relativeUrl: () => "/payment/check",
-  }
+  },
 };

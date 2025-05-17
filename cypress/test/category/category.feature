@@ -54,13 +54,34 @@ Feature: SUT - Category feature
             And You save
             Then " sUccesS " feedback "is displayed"
 
-        #TODO
+
         @program/bdd
         Scenario: created category gets appended to parent category DDL (admin portal)
+            Given You programmatically login as "admin"
+            And You have "categories" page opened
+            And You have "add category" page opened
+            And You set text field "name" of " add category" page to "cat name 12345615"
+            And You set text field "slug" of "add category " page to "slug-12345615"
+            And You save
+            And " sUccesS " feedback "is displayed"
+            And You have "categories" page opened
+            And You have "add category" page opened
+            Then option "cat name 12345615" exists
+
 
         @program/bdd
         Scenario: created category gets appended to categories list (admin portal)
+            Given You programmatically login as "admin"
+            When You have "add category" page opened
+            And You set text field "name" of " add category" page to "cat name 123456568"
+            And You set text field "slug" of "add category " page to "slug-123456568"
+            And You save
+            And " sUccesS " feedback "is displayed"
+            And You have "categories" page opened
+            And  You search for category "cat name 123456568"
+            Then "Name" of 1. "category" is "cat name 123456568"
 
+        # TODO
         @program/bdd
         Scenario: created category gets appended to categories filter (customer portal)
 
