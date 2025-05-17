@@ -13,6 +13,9 @@ class Categories extends Base {
   };
 
   readonly addCategory = () => cy.get("[data-test=category-add]");
+  readonly searchField = () => cy.get("[data-test=category-search-query]");
+  readonly searchBtn = () => cy.get("[data-test=category-search-submit]");
+  readonly resetBtn = () => cy.get("[data-test=category-search-reset]");
 
   table = {
     nthRow: (rowNr: number) => cy.get(`tbody > tr:nth-child(${rowNr})`),
