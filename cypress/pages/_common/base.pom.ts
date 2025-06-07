@@ -45,6 +45,14 @@ export abstract class Base {
   static readonly categories = () =>
     cy.get("[data-test=filters] [data-test^=category]");
 
+  static readonly childCategories = () =>
+    cy.get("[data-test=filters] ul [data-test^=category]");
+
+   static readonly parentCategories = () =>
+    cy.get("[data-test=filters] [data-test^=category]:not([data-test=filters] ul [data-test^=category])");
+
+
+
   static readonly brands = () =>
     cy.get("[data-test=filters] [data-test^=brand]");
 

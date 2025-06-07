@@ -81,12 +81,24 @@ Feature: SUT - Category feature
             And  You search for category "cat name 123456568"
             Then "Name" of 1. "category" is "cat name 123456568"
 
+
+        @program/bdd @only
+        Scenario: created parent category gets appended to categories filter as parent (customer portal)
+            Given You programmatically login as "admin"
+            When You have "add category" page opened
+            And You set text field "name" of " add category" page to "cat name 123456560"
+            And You set text field "slug" of "add category " page to "slug-123456560"
+            And You save
+            And " sUccesS " feedback "is displayed"
+            And You have "home" page opened
+            Then You find category "cat name 123456560" in parent categories
+
+        @program/bdd @manual
+        Scenario: created child category gets appended to categories filter as child (customer portal)
+
+
+
         # TODO
-        @program/bdd
-        Scenario: created category gets appended to categories filter (customer portal)
-
-
-
     Rule: user can update category (admin protal + effect on customer portal)
 
         @program/bdd
