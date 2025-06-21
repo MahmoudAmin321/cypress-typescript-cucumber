@@ -82,7 +82,7 @@ Feature: SUT - Category feature
             Then "Name" of 1. "category" is "cat name 123456568"
 
 
-        @program/bdd @only
+        @program/bdd
         Scenario: created parent category gets appended to categories filter as parent (customer portal)
             Given You programmatically login as "admin"
             When You have "add category" page opened
