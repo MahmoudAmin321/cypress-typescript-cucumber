@@ -4,6 +4,7 @@ import { apis } from "../../../support/consts";
 import { Base } from "../../../pages/_common/base.pom";
 import { Factory } from "../../../pages/_common/factory";
 
+
 When(
   "{word} have clicked on {string} button of {int}. {string}",
   function (_: string, bddActionBtn: string, rowNr: number, bddEntity: string) {
@@ -11,27 +12,35 @@ When(
     const lower = bddActionBtn.toLowerCase();
 
     if (lower.match(/edit/)) {
-      // spy
-      // when time comes, handle specific category
-      cy.spyApi(apis.specificProduct);
+      if (bddEntity.trim().toLowerCase() === "product") {
+        // spy
+        cy.spyApi(apis.specificProduct);
 
-      // click
-      table.nthActionBtns(rowNr).edit().click();
+        // click
+        table.nthActionBtns(rowNr).edit().click();
 
-      // wait
-      // when time comes, handle specific category
-      cy.wait(`@${apis.specificProduct.interceptorName}`);
+        // wait
+        cy.wait(`@${apis.specificProduct.interceptorName}`);
+      } else if (bddEntity.trim().toLowerCase() === "category") {
+        // spy
+        cy.spyApi(apis.specificCategory);
+
+        // click
+        table.nthActionBtns(rowNr).edit().click();
+
+        cy.wait(1500);
+        // wait
+        cy.wait(`@${apis.specificCategory.interceptorName}`);
+      }
     } else if (lower.match(/delete/)) {
       // spy
-      // when time comes, handle categories
-      cy.spyApi(apis.products);
+      cy.spyApi(apis.categories);
 
       // click
       table.nthActionBtns(rowNr).delete().click();
 
       // wait
-      // when time comes, handle categories
-      cy.wait(`@${apis.products.interceptorName}`);
+      cy.wait(`@${apis.categories.interceptorName}`);
     } else {
       throw Error(`Button [ ${bddActionBtn} ] doesn't exist in the map`);
     }

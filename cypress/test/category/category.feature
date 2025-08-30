@@ -97,13 +97,34 @@ Feature: SUT - Category feature
         Scenario: created child category gets appended to categories filter as child (customer portal)
 
 
+    Rule: user can update category (admin protal + effect on customer portal)
+        @program/bdd @bug
+        Scenario: bug - editing a category to duplicate slug is Not possible
+            # precondition .. create 1st category
+            Given You programmatically login as "admin"
+            And You have "add category" page opened
+            And You set text field "name" of " add category" page to "cat name 123459520"
+            And You set text field "slug" of "add category " page to "slug-123459520"
+            And You save
+            And " sUccesS " feedback "is displayed"
+            And You have "categories" page opened
+            # precondition .. create 2nd category
+            And You have "add category" page opened
+            And You set text field "name" of " add category" page to "cat name 123459521"
+            And You set text field "slug" of "add category " page to "slug-123459521"
+            And You save
+            And " sUccesS " feedback "is displayed"
+            And You have "categories" page opened
+            # edit slug to duplicate duplicate slug
+            And  You search for category "cat name 123459521"
+            And " sLUg " of 1. "category" is "slug-123459521"
+            When You have clicked on "edit" button of 1. " CATEgorY "
+            And  You set text field "slug" of "add category " page to "slug-123459520"
+            And You save
+            Then "error" feedback "is displayed"
+            And "error" feedback contain text " duplicAte entRY  "
 
         # TODO
-    Rule: user can update category (admin protal + effect on customer portal)
-
-        @program/bdd
-        Scenario: editing a category to duplicate slug is Not possible
-
         @program/bdd
         Scenario: editing a category to unique slug is possible
 
