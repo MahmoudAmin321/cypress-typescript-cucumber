@@ -92,7 +92,7 @@ export const apis /*: { [key: string]: ApiInfo }*/ = {
   specificCategory: {
     interceptorName: "specificCategory",
     urlRegex: new RegExp(`categories/tree/${dbIdRegex}$`),
-    relativeUrl: (categoryId: string) => `/categories/${categoryId}`,
+    relativeUrl: (categoryId: string) => `/categories/tree/${categoryId}`,
   },
   products: {
     interceptorName: "products",
