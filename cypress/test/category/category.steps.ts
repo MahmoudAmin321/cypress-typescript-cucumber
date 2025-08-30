@@ -13,9 +13,6 @@ Then("option {string} exists", function (bddExactOptionName: string) {
 });
 
 When("You search for category {string}", function (bddCategoryName: string) {
-  // log 
-  console.log("sic ", apis.SearchIncategories)
-  
   // spy
   cy.spyApi(apis.SearchIncategories);
 
@@ -23,29 +20,33 @@ When("You search for category {string}", function (bddCategoryName: string) {
   categoriesPage.searchField().type(bddCategoryName);
   categoriesPage.searchBtn().click();
 
+  cy.wait(1500);
+
   // wait
   cy.wait(`@${apis.SearchIncategories.interceptorName}`);
 });
 
+Then(
+  "You find category {string} in parent categories",
+  function (bddCategoryName: string) {
+    // Find the checkbox with the specific text
+    cy.contains("label", bddCategoryName)
+      .children("[data-test^='category']")
+      .eq(0)
+      .then(($categoryElement) => {
+        // Get the data-test value of this category
+        const categoryId = $categoryElement.attr("data-test");
 
-Then("You find category {string} in parent categories", function (bddCategoryName: string) {
-  // Find the checkbox with the specific text
-cy.contains('label', bddCategoryName)
-  .children("[data-test^='category']").eq(0).then(($categoryElement) => {
-    // Get the data-test value of this category
-    const categoryId = $categoryElement.attr('data-test');
-    
-    // Verify this category exists in the parent categories list
-    Base.parentCategories()
-      .then(($parentCategories) => {
-        // Convert to array of data-test attributes
-        const parentIds = $parentCategories.map((i, el) => el.getAttribute('data-test')).get();
-        
-        // Assert our category exists in parent categories
-        expect(parentIds).to.include(categoryId);
+        // Verify this category exists in the parent categories list
+        Base.parentCategories().then(($parentCategories) => {
+          // Convert to array of data-test attributes
+          const parentIds = $parentCategories
+            .map((i, el) => el.getAttribute("data-test"))
+            .get();
+
+          // Assert our category exists in parent categories
+          expect(parentIds).to.include(categoryId);
+        });
       });
-  });
-  
-  
-});
-
+  }
+);
