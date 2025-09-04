@@ -35,6 +35,15 @@ class CartApi extends BaseAPI {
     });
   }
 
+  updateQuantity(cartId: string, requestBody: object): Cypress.Chainable<Cypress.Response<any>> {
+    return cy.request({
+      url: `${apiHost}${apis.cartProductQuantity.relativeUrl(cartId)}`,
+      method: "PUT",
+      body: requestBody,
+      failOnStatusCode: false,
+    });
+  }
+
   setUp() {
     // get stored carts
     const dbJsonFile = "cypress/fixtures/cart-ids.json";
