@@ -44,6 +44,14 @@ class CartApi extends BaseAPI {
     });
   }
 
+  deleteProductFromCart(cartId: string, productId: string): Cypress.Chainable<Cypress.Response<any>> {
+    return cy.request({
+      url: `${apiHost}${apis.specificCartProduct.relativeUrl(cartId, productId)}`,
+      method: "DELETE",
+      failOnStatusCode: false,
+    });
+  }
+
   setUp() {
     // get stored carts
     const dbJsonFile = "cypress/fixtures/cart-ids.json";
