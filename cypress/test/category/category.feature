@@ -115,7 +115,7 @@ Feature: SUT - Category feature
             And You save
             And " sUccesS " feedback "is displayed"
             And You have "categories" page opened
-            # edit slug to duplicate duplicate slug
+            # edit slug to duplicate slug
             And  You search for category "cat name 123459521"
             And " sLUg " of 1. "category" is "slug-123459521"
             When You have clicked on "edit" button of 1. " CATEgorY "
@@ -124,10 +124,25 @@ Feature: SUT - Category feature
             Then "error" feedback "is displayed"
             And "error" feedback contain text " duplicAte entRY  "
 
-        # TODO
         @program/bdd
         Scenario: editing a category to unique slug is possible
+            # precondition .. create a category
+            Given You programmatically login as "admin"
+            And You have "add category" page opened
+            And You set text field "name" of " add category" page to "cat name 123458520"
+            And You set text field "slug" of "add category " page to "slug-123458520"
+            And You save
+            And " sUccesS " feedback "is displayed"
+            And You have "categories" page opened
+            # edit slug to unique slug
+            And  You search for category "cat name 123458520"
+            And " sLUg " of 1. "category" is "slug-123458520"
+            When You have clicked on "edit" button of 1. " CATEgorY "
+            And  You set text field "slug" of "add category " page to "slug-123458521"
+            And You save
+            Then " sUccesS " feedback "is displayed"
 
+        # TODO
         @program/bdd
         Scenario: updated category name is displayed in parent category DDL (admin portal)
 
