@@ -3,8 +3,18 @@ import { apiHost } from "../../../../support/cyEnvVar";
 import { BaseAPI } from "../base.apiPom";
 
 class CategoriesApi extends BaseAPI {
-  url = `${apiHost}${apis.categories.relativeUrl()}`
-  get(url = this.url, method = "GET"): Cypress.Chainable<Cypress.Response<any>> {
+  url = `${apiHost}${apis.categories.relativeUrl()}`;
+
+  readonly categoryName = "Category name";
+
+  readonly categoryData = (name = this.categoryName) => {
+    return { name, slug: name.toLowerCase().replace(/ /g, "-") };
+  };
+
+  get(
+    url = this.url,
+    method = "GET"
+  ): Cypress.Chainable<Cypress.Response<any>> {
     return cy.request({
       url,
       method,
