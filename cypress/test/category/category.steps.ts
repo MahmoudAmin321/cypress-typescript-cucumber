@@ -2,7 +2,6 @@ import { Then, When } from "@badeball/cypress-cucumber-preprocessor";
 import addCategoryPage from "../../pages/admin/categoryForm/addCategory.pom";
 import categoriesPage from "../../pages/admin/categories.pom";
 import { apis } from "../../support/consts";
-import homePage from "../../pages/home.pom";
 import { Base } from "../../pages/_common/base.pom";
 
 Then("option {string} exists", function (bddExactOptionName: string) {
