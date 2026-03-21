@@ -4,8 +4,7 @@ import categoriesApi from "../_common/apiPom/category/categoriesApi";
 
 describe(`${apis.categories.relativeUrl()}`, () => {
   before(() => {
-    // TODO .. when POST categories
-    // brandsApi.cleanUp();
+    categoriesApi.cleanUp();
   });
 
   beforeEach(() => {
@@ -14,8 +13,7 @@ describe(`${apis.categories.relativeUrl()}`, () => {
   });
 
   afterEach(() => {
-    // TODO .. when POST categories
-    // brandsApi.cleanUp();
+    categoriesApi.cleanUp();
   });
 
   after(() => {
@@ -30,7 +28,7 @@ describe(`${apis.categories.relativeUrl()}`, () => {
       // Assert, that any (randomly selected) object in the response array has the correct properties
       const randomIndex = Helper.getRandomInteger(
         0,
-        categoriessResp.body.length - 1
+        categoriessResp.body.length - 1,
       );
 
       const objectTepmlate = {
@@ -56,6 +54,9 @@ describe(`${apis.categories.relativeUrl()}`, () => {
       expect(categoriessResp.status).to.eq(404);
     });
   });
+
+  // TODO .. when POST categories
+  // should throw error if unauthorized user calls the api
 
   // TODO .. when POST categories
   // it("Should POST brand successfully, upon providing valid body", () => {
