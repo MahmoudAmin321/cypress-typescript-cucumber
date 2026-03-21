@@ -9,10 +9,10 @@ class EditCategory extends BaseCategory {
   readonly storedId = "";
 
   getApiInfo(): ApiInfo {
-    return apis.specificCategory;
+    return apis.specificCategoryTree;
   }
   waitForPage = () => {
-    return cy.wait(`@${apis.specificCategory.interceptorName}`);
+    return cy.wait(`@${apis.specificCategoryTree.interceptorName}`);
   };
 
   assertPage = () => {

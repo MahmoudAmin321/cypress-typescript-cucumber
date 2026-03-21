@@ -23,14 +23,14 @@ When(
         cy.wait(`@${apis.specificProduct.interceptorName}`);
       } else if (bddEntity.trim().toLowerCase() === "category") {
         // spy
-        cy.spyApi(apis.specificCategory);
+        cy.spyApi(apis.specificCategoryTree);
 
         // click
         table.nthActionBtns(rowNr).edit().click();
 
         cy.wait(1500);
         // wait
-        cy.wait(`@${apis.specificCategory.interceptorName}`);
+        cy.wait(`@${apis.specificCategoryTree.interceptorName}`);
       }
     } else if (lower.match(/delete/)) {
       // spy
