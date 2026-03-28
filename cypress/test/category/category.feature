@@ -167,10 +167,32 @@ Feature: SUT - Category feature
             Then option "cat name 123458998" exists
 
 
-         # TODO
         @program/bdd
-        Scenario: updated category data is displayed categories list (admin portal)
+        Scenario: updated category data is displayed in categories list (admin portal)
+        # precondition .. create a category
+            Given You programmatically login as "admin"
+            And You have "add category" page opened
+            And You set text field "name" of " add category" page to "cat name 123458000"
+            And You set text field "slug" of "add category " page to "slug-123458000"
+            And You save
+            And " sUccesS " feedback "is displayed"
+            And You have "categories" page opened
+            # edit
+            When  You search for category "cat name 123458000"
+            And " sLUg " of 1. "category" is "slug-123458000"
+            And You have clicked on "edit" button of 1. " CATEgorY "
+            And You set text field "name" of " add category" page to "cat name 123458001"
+            And  You set text field "slug" of "add category " page to "slug-123458001"
+            And You save
+            And " sUccesS " feedback "is displayed"
+            And You have "categories" page opened
+            # assert
+            Then  You search for category "cat name 123458001"
+            And " NAME " of 1. "category" is "cat name 123458001"
+            And " sLUg " of 1. "category" is "slug-123458001"
 
+
+        # TODO
         @program/bdd
         Scenario: updated category name is displayed in categories filter (customer portal)
 
